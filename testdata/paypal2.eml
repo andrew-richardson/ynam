@@ -1,0 +1,806 @@
+Delivered-To: arichardson2189@gmail.com
+Received: by 2002:a17:522:e510:b0:651:429b:a56c with SMTP id es16csp1311960pvb;
+        Thu, 2 Apr 2026 21:18:52 -0700 (PDT)
+X-Received: by 2002:a05:7022:6613:b0:128:cf5c:5357 with SMTP id a92af1059eb24-12bfb6ec4camr906809c88.2.1775189932130;
+        Thu, 02 Apr 2026 21:18:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775189932; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z5u4FcgEla0SEtC5Lezzm3qMSID1TZV0Zva4RtokIM+1/eOpaCLmTnh7Oa8g3ppnf3
+         DeAZTn0tX/VlI/c31OyPDhTWhNsG6Sl+RnJpStF8AXVFt22PdvyrnoT25KDEszAYGo5R
+         QcakGgRIX1PEiFJVyiNx4PUHiDVxdPMi70DvIx/QMh/DnEQ7SmGzfA7fRcvHJlYvB8+Q
+         DXg1jHZiC0rXA/p5TfAsXQteu9ybfKIakBl/ILqCY15ms/6OcTElYrlPoZUKDMDAyxWZ
+         YKnn1z6s9ww09lip67uOVAtsxfU3kX0LevEWxFAwmlWUmqS8cEfv92mHSiRxhIQdKxPg
+         +1NA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=amq-delivery-message-id:pp-correlation-id:subject:reply-to:to:from
+         :mime-version:message-id:date:content-transfer-encoding
+         :dkim-signature;
+        bh=7nkDwcCke8atBbfn7MFrZMk/9LJ5ZCiRLQFf04YV7iI=;
+        fh=TaO8x+DlZniaCsPRbjPoBGWgWxcQ7hPhQF0jG2RrCZk=;
+        b=HjqPY2L0j6GYf9zYC3Xkhvr5WgihFkjjaiJB+RaBTCpOQ+aTxedxVLTSRZYTwmg293
+         qgGswR7y6kgmHUyARWToTKGSa+JEzLZydIBXR0glMWixFGDqtbW7kfsBQ+7ZDjGzoEd9
+         xOnvMxJ1m6DdRQ5Ums2MIAUWDvtSbkKIOvFZWxt0pUaRHhv07J4L7RRqjNMnEzXkSSeP
+         KtKCeGmdOHGzPsKCSQqkE+Rv9t529fqfwRjH1z35ztZ3RBpnRcuqsyGToCCKi6sGXI3t
+         oqsD9xPgzJBn/W+Z0dJENnPvGPmRUq3ui5X0nR3SRdvNcMbc7DfcnZCvuwyGtkvBKSrD
+         hGqw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@paypal.com header.s=pp-dkim1 header.b=FtzV+ch7;
+       spf=pass (google.com: domain of service@paypal.com designates 173.0.84.229 as permitted sender) smtp.mailfrom=service@paypal.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=paypal.com
+Return-Path: <service@paypal.com>
+Received: from mx4.slc.paypal.com (mx4.slc.paypal.com. [173.0.84.229])
+        by mx.google.com with ESMTPS id a92af1059eb24-12bedd571fbsi10405594c88.1.2026.04.02.21.18.51
+        for <arichardson2189@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 21:18:52 -0700 (PDT)
+Received-SPF: pass (google.com: domain of service@paypal.com designates 173.0.84.229 as permitted sender) client-ip=173.0.84.229;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@paypal.com header.s=pp-dkim1 header.b=FtzV+ch7;
+       spf=pass (google.com: domain of service@paypal.com designates 173.0.84.229 as permitted sender) smtp.mailfrom=service@paypal.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=paypal.com
+DKIM-Signature: v=1; a=rsa-sha256; d=paypal.com; s=pp-dkim1; c=relaxed/relaxed;
+	q=dns/txt; i=@paypal.com; t=1775189931;
+	h=From:From:Subject:Date:To:MIME-Version:Content-Type;
+	bh=7nkDwcCke8atBbfn7MFrZMk/9LJ5ZCiRLQFf04YV7iI=;
+	b=FtzV+ch7PXZi7dzGzpDFqzeQmqxT5OKSgyXq4UGko9hGTjMerjtURhXpH4mDK55/
+	ynIn4oU+rfQ5cC4meAcB6Udc1CrrZFclWKGlr66YuUdWGKBI7M5fR1BD+yucBuGJ
+	ZN0u9t1DcIHInTSSX2x3gBdIhKZ6o/4aEgb0dEijN6uA3kkSBflWFFrIH8dFYt7E
+	W9oGw/JEoefMAl5PMfjVgTWviR1dt5eSmlBmSJ379QRroUOFmr/aIsZ2nys1Fq6t
+	cXT6V7qVLM5CLVnoYdvEIGIJEDCop7sh+wTquDLwSMb/3z1/Xc+xdQ9ngs467IKs
+	9yb6YGcspRNvxgJ5c/fRpQ==;
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+Date: Thu, 02 Apr 2026 21:18:51 -0700
+Message-ID: <7B.D9.12868.BAF3FC96@ccg13mail06>
+MIME-Version: 1.0
+From: "service@paypal.com" <service@paypal.com>
+To: Andrew Richardson <arichardson2189@gmail.com>
+Reply-To: Andrew Richardson <arichardson2189@gmai...>
+Subject: =?UTF-8?B?Q2xvdWRmbGFyZSBJbmM6ICQxMC40NsKgVVNE?=
+X-MaxCode-Template: RT002952
+X-PP-Priority: 0-paypal-false
+PP-Correlation-Id: d11ebc731e744
+X-PP-Email-transmission-Id: 384d303e-2f14-11f1-9ea4-8b12ada7ecb4
+X-PP-REQUESTED-TIME: 1775189926518
+X-Email-Type-Id: RT002952
+AMQ-Delivery-Message-Id: nullval
+X-XPT-XSL-Name: nullval
+
+<html dir=3D"ltr" lang=3D"en">=0A=0A  <head>=0A    <meta http-equiv=3D"Cont=
+ent-Type" content=3D"text/html; charset=3Dutf-8" />=0A    <meta name=3D"vie=
+wport" content=3D"initial-scale=3D1.0,minimum-scale=3D1.0,maximum-scale=3D1=
+.0,width=3Ddevice-width,height=3Ddevice-height,target-densitydpi=3Ddevice-=
+dpi,user-scalable=3Dno" />=0A    <title>Cloudflare Inc: $10.46=C2=A0USD</ti=
+tle>=0A    <style type=3D"text/css">=0A      /**=0A * SupremeLL Fonts=0A */=
+=0A      /* Body text - font-weight:450 */=0A      @font-face {=0A        f=
+ont-family: SupremeLLTest;=0A        font-style: normal;=0A        font-wei=
+ght: 450;=0A        src: url('https://www.paypalobjects.com/digitalassets/c=
+/system-triggered-email/n/layout/fonts/SupremeLL/SupremeLLTestSubWeb-Book.w=
+off2') format('woff2'),=0A          /*Moderner Browsers*/=0A          url('=
+https://www.paypalobjects.com/digitalassets/c/system-triggered-email/n/layo=
+ut/fonts/SupremeLL/SupremeLLTestSubWeb-Book.woff') format('woff');=0A      =
+  /* Modern Browsers */=0A        /* Fallback font for - MS Outlook older v=
+ersions (2007,13, 16)*/=0A        mso-font-alt: 'Calibri';=0A      }=0A=0A =
+     /* Subheadline font-weight:500 */=0A      @font-face {=0A        font-=
+family: SupremeLLTest;=0A        font-style: normal;=0A        font-weight:=
+ 500;=0A        src: url('https://www.paypalobjects.com/digitalassets/c/sys=
+tem-triggered-email/n/layout/fonts/SupremeLL/SupremeLLTestSubWeb-Medium.wof=
+f2') format('woff2'),=0A          /*Moderner Browsers*/=0A          url('ht=
+tps://www.paypalobjects.com/digitalassets/c/system-triggered-email/n/layout=
+/fonts/SupremeLL/SupremeLLTestSubWeb-Medium.woff') format('woff');=0A      =
+  /* Modern Browsers */=0A        /* Fallback font for - MS Outlook older v=
+ersions (2007,13, 16)*/=0A        mso-font-alt: 'Calibri';=0A      }=0A=0A =
+     /* Button font-weight:700 */=0A      @font-face {=0A        font-famil=
+y: SupremeLLTest;=0A        font-style: normal;=0A        font-weight: 700;=
+=0A        src: url('https://www.paypalobjects.com/digitalassets/c/system-t=
+riggered-email/n/layout/fonts/SupremeLL/SupremeLLTestSubWeb-Bold.woff2') fo=
+rmat('woff2'),=0A          /*Moderner Browsers*/=0A          url('https://w=
+ww.paypalobjects.com/digitalassets/c/system-triggered-email/n/layout/fonts/=
+SupremeLL/SupremeLLTestSubWeb-Bold.woff') format('woff');=0A        /* Mode=
+rn Browsers */=0A        /* Fallback font for - MS Outlook older versions (=
+2007,13, 16)*/=0A        mso-font-alt: 'Calibri';=0A      }=0A=0A      /* H=
+eadline font-weight:900 */=0A      @font-face {=0A        font-family: Supr=
+emeLLTest;=0A        font-style: normal;=0A        font-weight: 900;=0A    =
+    src: url('https://www.paypalobjects.com/digitalassets/c/system-triggere=
+d-email/n/layout/fonts/SupremeLL/SupremeLLTestSubWeb-Black.woff2') format('=
+woff2'),=0A          /*Moderner Browsers*/=0A          url('https://www.pay=
+palobjects.com/digitalassets/c/system-triggered-email/n/layout/fonts/Suprem=
+eLL/SupremeLLTestSubWeb-Black.woff') format('woff');=0A        /* Modern Br=
+owsers */=0A        /* Fallback font for - MS Outlook older versions (2007,=
+13, 16)*/=0A        mso-font-alt: 'Calibri';=0A      }=0A=0A      /* End - =
+SupremeLL Fonts */=0A=0A      /**=0A   * Import only the styles required fo=
+r Email templates.=0A   */=0A      @charset "UTF-8";=0A=0A      html {=0A  =
+      box-sizing: border-box;=0A        background: #F5F7FA;=0A        colo=
+r: #000000;=0A        font-size: 14px;=0A        line-height: 1.4286;=0A   =
+     height: 100%;=0A      }=0A=0A      *,=0A      *:before,=0A      *:afte=
+r {=0A        box-sizing: inherit;=0A      }=0A=0A      body {=0A        fo=
+nt-size: 14px !important;=0A        font-weight: 450;=0A        line-height=
+: 1.4286;=0A        font-family: SupremeLLTest, 'Avant Garde', Helvetica, A=
+rial;=0A        -webkit-font-smoothing: antialiased;=0A        -moz-osx-fon=
+t-smoothing: grayscale;=0A        font-smoothing: antialiased;=0A        ba=
+ckground: #F5F7FA;=0A        color: #000000;=0A        height: 100%;=0A    =
+    margin: 0;=0A        padding: 0;=0A      }=0A=0A      a,=0A      a:visi=
+ted {=0A        color: #0074DE;=0A        text-decoration: none;=0A        =
+font-weight: 700;=0A        font-family: SupremeLLTest, 'Avant Garde', Helv=
+etica, Arial;=0A        ;=0A      }=0A=0A      a:active,=0A      a:focus,=
+=0A      a:hover {=0A        color: #003087;=0A        text-decoration: und=
+erline;=0A      }=0A=0A      p,=0A      li,=0A      dd,=0A      dt,=0A     =
+ label,=0A      input,=0A      textarea,=0A      pre,=0A      code,=0A     =
+ table {=0A        font-size: 14px;=0A        line-height: 1.4286;=0A      =
+  font-weight: 450;=0A        text-transform: none;=0A        font-family: =
+SupremeLLTest, 'Avant Garde', Helvetica, Arial;=0A        ;=0A        color=
+: #000000;=0A      }=0A=0A      /* prevent iOS font upsizing */=0A      * {=
+=0A        -webkit-text-size-adjust: none;=0A      }=0A=0A      /* force Ou=
+tlook.com to honor line-height */=0A      .ExternalClass * {=0A        line=
+-height: 100%;=0A      }=0A=0A      td {=0A        mso-line-height-rule: ex=
+actly;=0A      }=0A=0A      div[style*=3D"margin: 16px 0"] {=0A        marg=
+in: 0 !important;=0A      }=0A=0A      .ppsans {=0A        font-family: Sup=
+remeLLTest, 'Avant Garde', Helvetica, Arial !important;=0A      }=0A    </s=
+tyle>=0A  </head>=0A=0A  <body>=0A    <h4 id=3D"preHeader" style=3D"display=
+:none;color:#F5F7FA;font-size:0px;line-height:0px">Authorized with Cloudfla=
+re Inc.</h4>=0A    <table cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" =
+width=3D"100%" role=3D"presentation">=0A      <tbody>=0A        <tr>=0A    =
+      <td bgcolor=3D"#F5F7FA" style=3D"font-size:0px"></td>=0A          <td=
+ bgcolor=3D"#F5F7FA" width=3D"640" align=3D"center" class=3D"mobContent">=
+=0A            <table cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" widt=
+h=3D"100%" dir=3D"ltr" role=3D"presentation">=0A              <tbody>=0A   =
+             <tr>=0A                  <td>=0A                    <table cel=
+lPadding=3D"0" cellSpacing=3D"0" border=3D"0" width=3D"100%" role=3D"presen=
+tation">=0A                      <tbody>=0A                        <tr>=0A =
+                         <td>=0A                            <table width=3D=
+"100%" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" dir=3D"ltr" role=3D=
+"presentation">=0A                              <tbody>=0A                 =
+               <tr>=0A                                  <td align=3D"center=
+" style=3D"padding:24px 24px 16px 24px"><img src=3D"https://www.paypalobjec=
+ts.com/digitalassets/c/system-triggered-email/n/layout/images/ppe/pp-logo_x=
+2.png" style=3D"display:block" border=3D"0" width=3D"51" height=3D"51" alt=
+=3D"PayPal" title=3D"PayPal" /></td>=0A                                </tr=
+>=0A                              </tbody>=0A                            </=
+table>=0A                          </td>=0A                        </tr>=0A=
+                        <tr>=0A                          <td>=0A           =
+                 <table width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" =
+border=3D"0" dir=3D"ltr" role=3D"presentation">=0A                         =
+     <tbody>=0A                                <tr>=0A                     =
+             <td align=3D"center" style=3D"font-weight:700;font-size:20px;l=
+ine-height:28px;padding:0px 24px 16px 24px"><span>Hello, Andrew Richardson<=
+/span></td>=0A                                </tr>=0A                     =
+         </tbody>=0A                            </table>=0A                =
+          </td>=0A                        </tr>=0A                      </t=
+body>=0A                    </table>=0A                  </td>=0A          =
+      </tr>=0A              </tbody>=0A            </table>=0A            <=
+table cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" width=3D"100%" class=
+=3D"ppsans" dir=3D"ltr" role=3D"presentation">=0A              <tbody>=0A  =
+              <tr>=0A                  <td width=3D"640" valign=3D"top">=0A=
+                    <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"=
+0" border=3D"0" role=3D"presentation">=0A                      <tbody>=0A  =
+                      <tr>=0A                          <td align=3D"center"=
+ style=3D"padding:0px 24px 40px 24px;word-break:break-word">=0A            =
+                <p class=3D"ppsans" style=3D"font-size:42px;line-height:46p=
+x;font-weight:900;color:#000;margin:0"><span>You authorized $10.46=C2=A0USD=
+ to Cloudflare Inc</span></p>=0A                          </td>=0A         =
+               </tr>=0A                      </tbody>=0A                   =
+ </table>=0A                    <table id=3D"highlight" width=3D"100%" cell=
+Spacing=3D"0" cellPadding=3D"0" border=3D"0">=0A                      <tbod=
+y>=0A                        <tr>=0A                          <td style=3D"=
+padding:0px 24px 16px 24px">=0A                            <table width=3D"=
+100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" style=3D"background:=
+#fff;border-radius:18px" role=3D"presentation">=0A                         =
+     <tbody>=0A                                <tr>=0A                     =
+             <td align=3D"center" class=3D"ppsans" style=3D"vertical-align:=
+top;padding:16px 16px 16px 16px">=0A                                    <ta=
+ble width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0">=0A    =
+                                  <tbody>=0A                               =
+         <tr>=0A                                          <td style=3D"padd=
+ing:0px 0px 16px 0px">=0A                                            <table=
+ id=3D"cartDetails" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" width=
+=3D"100%" dir=3D"ltr" style=3D"font-size:14px">=0A                         =
+                     <tbody>=0A                                            =
+    <tr>=0A                                                  <td style=3D"p=
+adding:0px 0px 12px 0px;text-align:left;border-top:0px;width:36.5%;word-bre=
+ak:break-all;vertical-align:top"><span class=3D"" style=3D"font-size:14px;c=
+olor:#000000"><span>Merchant</span></span></td>=0A                         =
+                         <td style=3D"padding:0px 0px 12px 0px;text-align:l=
+eft;border-top:0px;width:63.5%;word-break:break-all;vertical-align:top"><sp=
+an class=3D"" style=3D"font-size:14px;color:#000000"><span>Cloudflare Inc<b=
+r/>billing@cloudflare.c...</span></span></td>=0A                           =
+                     </tr>=0A                                              =
+  <tr>=0A                                                  <td style=3D"pad=
+ding:0px 0px 12px 0px;text-align:left;border-top:0px;width:36.5%;vertical-a=
+lign:top"><span class=3D"" style=3D"font-size:14px;color:#000000"><span>Tra=
+nsaction date</span></span></td>=0A                                        =
+          <td style=3D"padding:0px 0px 12px 0px;text-align:left;border-top:=
+0px;width:63.5%;vertical-align:top;word-break:break-all"><span class=3D"" s=
+tyle=3D"font-size:14px;color:#000000"><span>Apr 2, 2026</span></span></td>=
+=0A                                                </tr>=0A                =
+                                <tr>=0A                                    =
+              <td style=3D"padding:0px 0px 12px 0px;text-align:left;border-=
+top:0px;width:36.5%;vertical-align:top"><span class=3D"" style=3D"font-size=
+:14px;color:#000000"><span>Order ID</span></span></td>=0A                  =
+                                <td style=3D"padding:0px 0px 12px 0px;text-=
+align:left;border-top:0px;width:63.5%;vertical-align:top;word-break:break-a=
+ll"><span class=3D"" style=3D"font-size:14px;color:#000000"><span>9e652b7e2=
+291bab0-ZRH-1775189906-haturtles.com-1-create_payment_intent</span></span><=
+/td>=0A                                                </tr>=0A            =
+                                  </tbody>=0A                              =
+              </table>=0A                                          </td>=0A=
+                                        </tr>=0A                           =
+           </tbody>=0A                                    </table>=0A      =
+                              <table dir=3D"ltr" width=3D"100%" cellSpacing=
+=3D"0" cellPadding=3D"0" border=3D"0" role=3D"presentation">=0A            =
+                          <tbody>=0A                                       =
+ <tr>=0A                                          <td style=3D"padding:0px =
+0px 16px 0px">=0A                                            <table width=
+=3D"100%" border=3D"0" cellSpacing=3D"0" cellPadding=3D"0" dir=3D"ltr" role=
+=3D"presentation">=0A                                              <tbody>=
+=0A                                                <tr>=0A                 =
+                                 <td style=3D"padding:0px 0px 0px 0px" alig=
+n=3D"left">=0A                                                    <table bo=
+rder=3D"0" cellSpacing=3D"0" cellPadding=3D"0" dir=3D"ltr" role=3D"presenta=
+tion">=0A                                                      <tbody>=0A  =
+                                                      <tr>=0A              =
+                                            <td align=3D"center" style=3D"b=
+order-radius:60px;border:2px solid #ffffff;background-color:#000000"><a hre=
+f=3D"https://www.paypal.com/mobile-app/myaccount/activities/details/47B9258=
+9AM038821A=3Fsource=3DRT002952&pp_web_dl=3Dcustom&pp_mob_dl=3Dcustom&link_r=
+ef=3Dview-payment-status-btn-RT002952&v=3D1&utm_source=3Dunp&utm_medium=3De=
+mail&utm_campaign=3DRT002952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7e=
+cb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC&=
+unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpci=
+d=3Demail-xo-auth-ql-buyer-notification&page=3Dmain%3Aemail%3ART002952&pgrp=
+=3Dmain%3Aemail&e=3Dcl&mchn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&xt=
+=3D145585%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C=
+174077%2C173345%2C175544%2C104038" target=3D"_blank" style=3D"line-height:2=
+0px;font-size:18px;border-radius:60px;padding:15px 30px;display:inline-bloc=
+k;border:1px solid #000000;font-weight:700;text-align:center;text-decoratio=
+n:none;cursor:pointer;min-width:150px;background-color:#000000;color:#fffff=
+f" role=3D"button">View Payment Details</a></td>=0A                        =
+                                </tr>=0A                                   =
+                   </tbody>=0A                                             =
+       </table>=0A                                                  </td>=
+=0A                                                </tr>=0A                =
+                              </tbody>=0A                                  =
+          </table><img src=3D"https://t.paypal.com/ts=3Fevent_name=3Dpaymen=
+t-details-btn-RT002952&amp;v=3D1&amp;utm_source=3Dunp&amp;utm_medium=3Demai=
+l&amp;utm_campaign=3DRT002952&amp;utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12=
+ada7ecb4&amp;ppid=3DRT002952&amp;cnac=3DUS&amp;rsta=3Den_US%28en-US%29&amp;=
+cust=3DXDTCF7FJURVZC&amp;unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&amp;=
+calc=3Dd11ebc731e744&amp;unp_tpcid=3Demail-xo-auth-ql-buyer-notification&am=
+p;page=3Dmain%3Aemail%3ART002952&amp;pgrp=3Dmain%3Aemail&amp;e=3Dre&amp;mch=
+n=3Dem&amp;s=3Dci&amp;mail=3Dsys&amp;appVersion=3D1.398.0&amp;xt=3D145585%2=
+C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C174077%2C17=
+3345%2C175544%2C104038" style=3D"display:block" border=3D"0" alt=3D"" heigh=
+t=3D"1px" width=3D"1px" aria-hidden=3D"true" />=0A                         =
+                 </td>=0A                                        </tr>=0A  =
+                                    </tbody>=0A                            =
+        </table>=0A                                    <table width=3D"100%=
+" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0">=0A                     =
+                 <tbody>=0A                                        <tr>=0A =
+                                         <td style=3D"padding:0px 0px 16px =
+0px">=0A                                            <hr style=3D"border-top=
+:1px solid #C6C6C6" />=0A                                          </td>=0A=
+                                        </tr>=0A                           =
+           </tbody>=0A                                    </table>=0A      =
+                              <table width=3D"100%" cellSpacing=3D"0" cellP=
+adding=3D"0" border=3D"0">=0A                                      <tbody>=
+=0A                                        <tr>=0A                         =
+                 <td style=3D"padding:0px 0px 16px 0px">=0A                =
+                            <table id=3D"cartDetails" cellSpacing=3D"0" cel=
+lPadding=3D"0" border=3D"0" width=3D"100%" dir=3D"ltr" style=3D"font-size:1=
+4px" role=3D"presentation">=0A                                             =
+ <tbody>=0A                                                <tr>=0A         =
+                                         <td style=3D"padding:0px 0px 8px 0=
+px;vertical-align:top" colSpan=3D"1"><span>Subtotal</span></td>=0A         =
+                                         <td style=3D"text-align:right;padd=
+ing:0px 0px 8px 0px;width:135px;vertical-align:top"><span>$10.46</span></td=
+>=0A                                                </tr>=0A               =
+                                 <tr>=0A                                   =
+               <td style=3D"padding:0px 0px 0px 0px;vertical-align:top" col=
+Span=3D"1"><span>Total</span></td>=0A                                      =
+            <td style=3D"text-align:right;padding:0px 0px 0px 0px;width:135=
+px;vertical-align:top;font-weight:500;font-size:16px"><span>$10.46=C2=A0USD=
+</span></td>=0A                                                </tr>=0A    =
+                                          </tbody>=0A                      =
+                      </table>=0A                                          =
+</td>=0A                                        </tr>=0A                   =
+                   </tbody>=0A                                    </table>=
+=0A                                    <table width=3D"100%" cellPadding=3D=
+"0" cellSpacing=3D"0" border=3D"0">=0A                                     =
+ <tbody>=0A                                        <tr>=0A                 =
+                         <td style=3D"padding:0px 0px 16px 0px">=0A        =
+                                    <hr style=3D"border-top:1px solid #C6C6=
+C6" />=0A                                          </td>=0A                =
+                        </tr>=0A                                      </tbo=
+dy>=0A                                    </table>=0A                      =
+              <table border=3D"0" cellPadding=3D"0" cellSpacing=3D"0" dir=
+=3D"ltr" role=3D"presentation" style=3D"font-size:14px;line-height:18px" wi=
+dth=3D"100%">=0A                                      <tr>=0A              =
+                          <td style=3D"text-align:left;font-size:14px;font-=
+weight:700;padding-bottom:12px">Authorized with</td>=0A                    =
+                  </tr>=0A                                      <tr>=0A    =
+                                    <td style=3D"padding-bottom:16px">=0A  =
+                                        <table border=3D"0" cellPadding=3D"=
+0" cellSpacing=3D"0" dir=3D"ltr" role=3D"presentation" width=3D"100%">=0A  =
+                                          <tr>=0A                          =
+                    <td valign=3D"top">=0A                                 =
+               <p style=3D"font-weight:500;line-height:18px;padding:0;margi=
+n:0">USAA FEDERAL SAVINGS BANK</p>=0A                                      =
+          <p style=3D"font-weight:400;line-height:18px;color:#545D68;paddin=
+g:0;margin:0;text-transform:capitalize">Checking =E2=80=A2=E2=80=A27675</p>=
+=0A                                              </td>=0A                  =
+                            <td valign=3D"top" align=3D"right">=0A         =
+                                       <p style=3D"font-size:14px;font-weig=
+ht:500;line-height:18px;padding:0;margin:0;padding-left:16px">$10.46=C2=A0U=
+SD</p>=0A                                              </td>=0A            =
+                                </tr>=0A                                   =
+       </table>=0A                                        </td>=0A         =
+                             </tr>=0A                                      =
+<tr>=0A                                        <td style=3D"padding-bottom:=
+16px">=0A                                          <table width=3D"100%" ce=
+llPadding=3D"0" cellSpacing=3D"0" border=3D"0">=0A                         =
+                   <tbody>=0A                                              =
+<tr>=0A                                                <td class=3D"ppsans"=
+ style=3D"padding:0px 0px 0px 0px">=0A                                     =
+             <p class=3D"ppsans" style=3D"font-size:14px;line-height:20px;c=
+olor:#000000;margin:0;word-break:break-word" dir=3D"ltr"><span>You=E2=80=99=
+ll see this purchase as pending in your payment status until Cloudflare Inc=
+ processes it. We'll send you another receipt if the final payment amount i=
+s greater than this authorization amount.</span></p>=0A                    =
+                            </td>=0A                                       =
+       </tr>=0A                                            </tbody>=0A     =
+                                     </table>=0A                           =
+             </td>=0A                                      </tr>=0A        =
+                            </table>=0A                                  </=
+td>=0A                                </tr>=0A                             =
+ </tbody>=0A                            </table>=0A                        =
+  </td>=0A                        </tr>=0A                      </tbody>=0A=
+                    </table>=0A                    <table id=3D"highlight" =
+width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0">=0A        =
+              <tbody>=0A                        <tr>=0A                    =
+      <td style=3D"padding:0px 24px 24px 24px">=0A                         =
+   <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" s=
+tyle=3D"background:#fff;border-radius:18px" role=3D"presentation">=0A      =
+                        <tbody>=0A                                <tr>=0A  =
+                                <td align=3D"center" class=3D"ppsans" style=
+=3D"vertical-align:top;padding:0 0 0 0">=0A                                =
+    <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" =
+role=3D"presentation">=0A                                      <tbody>=0A  =
+                                      <tr>=0A                              =
+            <td style=3D"padding:14px 16px 0">=0A                          =
+                  <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0"=
+ border=3D"0">=0A                                              <tbody>=0A  =
+                                              <tr>=0A                      =
+                            <td valign=3D"top">=0A                         =
+                           <p style=3D"font-weight:500;font-size:20px;line-=
+height:28px;color:#000000;margin:0" dir=3D"ltr"><span>Need some help=3F</sp=
+an></p>=0A                                                  </td>=0A       =
+                                         </tr>=0A                          =
+                    </tbody>=0A                                            =
+</table>=0A                                          </td>=0A              =
+                          </tr>=0A                                      </t=
+body>=0A                                    </table>=0A                    =
+                <table width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" b=
+order=3D"0">=0A                                      <tbody>=0A            =
+                            <tr>=0A                                        =
+  <td class=3D"ppsans" style=3D"padding:6px 16px">=0A                      =
+                      <p class=3D"ppsans" style=3D"font-size:14px;line-heig=
+ht:20px;color:#000000;margin:0;word-break:break-word" dir=3D"ltr"><span>Con=
+tact Cloudflare Inc for questions or issues with this purchase.</span></p>=
+=0A                                          </td>=0A                      =
+                  </tr>=0A                                      </tbody>=0A=
+                                    </table>=0A                            =
+        <table width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" border=3D=
+"0">=0A                                      <tbody>=0A                    =
+                    <tr>=0A                                          <td cl=
+ass=3D"ppsans" style=3D"padding:12px 16px">=0A                             =
+               <p class=3D"ppsans" style=3D"font-size:14px;line-height:20px=
+;color:#000000;margin:0;word-break:break-word" dir=3D"ltr">=0A             =
+                               <table width=3D"100%" border=3D"0" cellSpaci=
+ng=3D"0" cellPadding=3D"0" role=3D"presentation" dir=3D"ltr">=0A           =
+                                   <tbody>=0A                              =
+                  <tr>=0A                                                  =
+<td style=3D"background-color:#F5F7FA;border-radius:12px;width:100%" height=
+=3D"56" align=3D"center"><a href=3D"mailto:billing@cloudflare.com" target=
+=3D"_blank" style=3D"display:block;text-align:center;font-size:14px;font-we=
+ight:700;color:#000000;padding:16px 10px;text-decoration:none;cursor:pointe=
+r" role=3D"button">=0A                                                     =
+ <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0">=0A=
+                                                        <tbody>=0A         =
+                                                 <tr>=0A                   =
+                                         <td align=3D"center" style=3D"padd=
+ing:0" dir=3D"ltr">=0A                                                     =
+         <table cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" dir=3D"ltr=
+">=0A                                                                <tbody=
+>=0A                                                                  <tr>=
+=0A                                                                    <td =
+align=3D"center">=0A                                                       =
+               <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" bo=
+rder=3D"0" dir=3D"ltr" role=3D"presentation">=0A                           =
+                                             <tbody>=0A                    =
+                                                      <tr>=0A              =
+                                                              <td align=3D"=
+center" class=3D"ppsans" style=3D"padding:0px 0px 0px 0px"><img class=3D"" =
+src=3D"https://www.paypalobjects.com/digitalassets/c/system-triggered-email=
+/w100/icon-email.png" style=3D"display:block;border-radius:0;border:0" bord=
+er=3D"0" alt=3D"" height=3D"24" width=3D"24" /></td>=0A                    =
+                                                      </tr>=0A             =
+                                                           </tbody>=0A     =
+                                                                 </table>=
+=0A                                                                    </td=
+>=0A                                                                    <td=
+ style=3D"padding:0px 8px"><span class=3D"" style=3D"font-size:14;color:#00=
+0000"><span>Email</span></span></td>=0A                                    =
+                              </tr>=0A                                     =
+                           </tbody>=0A                                     =
+                         </table>=0A                                       =
+                     </td>=0A                                              =
+            </tr>=0A                                                       =
+ </tbody>=0A                                                      </table>=
+=0A                                                    </a></td>=0A        =
+                                        </tr>=0A                           =
+                   </tbody>=0A                                            <=
+/table>=0A                                            </p>=0A              =
+                            </td>=0A                                       =
+ </tr>=0A                                      </tbody>=0A                 =
+                   </table>=0A                                    <table wi=
+dth=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0">=0A          =
+                            <tbody>=0A                                     =
+   <tr>=0A                                          <td class=3D"ppsans" st=
+yle=3D"padding:6px 16px 14px">=0A                                          =
+  <p class=3D"ppsans" style=3D"font-size:12px;line-height:20px;color:#545D6=
+8;margin:0;word-break:break-word" dir=3D"ltr"><span>Still need help=3F <a h=
+ref=3D"https://www.paypal.com/us/smarthelp/contact-us=3Flink_ref=3Dhelp_cen=
+ter_rt002952&v=3D1&utm_source=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002=
+952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=
+=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-1=
+1f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buy=
+er-notification&page=3Dmain%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dcl&m=
+chn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D1=
+45585%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C1740=
+77%2C173345%2C175544%2C104038" target=3D"_blank" style=3D"text-decoration:n=
+one">Visit the PayPal Help Center</a></span></p>=0A                        =
+                  </td>=0A                                        </tr>=0A =
+                                     </tbody>=0A                           =
+         </table>=0A                                  </td>=0A             =
+                   </tr>=0A                              </tbody>=0A       =
+                     </table>=0A                          </td>=0A         =
+               </tr>=0A                      </tbody>=0A                   =
+ </table>=0A                    <table id=3D"highlight" width=3D"100%" cell=
+Spacing=3D"0" cellPadding=3D"0" border=3D"0">=0A                      <tbod=
+y>=0A                        <tr>=0A                          <td style=3D"=
+padding:0px 24px 24px 24px">=0A                            <table width=3D"=
+100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" style=3D"background:=
+#fff;border-radius:18px" role=3D"presentation">=0A                         =
+     <tbody>=0A                                <tr>=0A                     =
+             <td align=3D"center" class=3D"ppsans" style=3D"vertical-align:=
+top;padding:0 0 0 0">=0A                                    <table width=3D=
+"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" dir=3D"ltr" role=3D=
+"presentation" data-testid=3D"debit-card-upsell">=0A                       =
+               <tr>=0A                                        <td style=3D"=
+padding:16px">=0A                                          <table width=3D"=
+100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0" role=3D"presentation=
+">=0A                                            <tr data-testid=3D"upsell-=
+title">=0A                                              <td style=3D"paddin=
+g-bottom:12px"><span class=3D"" style=3D"font-size:20px;color:#000000;font-=
+weight:700"><span>Get a $50 cash back bonus on your first purchase for a li=
+mited time</span></span></td>=0A                                           =
+ </tr>=0A                                            <tr>=0A               =
+                               <td>=0A                                     =
+           <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=
+=3D"0" role=3D"presentation">=0A                                           =
+       <tr>=0A                                                    <td style=
+=3D"vertical-align:top">=0A                                                =
+      <table width=3D"100%" cellSpacing=3D"0" cellPadding=3D"0" border=3D"0=
+" role=3D"presentation" height=3D"100%">=0A                                =
+                        <tr data-testid=3D"upsell-description">=0A         =
+                                                 <td style=3D"padding-botto=
+m:12px"><span class=3D"" style=3D"font-size:14px;color:#000000"><span>Earn =
+3% cash back with PayPal Cashback Mastercard=C2=AE on all PayPal purchases.=
+</span></span></td>=0A                                                     =
+   </tr>=0A                                                        <tr>=0A =
+                                                         <td></td>=0A      =
+                                                  </tr>=0A                 =
+                                     </table>=0A                           =
+                         </td>=0A                                          =
+          <td data-testid=3D"upsell-image" width=3D"124" height=3D"69" styl=
+e=3D"padding-left:12px;vertical-align:top">=0A                             =
+                         <table width=3D"124" height=3D"100%" cellSpacing=
+=3D"0" cellPadding=3D"0" border=3D"0" role=3D"presentation">=0A            =
+                                            <tr>=0A                        =
+                                  <td align=3D"right" valign=3D"top"><img s=
+rc=3D"https://paypalobjects.com/digitalassets/c/system-triggered-email/w100=
+/img-cbmc-upsell-card-cashback.png" style=3D"display:block" border=3D"0" al=
+t=3D"A dark blue PayPal Cashback Mastercard card image with a 3% cash back =
+icon." width=3D"124" height=3D"69" /></td>=0A                              =
+                          </tr>=0A                                         =
+             </table>=0A                                                   =
+ </td>=0A                                                  </tr>=0A        =
+                                        </table>=0A                        =
+                        <table width=3D"100%" cellSpacing=3D"0" cellPadding=
+=3D"0" border=3D"0" role=3D"presentation">=0A                              =
+                    <tr data-testid=3D"upsell-cta">=0A                     =
+                               <td>=0A                                     =
+                 <table width=3D"100%" border=3D"0" cellSpacing=3D"0" cellP=
+adding=3D"0" dir=3D"ltr" role=3D"presentation">=0A                         =
+                               <tbody>=0A                                  =
+                        <tr>=0A                                            =
+                <td style=3D"padding:0px 0px 0px 0px" align=3D"left">=0A   =
+                                                           <table border=3D=
+"0" cellSpacing=3D"0" cellPadding=3D"0" dir=3D"ltr" role=3D"presentation">=
+=0A                                                                <tbody>=
+=0A                                                                  <tr>=
+=0A                                                                    <td =
+align=3D"center" style=3D"border-radius:60px;border:2px solid #002994;backg=
+round-color:#002994"><a href=3D"https://www.paypal.com/credit-application/c=
+o/landing=3Fpresent=3DclpCBMCSP1GET50&track=3DcltSMARTRECEIPT50A&link_ref=
+=3DcbmcUpsell.apply_now_first_purchase&v=3D1&utm_source=3Dunp&utm_medium=3D=
+email&utm_campaign=3DRT002952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7=
+ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC=
+&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpc=
+id=3Demail-xo-auth-ql-buyer-notification&page=3Dmain%3Aemail%3ART002952&pgr=
+p=3Dmain%3Aemail&e=3Dcl&mchn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&xt=
+=3D145585%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C=
+174077%2C173345%2C175544%2C104038" target=3D"_blank" style=3D"line-height:1=
+8px;font-size:14px;border-radius:60px;padding:6px 16px;display:inline-block=
+;border:1px solid #002994;font-weight:700;text-align:center;text-decoration=
+:none;cursor:pointer;min-width:70px;background-color:#002994;color:#fff" ro=
+le=3D"button">Apply Now</a></td>=0A                                        =
+                          </tr>=0A                                         =
+                       </tbody>=0A                                         =
+                     </table>=0A                                           =
+                 </td>=0A                                                  =
+        </tr>=0A                                                        </t=
+body>=0A                                                      </table>=0A  =
+                                                  </td>=0A                 =
+                                   <td style=3D"padding-left:12px">=0A     =
+                                                 <p style=3D"font-size:12px=
+;line-height:18px;color:#686A6D;padding:10px 0;margin:0;text-align:right;te=
+xt-wrap:nowrap;white-space:nowrap">Subject to credit approval</p>=0A       =
+                                             </td>=0A                      =
+                            </tr>=0A                                       =
+         </table>=0A                                              </td>=0A =
+                                           </tr>=0A                        =
+                  </table>=0A                                        </td>=
+=0A                                      </tr>=0A                          =
+          </table>=0A                                  </td>=0A            =
+                    </tr>=0A                              </tbody>=0A      =
+                      </table>=0A                          </td>=0A        =
+                </tr>=0A                      </tbody>=0A                  =
+  </table><img src=3D"https://www.paypal.com/webapps/mch/cmd/=3Fv=3D3.0&amp=
+;t=3D1775189926&amp;fdata=3DOBcGAzRHBBYcHAQeSFRMKk90PRgwNE9jVWhoGjAsS0gtRmZ=
+pYApwZ0RSYgtoXX5SYVVfU3MPTEdaUUwTRBFMSy50aF1wYVxyTn16Wmt9U1hcVnBqagZpdFdGdF=
+cnAS9HcCRJR3QCXVRJSFlGHkNYX11geF9wYFtjV2poTjYhDkhMJ2Z5bwd4Z0RfYQ5iXn5TYlFZU=
+3YGWEdYU0xRTlRMKk90BiQWGDoHV2hqTng4BAgAAmZ5GBNpAQYGO0swCz8PPgpINCZUCA8JBExR=
+DlRMGgI8LUtkEU9jBSQoHS0XGAwOAi4oLG0rNxkECk0hGy4KPTsFCSdCAQMmBAIFTh0dBQc7PUt=
+kck9jFSEoTngIS0giKRQRDHdpdFdGdFswGGpHEUVJVmIWTkdYFQMUSQFMSy50aFpkcE1jVyooBj=
+1pSylMRnBtaAB4bUBRZg9jWn5RYF1bUHsWTEVYURkAQRwJS08VaEtyZVx3QXp-Xml9XFpdUHdgb=
+wN.dFVEdBknSWomcEVbSHMWTEVYURkDDFQtS09kfl1wYFZ7T3t.TnhrS0gECTMuPW0hMVVGFRlw=
+Xn5QZ1JcV3cFWVNJRV1BGURVXk90aktkOAA2ACwWDDYsD0hMJ2Z5H3cGECYuFhlwS2pHPBcPOSh=
+HBEdYMExRZDg9OCsGGiMKHz1jV2poTjgrHgACCRgxPBNpFVVGYglgXH9TZ1RbUnEGWlNPR1RIFV=
+RMSU90KAkxOAEsKSomCzxpSylMRgk3LG0JJQQLPFswCicDcEVLR2JeAxIcAjIDSAQyGAsmLB5kc=
+C5jVy8oAyotS0hORmYxNkYpNgAUMElwSQtHcFRGVmIWTkdYEwIFQwEfE090CUtkBD1jV2poTiw7=
+Dw0yAj8sPUAmNBgLLBlwKGpHNwUEFSYWTEVYUSQjcjYhIy0eHSIXBE9jNmhoCTgkGQxMRmR5eUI=
+6MAcCO1klASQIDhARFiYWTCZYUVpEH0BaWVlkeV9yaV9wRn1xV2BpS0pMRjM.KlssdFUndBlmXX=
+tUYVxcVXYBXVNMQ1RHHkFVS092aEsoOholBCw4Bj1pSylMRnNvbFN5bUBeMwE1Wn9TMlJQViUGC=
+19ISVpEFEUJCF9taEtmcE8vHT0uHTwuAw1MRgd5eQZ.YRVWbQxoDnICY1BdBXUPXQBIFlRBFEJZ=
+U14xK1t9cE9hV2g.HC0hDkhMJ2Z5bAV8NEVfYQE3US9UZVELUHsHC1cfSVxJGkFUWgo3eFJkcE1=
+jVzsoATJpSylMRnR5eRFpdAcSN2cyACVHcCRJRxBuPjI8PTI1YDQkJk90aktkNBgnGD0WATglD0=
+hMJ2Z5KFc6JhsJNFQ4EioSOAsGOTBOHhIcHTIVQBQEBk90aktkJB0nBBYuGjAsS0gtRmY2LV4kd=
+FVEdBkkGy4UDhcNFTBeAggmFxgZSVRMKk90Jx8pPU9jVWhoHTwuAw1MRgd5eQV9ZUZXbQxnW31T=
+ZFddV3YCXFNYUU5RDAUYCAcxaEsFcE8BRHp8Nh8CLDkhIQ8JeRNrdFUCLUg4GjI5JRdJRwMWTFd=
+OR1hBFEVVWFh0aElkcAs2V2gJTngLJiAoKRMHEX8YBzE0BnEeJg&amp;cks=3DMWM5NzE4YTAyM=
+zY3ZmQ2MGJjM2Q2OTJkMWY4MmE1Yjk&amp;e=3D1.0" style=3D"display:block" border=
+=3D"0" alt=3D"" height=3D"1px" width=3D"1px" aria-hidden=3D"true" />=0A    =
+                <table width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" b=
+order=3D"0">=0A                      <tbody>=0A                        <tr>=
+=0A                          <td class=3D"ppsans" style=3D"padding:0px 24px=
+ 0 24px">=0A                            <p class=3D"ppsans" style=3D"font-s=
+ize:12px;line-height:20px;color:#000000;margin:0;word-break:break-word" dir=
+=3D"ltr"><span>Your payment was sent from arichardson2189@gmail.com</span><=
+span> </span></p>=0A                          </td>=0A                     =
+   </tr>=0A                      </tbody>=0A                    </table>=0A=
+                  </td>=0A                </tr>=0A                <tr>=0A  =
+                <td width=3D"640">=0A                    <table width=3D"10=
+0%" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" dir=3D"ltr">=0A       =
+               <tbody>=0A                        <tr>=0A                   =
+       <td>=0A                            <table width=3D"100%" cellPadding=
+=3D"0" cellSpacing=3D"0" border=3D"0">=0A                              <tbo=
+dy>=0A                                <tr>=0A                              =
+    <td align=3D"center" valign=3D"top" style=3D"padding:30px 24px 30px 24p=
+x"><img src=3D"https://www.paypalobjects.com/digitalassets/c/system-trigger=
+ed-email/n/layout/images/ppe/pp-logo_x2.png" width=3D"40" height=3D"40" sty=
+le=3D"display:block" border=3D"0" alt=3D"PayPal" />=0A                     =
+               <hr class=3D"footerDivider" style=3D"border-top:1px solid #C=
+6C6C6;margin:30px 0px 0px 0px" />=0A                                  </td>=
+=0A                                </tr>=0A                              </=
+tbody>=0A                            </table>=0A                          <=
+/td>=0A                        </tr>=0A                      </tbody>=0A   =
+                 </table>=0A                    <table id=3D"body_footer_li=
+nks" width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" style=
+=3D"margin-bottom:0px" dir=3D"ltr">=0A                      <tbody>=0A     =
+                   <tr>=0A                          <td align=3D"center" st=
+yle=3D"font-size:12px;line-height:16px;padding:10px 24px 23px 24px;color:#0=
+01435;font-weight:400" class=3D"ppsans"><a href=3D"https://www.paypal.com/u=
+s/smarthelp/home=3Fv=3D1&utm_source=3Dunp&utm_medium=3Demail&utm_campaign=
+=3DRT002952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT0029=
+52&cnac=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e=
+-2f14-11f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth=
+-ql-buyer-notification&page=3Dmain%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=
+=3Dre&mchn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&tenant_name=3DPAYPAL=
+&xt=3D145585%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981=
+%2C174077%2C173345%2C175544%2C104038&link_ref=3Dsmarthelp_home" target=3D"_=
+blank" class=3D"ppsans" style=3D"color:#0074DE;text-decoration:none" alt=3D=
+"Help &amp; Contact">Help &amp; Contact</a><span style=3D"padding:0px 5px">=
+ | </span><a href=3D"https://www.paypal.com/us/webapps/mpp/paypal-safety-an=
+d-security=3Fv=3D1&utm_source=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002=
+952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=
+=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-1=
+1f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buy=
+er-notification&page=3Dmain%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dre&m=
+chn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D1=
+45585%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C1740=
+77%2C173345%2C175544%2C104038&link_ref=3Dmpp_paypal-safety-and-security" ta=
+rget=3D"_blank" class=3D"ppsans" style=3D"color:#0074DE;text-decoration:non=
+e" alt=3D"Security">Security</a><span style=3D"padding:0px 5px"> | </span><=
+a href=3D"https://www.paypal.com/us/webapps/mpp/mobile-apps=3Fv=3D1&utm_sou=
+rce=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002952&utm_unptid=3D384d303e-=
+2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%=
+29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=
+=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buyer-notification&page=3Dmai=
+n%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dre&mchn=3Dem&s=3Dci&mail=3Dsys=
+&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D145585%2C165082%2C175708%2C=
+150568%2C160616%2C165712%2C147123%2C154981%2C174077%2C173345%2C175544%2C104=
+038&link_ref=3Dmpp_mobile-apps" target=3D"_blank" class=3D"ppsans" style=3D=
+"color:#0074DE;text-decoration:none" alt=3D"Apps">Apps</a></td>=0A         =
+               </tr>=0A                        <tr>=0A                     =
+     <td align=3D"center" style=3D"padding-bottom:10px;padding-top:0px;padd=
+ing-left:11px;padding-right:20px">=0A                            <table cel=
+lPadding=3D"0" cellSpacing=3D"0" border=3D"0" dir=3D"ltr">=0A              =
+                <tbody>=0A                                <tr>=0A          =
+                        <td align=3D"center" valign=3D"middle" width=3D"55"=
+><a id=3D"twitter" href=3D"https://twitter.com/PayPal=3Fv=3D1%2C0.1&utm_sou=
+rce=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002952&utm_unptid=3D384d303e-=
+2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%=
+29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=
+=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buyer-notification&page=3Dmai=
+n%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dre&mchn=3Dem&s=3Dci&mail=3Dsys=
+&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D145585%2C165082%2C175708%2C=
+150568%2C160616%2C165712%2C147123%2C154981%2C174077%2C173345%2C175544%2C104=
+038&link_ref=3Dtwitter.com_paypal" target=3D"_blank"><img border=3D"0" src=
+=3D"https://www.paypalobjects.com/digitalassets/c/system-triggered-email/n/=
+layout/images/quantum_leap/footer-social-icons_x.png" width=3D"32" height=
+=3D"32" style=3D"display:block" alt=3D"Twitter" /></a></td>=0A             =
+                     <td align=3D"center" valign=3D"middle" width=3D"55"><a=
+ id=3D"instagram" href=3D"https://www.instagram.com/paypal/=3Fv=3D1%2C0.1&u=
+tm_source=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002952&utm_unptid=3D384=
+d303e-2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28=
+en-US%29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4=
+&calc=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buyer-notification&page=
+=3Dmain%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dre&mchn=3Dem&s=3Dci&mail=
+=3Dsys&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D145585%2C165082%2C175=
+708%2C150568%2C160616%2C165712%2C147123%2C154981%2C174077%2C173345%2C175544=
+%2C104038&link_ref=3Dwww.instagram.com_paypal" target=3D"_blank"><img borde=
+r=3D"0" src=3D"https://paypalobjects.com/digitalassets/c/system-triggered-e=
+mail/n/layout/images/quantum_leap/footer-social-icons_instagram.png" width=
+=3D"32" height=3D"32" style=3D"display:block" alt=3D"Instagram" /></a></td>=
+=0A                                  <td align=3D"center" valign=3D"middle"=
+ width=3D"55"><a id=3D"facebook" href=3D"https://www.facebook.com/PayPalUSA=
+=3Fv=3D1%2C0.1&utm_source=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002952&=
+utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=3DUS=
+&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-11f1-9=
+ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buyer-no=
+tification&page=3Dmain%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dre&mchn=
+=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D1455=
+85%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C174077%=
+2C173345%2C175544%2C104038&link_ref=3Dwww.facebook.com_paypalusa" target=3D=
+"_blank"><img border=3D"0" src=3D"https://paypalobjects.com/digitalassets/c=
+/system-triggered-email/n/layout/images/quantum_leap/footer-social-icons_fa=
+cebook.png" width=3D"32" height=3D"32" style=3D"display:block" alt=3D"Faceb=
+ook" /></a></td>=0A                                  <td align=3D"center" v=
+align=3D"middle" width=3D"55"><a id=3D"linkedin" href=3D"http://www.linkedi=
+n.com/company/1482=3Ftrk=3Dtyah&v=3D1&utm_source=3Dunp&utm_medium=3Demail&u=
+tm_campaign=3DRT002952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&pp=
+id=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJURVZC&unptid=
+=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_tpcid=3Dem=
+ail-xo-auth-ql-buyer-notification&page=3Dmain%3Aemail%3ART002952&pgrp=3Dmai=
+n%3Aemail&e=3Dre&mchn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0&tenant_na=
+me=3DPAYPAL&xt=3D145585%2C165082%2C175708%2C150568%2C160616%2C165712%2C1471=
+23%2C154981%2C174077%2C173345%2C175544%2C104038&link_ref=3Dcompany_1482" ta=
+rget=3D"_blank"><img border=3D"0" src=3D"https://paypalobjects.com/digitala=
+ssets/c/system-triggered-email/n/layout/images/quantum_leap/footer-social-i=
+cons_linkedin.png" width=3D"32" height=3D"32" style=3D"display:block" alt=
+=3D"LinkedIn" /></a></td>=0A                                </tr>=0A       =
+                       </tbody>=0A                            </table>=0A  =
+                        </td>=0A                        </tr>=0A           =
+           </tbody>=0A                    </table>=0A                  </td=
+>=0A                </tr>=0A              </tbody>=0A            </table>=
+=0A            <table cellPadding=3D"0" cellSpacing=3D"0" border=3D"0" widt=
+h=3D"100%" style=3D"padding:5px 24px 20px 24px">=0A              <tbody>=0A=
+                <tr>=0A                  <td class=3D"ppsans" width=3D"600"=
+>=0A                    <table id=3D"hideForTextFooter" width=3D"100%" cell=
+Padding=3D"0" cellSpacing=3D"0" border=3D"0">=0A                      <tbod=
+y>=0A                        <tr>=0A                          <td style=3D"=
+font-size:12px;line-height:16px;padding:6px 0px">=0A                       =
+     <p class=3D"ppsans" style=3D"font-size:12px;margin:0" dir=3D"ltr"><spa=
+n>PayPal is committed to preventing fraudulent emails. Emails from PayPal w=
+ill always contain your full name. <a href=3D"https://www.paypal.com/us/web=
+apps/mpp/security/suspicious-activity=3Fv=3D1&utm_source=3Dunp&utm_medium=
+=3Demail&utm_campaign=3DRT002952&utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12a=
+da7ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%29&cust=3DXDTCF7FJUR=
+VZC&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=3Dd11ebc731e744&unp_=
+tpcid=3Demail-xo-auth-ql-buyer-notification&page=3Dmain%3Aemail%3ART002952&=
+pgrp=3Dmain%3Aemail&e=3Dcl&mchn=3Dem&s=3Dci&mail=3Dsys&appVersion=3D1.398.0=
+&tenant_name=3DPAYPAL&xt=3D145585%2C165082%2C175708%2C150568%2C160616%2C165=
+712%2C147123%2C154981%2C174077%2C173345%2C175544%2C104038&link_ref=3Dsecuri=
+ty_suspicious-activity" target=3D"_blank" style=3D"text-decoration:none">Le=
+arn to identify phishing</a></span></p>=0A                          </td>=
+=0A                        </tr>=0A                      </tbody>=0A       =
+             </table>=0A                    <table id=3D"hideForTextFooter"=
+ width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0">=0A       =
+               <tbody>=0A                        <tr>=0A                   =
+       <td style=3D"font-size:12px;line-height:16px;padding:6px 0px">=0A   =
+                         <p class=3D"ppsans" style=3D"font-size:12px;margin=
+:0" dir=3D"ltr"><span>Please don't reply to this email. To get in touch wit=
+h us, click <a href=3D"https://www.paypal.com/selfhelp/home=3Fv=3D1&utm_sou=
+rce=3Dunp&utm_medium=3Demail&utm_campaign=3DRT002952&utm_unptid=3D384d303e-=
+2f14-11f1-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%=
+29&cust=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=
+=3Dd11ebc731e744&unp_tpcid=3Demail-xo-auth-ql-buyer-notification&page=3Dmai=
+n%3Aemail%3ART002952&pgrp=3Dmain%3Aemail&e=3Dcl&mchn=3Dem&s=3Dci&mail=3Dsys=
+&appVersion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D145585%2C165082%2C175708%2C=
+150568%2C160616%2C165712%2C147123%2C154981%2C174077%2C173345%2C175544%2C104=
+038&link_ref=3Dselfhelp_home" target=3D"_blank" style=3D"text-decoration:no=
+ne">Help &amp; Contact</a>.</span></p>=0A                          </td>=0A=
+                        </tr>=0A                      </tbody>=0A          =
+          </table>=0A                    <table id=3D"" width=3D"100%" cell=
+Padding=3D"0" cellSpacing=3D"0" border=3D"0">=0A                      <tbod=
+y>=0A                        <tr>=0A                          <td style=3D"=
+font-size:12px;line-height:16px;padding:6px 0px">=0A                       =
+     <p class=3D"ppsans" style=3D"font-size:12px;margin:0" dir=3D"ltr"><spa=
+n>PayPal Customer Service can be reached at 888-221-1161.</span></p>=0A    =
+                      </td>=0A                        </tr>=0A             =
+         </tbody>=0A                    </table>=0A                    <tab=
+le id=3D"" width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" border=3D"0">=
+=0A                      <tbody>=0A                        <tr>=0A         =
+                 <td style=3D"font-size:12px;line-height:16px;padding:6px 0=
+px">=0A                            <p class=3D"ppsans" style=3D"font-size:1=
+2px;margin:0" dir=3D"ltr"><span>Not sure why you received this email=3F <a =
+href=3D"https://www.paypal.com/us/smarthelp/article/why-am-i-receiving-emai=
+ls-from-paypal-when-i-dont-have-an-account-faq4172=3Fv=3D1&utm_source=3Dunp=
+&utm_medium=3Demail&utm_campaign=3DRT002952&utm_unptid=3D384d303e-2f14-11f1=
+-9ea4-8b12ada7ecb4&ppid=3DRT002952&cnac=3DUS&rsta=3Den_US%28en-US%29&cust=
+=3DXDTCF7FJURVZC&unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&calc=3Dd11eb=
+c731e744&unp_tpcid=3Demail-xo-auth-ql-buyer-notification&page=3Dmain%3Aemai=
+l%3ART002952&pgrp=3Dmain%3Aemail&e=3Dcl&mchn=3Dem&s=3Dci&mail=3Dsys&appVers=
+ion=3D1.398.0&tenant_name=3DPAYPAL&xt=3D145585%2C165082%2C175708%2C150568%2=
+C160616%2C165712%2C147123%2C154981%2C174077%2C173345%2C175544%2C104038&link=
+_ref=3Darticle_why-am-i-receiving-emails-from-paypal-when-i-dont-have-an-ac=
+count-faq4172" target=3D"_blank" style=3D"text-decoration:none">Learn more<=
+/a></span></p>=0A                          </td>=0A                        =
+</tr>=0A                      </tbody>=0A                    </table>=0A   =
+                 <table width=3D"100%" cellPadding=3D"0" cellSpacing=3D"0" =
+border=3D"0">=0A                      <tbody>=0A                        <tr=
+>=0A                          <td style=3D"font-size:12px;line-height:16px;=
+padding:6px 0px">=0A                            <p class=3D"ppsans" style=
+=3D"font-size:12px;margin:0" dir=3D"ltr">=0A                            <di=
+v style=3D"font-size:12px" dir=3D"ltr"><span>Copyright &copy; 1999-2026 Pay=
+Pal, Inc. All rights reserved. PayPal is located at 2211 N. First St., San =
+Jose, CA 95131.</span></div>=0A                            <p style=3D"font=
+-size:12px" dir=3D"ltr">PayPal RT002952:en_US(en-US):1.2.0:d11ebc731e744</p=
+><img alt=3D"" height=3D"1" width=3D"1" border=3D"0" src=3D"https://t.paypa=
+l.com/ts=3Fv=3D1&amp;utm_source=3Dunp&amp;utm_medium=3Demail&amp;utm_campai=
+gn=3DRT002952&amp;utm_unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&amp;ppi=
+d=3DRT002952&amp;cnac=3DUS&amp;rsta=3Den_US%28en-US%29&amp;cust=3DXDTCF7FJU=
+RVZC&amp;unptid=3D384d303e-2f14-11f1-9ea4-8b12ada7ecb4&amp;calc=3Dd11ebc731=
+e744&amp;unp_tpcid=3Demail-xo-auth-ql-buyer-notification&amp;page=3Dmain%3A=
+email%3ART002952&amp;pgrp=3Dmain%3Aemail&amp;e=3Dop&amp;mchn=3Dem&amp;s=3Dc=
+i&amp;mail=3Dsys&amp;appVersion=3D1.398.0&amp;tenant_name=3DPAYPAL&amp;xt=
+=3D145585%2C165082%2C175708%2C150568%2C160616%2C165712%2C147123%2C154981%2C=
+174077%2C173345%2C175544%2C104038&amp;link_ref=3Dt.paypal.com_ts" /></p>=0A=
+                          </td>=0A                        </tr>=0A         =
+             </tbody>=0A                    </table>=0A                  </=
+td>=0A                </tr>=0A              </tbody>=0A            </table>=
+=0A          </td>=0A          <td bgcolor=3D"#F5F7FA" style=3D"font-size:0=
+px"></td>=0A        </tr>=0A      </tbody>=0A    </table>=0A  </body>=0A=0A=
+</html>
+

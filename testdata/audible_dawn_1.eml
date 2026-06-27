@@ -1,0 +1,1548 @@
+Return-path: <2026041316080461b0c386a4e44875a8ca1ff99120p0na-C2VUVYNEL4CEVR@bounces.audible.com>
+Original-recipient: rfc822;dawnwolff@me.com
+Received: from p00-icloudmta-smtpin-us-central-1n-100-percent-6 by p150-mailgateway-smtp-549cd7cb5f-l9dq7 (mailgateway 2614B88)
+	with SMTP id f6cde4f9-d449-4897-b8cf-ba306edfa610 
+	for <dawnwolff@me.com>; Mon, 13 Apr 2026 16:08:10 GMT
+X-Apple-MoveToFolder: INBOX 
+X-Apple-Action: MOVE_TO_FOLDER/INBOX
+X-Apple-UUID: f6cde4f9-d449-4897-b8cf-ba306edfa610
+Received: from a13-177.smtp-out.amazonses.com (a13-177.smtp-out.amazonses.com [54.240.13.177])
+	by p00-icloudmta-smtpin-us-central-1n-100-percent-6 (Postfix) with ESMTPS id 7162CC001AF
+	for <dawnwolff@me.com>; Mon, 13 Apr 2026 16:08:07 +0000 (UTC)
+X-ICL-Info: GAtbRVYDBVFFSlVHSgQEUVUKE0oWX1gHVQoPB0UFAkxHTVZZSQMYU0JORhIcDQRSR09WQ0kDB1RFQVZDTgFUUhZKXkEZBFNWQUFRQhkIVQNEHwBOQQEEUgVJCBZVcwQ0IC8/OT18AiEwLzQ3Gl9DDBYcFVkZRVILFxUDWRtfW0ITHVsWDVRfABkcSBQXXRYQFkQCFg9eQQ0ZHwA3FVUYARoURh8dXFlfFEhVWkkHAUwGFBIHVV9DFlsYCxYCX1gREApIFBddFhIBC1sWSQMbU0JOSAQVREZPGgwSWRldVxgaFxUSCx5VDRhZAhNFUUMGHBsKElZTWQ9OGAsWAl9YERAKSBQXXRYPHB1bS0gBBlJFSF8TQAcPWxRIUkRVUQMBQRheREwdA1FETUtDSAYETxdLUhFVVgYDRB8ATkpWBlVMVFZHSAAGUjUcCxYRXBgDGBgcGBZDUxFbGgkaRg==
+X-ICL-Score: 2.33303302423
+Authentication-Results: bimi.icloud.com; bimi=pass header.d=audible.com header.selector=default policy.authority=pass policy.authority-uri=https://d1uhhgz1vqkk16.cloudfront.net/amazon_497135759.pem
+BIMI-Location: v=BIMI1; l=https://d1uhhgz1vqkk16.cloudfront.net/amazon_497135759.svg a=https://d1uhhgz1vqkk16.cloudfront.net/amazon_497135759.pem
+X-BIMI-Indicator-Hash: h=Hzp187gLqgAbqIfHz9JNGR3qFO9dB8jgEm6i/+ESIZU= a=sha256
+X-ARC-Info: policy=fail; arc=none; r1=-20; r2=0
+Authentication-Results: arc.icloud.com; arc=none
+Authentication-Results: dmarc.icloud.com; dmarc=pass header.from=audible.com
+X-DMARC-Policy: v=DMARC1;p=quarantine;pct=100;rua=mailto:report@dmarc.amazon.com;ruf=mailto:report@dmarc.amazon.com
+X-DMARC-Info: pass=pass; dmarc-policy=quarantine; s=r1; d=r1; pdomain=audible.com
+Authentication-Results: dkim-verifier.icloud.com; dkim=pass header.d=audible.com header.i=@audible.com header.b=kj5O0iww
+Authentication-Results: dkim-verifier.icloud.com; dkim=pass header.d=amazonses.com header.i=@amazonses.com header.b=Xqe6o2Fr
+Received-SPF: pass (spf.icloud.com: domain of 2026041316080461b0c386a4e44875a8ca1ff99120p0na-C2VUVYNEL4CEVR@bounces.audible.com designates 54.240.13.177 as permitted sender) receiver=spf.icloud.com; client-ip=54.240.13.177; helo=a13-177.smtp-out.amazonses.com; envelope-from=2026041316080461b0c386a4e44875a8ca1ff99120p0na-C2VUVYNEL4CEVR@bounces.audible.com
+Authentication-Results: spf.icloud.com; spf=pass (spf.icloud.com: domain of 2026041316080461b0c386a4e44875a8ca1ff99120p0na-C2VUVYNEL4CEVR@bounces.audible.com designates 54.240.13.177 as permitted sender) smtp.mailfrom=2026041316080461b0c386a4e44875a8ca1ff99120p0na-C2VUVYNEL4CEVR@bounces.audible.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=awz5lygnblsozg5f6ebnxepo3n5nyrxa; d=audible.com; t=1776096485;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=5PD6NilqI0fRWJ1zs2ZV0x7fhwBHqmKns65lfIciS8k=;
+	b=kj5O0iww8rnnwumyEE/qqCfOEk22qTKQ+qK1Z2wswxyhayPBKFUWQFS0Jh9gS7eU
+	LxynZjWKt+pOYQoG6T9V47cItiZk49ZE6kKG0hl8HDLquZ+ovPgOpHDtTtZWU4WdskC
+	gRJpc+1ZG5kD5QBHsrbX24uFF/XSXgP8e0dFsmlA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1776096485;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:Feedback-ID;
+	bh=5PD6NilqI0fRWJ1zs2ZV0x7fhwBHqmKns65lfIciS8k=;
+	b=Xqe6o2FrkHuFiVdhgR77gClkjZD5/mJgj3gYDmwDI5kLlCPrgWeijIXQKYIReb+o
+	B3HZwsmxiYrkK32w0pzbvrkqH+2hEDpFJv94NC5qkbr7Xs2Ta1SrDzEn9wlUAJaiv8l
+	eOibXUifiDTJjvxr0h/aBifADI+468i5b1LSsxdo=
+Date: Mon, 13 Apr 2026 16:08:05 +0000
+From: "Audible.com" <donotreply@audible.com>
+To: dawnwolff@me.com
+Message-ID: <0100019d8799a143-a5c4a834-5314-4062-b24f-f0a1ff92f079-000000@email.amazonses.com>
+Subject: Thanks, your order is complete
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_20947_1018659409.1776096485689"
+X-AMAZON-MAIL-RELAY-TYPE: notification
+Bounces-to: 2026041316080461b0c386a4e44875a8ca1ff99120p0na-C2VUVYNEL4CEVR@bounces.audible.com
+X-AMAZON-METADATA: CA=C2VUVYNEL4CEVR-CU=A30Z4R2LARA9OK
+X-Original-MessageID: <urn.rtn.msg.2026041316080461b0c386a4e44875a8ca1ff99120p0na@1776096485690.>
+Feedback-ID: 1045311850::1.us-east-1.ZHcGJK6s+x+i9lRHKog4RW3tECwWIf1xzTYCZyUaiec=:AmazonSES
+X-SES-Outgoing: 2026.04.13-54.240.13.177
+X-MANTSH: 1TFkXGxsaGREKWUQXYWt4HXBsRFxpTWkRCllNF2JLRxEKX1kXGBoZEQpfTRdkRUR
+ PEQpZSRcacRoQGncGBxsZcRsaEh0QGx4cGXcGGBoGGhEKWV4XbGx5EQpDThd/GGZhRH5oQGl9f
+ GNDZl9QaGkae0VIRhlob2xuWWIeaBEKWFwXGQQaBB8eBRsaGgQSGAQbHxIEGRoQGx4aHxoRCl5
+ ZF0JvWEdpEQpNXBcYEhgRCkxaF2lgellHTREKTEYXTWsRCkNaFx8eBBgeGgQbGQQbHR0RCkJeF
+ xsRCllFFxkRCkVJFxsRCkVmFxsRCkJcFxsRCl5OFxsRCkJLF2JsGWJLG3hERXAbEQpCSRdibBl
+ iSxt4REVwGxEKQkUXaX5TWm94QkNZW0YRCkJOF2JsGWJLG3hERXAbEQpCTBdrUnxnS3pEX0h9S
+ REKQmwXYkVoZ29/eGBAGRkRCkJAF2x9HEYfZGBQX2J6EQpCWBd6WWtIXG9OXkdBexEKQngXYgF
+ saAFMY0BzHBgRClpYFxsbEQpwaBdgR18fWlNnQkV9ExAHGBwRCnBoF2ZGXUIZSAFYe1NbEAcYH
+ BEKcGgXYh5ISwUaRFJHREMQGxgRCnBoF29yaWNEHVpbE2xFEBoRCnBoF2ZOWH9TH0R9WEheEAc
+ bExEKcGgXYE9OH1pIQ3wcemsQGhEKcGgXZX9Men0FSGVEUmMQBxkaEQpwaBdsQBhOZh8dZ3keG
+ xAaEQpwfxdtQkVJTBtvGhNMSRAHGBgRCnBfF2BASWtkT01paUNpEAcdGhEKcH0Xb0F8f2FdY31
+ NHwUQBxkaEQpwXxd6fF1oeRkBEnhlYxAHHRoRCnB9F2hlYmVpAQFkT11MEAcZGhEKcH8XY15MG
+ 21heFxIWxkQBxsfEhEKcF8XbmxQGB1wWl5HZH8QBxkaEQpwfRdgZ3hgXHwaR2RvYRAHGRoRCnB
+ 9F21mSERAX0FZc3gSEAcZGhEKcH0Xb1BhfkFcQ0MYGhgQGhEKcH0Xel1vH3lwY3t+bnkQGhEKc
+ H0XZxNkRn9OTBpMXVsQGhEKcF8XZlh+ZHJkAR1rQmYQBx4SEQpwfRdpa2JgYnJhekxFRxAHGRo
+ RCnBfF2VJG1trWBxIQFl9EAcdGhEKcH0XZV5oexloXB9JTVgQBxkaEQpwXxdreWttZGl6UlwYR
+ BAHHRIRCnB9F2YbYUVFc3JbTWl6EAcdGhEKcH8XaWVJclkYekcfX1AQBxMfEQpwXxdiWnp4HkZ
+ DfV5pGRAHGx8TEQpwfRdvE0wTZ0d/e1BbGBAHHRoRCnBfF2hySBIfBUdsZ2dTEAcbEhEKcH0XZ
+ m58expPflsZf30QGhEKcH8Xb1psAWV6aGx6flgQBxkaEQpwXxdkElNEQmgeGUdEZRAHHRoRCnB
+ 9F2BrYnlAck1+WntIEBoRCnB9F2ZhZkZkGBptb0d5EBoRCnB/F2VrYxpDSxxeTWV4EAccHBEKc
+ F8XY3NMa0NuUBNneHMQBx0aEQpwfRdtHV1Oa3BTfnAYexAHHAQdEQpwbBdmGWtETBJFQklHRxA
+ aEQptfhcaEQpYTRdLEQ==
+X-Authority-Info: v=2.4 cv=M5pA6iws c=1 sm=1 tr=0 ts=69dd14e7 b=1
+ cx=c_apl:c_pps a=0pj4L7vMGwF7KMCLTXIWxg==:117 a=0pj4L7vMGwF7KMCLTXIWxg==:17
+ a=7ROb9Csz1HDQEvTFfGw6ygckdp4=:19 a=A5OVakUREuEA:10 a=Hgn-wnRn1-cA:10
+ a=VwMB-7IVs-YA:10 a=YFHz6ByJM4cA:10 a=sWKEhP36mHoA:10 a=g8TUdU_LZmEA:10
+ a=xeVbwEd3AAAA:8 a=Lde3uUjEAAAA:8 a=vggBfdFIAAAA:8 a=HHGDD-5mAAAA:8
+ a=JQPTYlQHEQRiHqt79isA:9 a=QEXdDO2ut3YA:10 a=S7OzpgZLAAAA:8 a=w1YcmPc3AAAA:8
+ a=NlMM1WjSAAAA:8 a=SSmOFEACAAAA:8 a=X0vLPMSeQFtM4TPOHl0A:9
+ a=hZvLtgnNnXNZuKU_:21 a=gKO2Hq4RSVkA:10 a=frz4AuCg-hUA:10 a=_W_S_7VecoQA:10
+ a=9pRv5oDDElOVWOsveFy4:22 a=ZSBKWZa6754UfejFtXCx:22 a=GSU9V5m4SHBvuTC9YXP0:22
+ cc=ntf
+X-Proofpoint-GUID: U2LKnTBjCWVIiLuzBC0Qobl3BEFDsH4B
+X-Proofpoint-ORIG-GUID: U2LKnTBjCWVIiLuzBC0Qobl3BEFDsH4B
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDE1OCBTYWx0ZWRfX32t6Qb3YJDVF
+ xgmwDkHOGAwFtKhXcrVeiIj52RWUV79zrYOLkd3Qi73sQiDwH6Pi+VD+yIH8RCxMxY6sXnn4HhE
+ mpdtAIyPAggBwSq8kbzdopHR/AqiAHI8RK6KOaYXJNPuox4jDszDAFI6YqMz6Ap34C+PSqyai0C
+ EtcqzVC41TUS411pEMrie/R/Z97C75ntR2UTbfZqRD7E32VLoOwWqHog+BfqdcDIWA1vhrZI6KA
+ FUbYPaXA2tSiyvYfuTqltU21OaqgkrrjultpylUTVFCiI3TKi2iW+TtX2D1err5ozgKjqYSmuV6
+ aLOq818/HDvxshBReGxkYpIKownRe8WX/8WlQh8U1fYGM3XPs12yGuQN//j+2GAN1Ui52Z3hj+X
+ HKa5YrV0mDhpeffoU9eCSoFHVBwlzGyG19BS8LzV1eV2iGI3BdGsw9a7PM+N+6uRNsbaDVog
+X-JNJ: AAAAAAABjjlMGz6cWlpBXfw/JcFR8FAfqOebKAYpbpdU5DL6i2UDZA7U3ZqzN+60kC8m7aPYRN8RVgyCVp3qYrm1Lq0gNtSMAXhGWhNmMCTEr0F9LbdsziCDQKbqhUsbrXoFx9AEzLyPS5y5dWCgl6SN/Z5IwKdRTBG6CxEjxF787HQgoeQcuX1NRVJj9lWwzXF+VUOrpkDJhNhOLpzFxBV/XLajLR5cGFi0POHJJJAjpMCvgThAfCQlOvrDXCoqSPFxbPShP+JdoE5ZbUfm+bn5E655K2BDfv6j5vUXLB2f3W1stdQ177kflfwHQzIpiocd1m6R4qaICdvnGci+eRaVC6jKeVF2YgrznSIizvUmNdc6Hebd2hXIXKYETlnxyfZPWEDEWGmGFrHSN6psqzzKIamQFteGvCMUSF2s4yajvdhEywj2Yp4urR3kOb2u8cbBi8iG+cZbHud7rtqt4WVXhUdNls99mfGDEMsmP6rTSZhf/BTrS2KDGqwkVFJnE4aW2zZTSj0DglQb3Qb+XUaXxgLv3O3GOzyZtkdtE3z2PD5ocJBAWS4cwSUgC6uxX3+EjHR+jxon1H9JCaXISPjy8Mr13xDQZsRLcGqcrtL7Sq7XPeCpvE0n36ctIPUGD5g+GNvLW9/7a8QRfLI4PVzOWDoeSfu6xdYx29ECX7aCq0mHRgdK5vtBekFgghpGyOAYqPzaLLZDEhs2Aa2RIjSDdIjK5S44fyN5fjdu2gK0jJfc/MvbA2JPZcsi6Xebi9A2
+
+------=_Part_20947_1018659409.1776096485689
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Membership Now
+Membership Now
+
+audible
+
+My Account https://www.audible.com/account/overview/?source_code=3DAUDOREM1=
+216179MBK
+https://www.audible.com/sign-in?rdpath=3Dhttps://www.audible.com/?source_co=
+de=3DAUDOREM1216179MBK
+
+---------------------------------------------------------------------------=
+----------------------------
+
+
+=20
+* Your next listen is ready,  Dawn *
+Order number: D01-2327336-6723439
+Visit library
+https://smart.link/qpv8swzkyuflf?source_code=3DAUDOREM1216179MBK
+
+Apple In-App Purchase
+Dungeon Crawler Carl
+1 credit
+Author: Matt Dinniman
+Narrated by: Jeff Hays
+Visit library https://smart.link/qpv8swzkyuflf
+
+Summary
+Credit(s) used: 1
+Subtotal: $0.00
+
+Tax:$0.00
+
+
+Total paid: $0.00
+
+
+=20
+* You might like these=C2=A0listens *
+
+
+The Will of the Many
+BY James Islington
+VOICED BY Euan Morton
+https://www.audible.com/sign-in?rdpath=3Dhttps%3A%2F%2Fwww.audible.com%2Fpd=
+%2FB0BXTL5Y9C%3Fsource_code%3DAUDOREM1216179MBK%26plink%3DzeeMk2uMwodQFCJI%=
+26ref_%3D1045311850_adblp13npbxx
+
+All These Worlds
+BY Dennis E. Taylor
+VOICED BY Ray Porter
+https://www.audible.com/sign-in?rdpath=3Dhttps%3A%2F%2Fwww.audible.com%2Fpd=
+%2FB07341FZDC%3Fsource_code%3DAUDOREM1216179MBK%26plink%3DzeeMk2uMwodQFCJI%=
+26ref_%3D1045311850_adblp13npbxx
+
+Carl's Doomsday Scenario
+BY Matt Dinniman
+VOICED BY Jeff Hays
+https://www.audible.com/sign-in?rdpath=3Dhttps%3A%2F%2Fwww.audible.com%2Fpd=
+%2FB0934GTSGT%3Fsource_code%3DAUDOREM1216179MBK%26plink%3DzeeMk2uMwodQFCJI%=
+26ref_%3D1045311850_adblp13npbxx
+
+
+
+---------------------------------------------------------------------------=
+----------------------------
+
+Library https://www.audible.com/lib?source_code=3DAUDOREM1216179MBK
+Wish=C2=A0List https://www.audible.com/wl?source_code=3DAUDOREM1216179MBK
+FAQ=C2=A0&=C2=A0Help Center https://help.audible.com/s/?language=3Den_US
+Privacy=C2=A0Notice https://www.amazon.com/gp/help/customer/display.html/re=
+f=3Dhp_left_v4_sib?ie=3DUTF8&amp;nodeId=3D468496&amp;language=3Den_US
+This email was sent to dawnwolff@me.com.=20
+
+=C2=A91=E2=80=8C9=E2=80=8C9=E2=80=8C7=E2=80=8C-2026 Audible, Inc. Audible a=
+nd the Audible logo are trademarks of Audible, Inc, or its affiliates. 1 Wa=
+shington Park, 16th Floor. Newark, NJ 07102. All Rights Reserved. Email ref=
+erence number: 1045311850
+------=_Part_20947_1018659409.1776096485689
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-microso=
+ft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office" lang=3D"en"=
+>
+
+<head></head>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" />
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
+0, maximum-scale=3D1.0, user-scalable=3D0">
+<meta name=3D"x-apple-disable-message-reformatting" />
+<meta name=3D"color-scheme" content=3D"light dark">
+<meta name=3D"supported-color-schemes" content=3D"light dark">
+
+<title>Thanks, your order is complete</title>
+
+<!--[if gte mso 9]>
+<style type=3D"text/css">
+    .lhfix {mso-line-height-rule: exactly;}
+    .mso_bordernone { border: none !important; }
+    .mso_listen_now_cta { background-color: #F7991C !important; border: 1px=
+ solid #F7991C !important; padding:12px 34px !important; border-collapse: c=
+ollapse !important; }
+    .mso_wide_cta { background-color:#F7991C !important; border: 1px solid =
+#F7991C !important; padding:12px 100px !important; border-collapse: collaps=
+e !important; }
+    .mso_download_the_app_cta { background-color:#F7991C !important; paddin=
+g:12px 24px !important; border-collapse: collapse !important; }
+    div {mso-line-height-rule: 100%;}
+    table {border-collapse: collapse; border-spacing: 0; mso-line-height-ru=
+le: exactly; mso-table-lspace: 0;mso-table-rspace: 0; mso-margin-bottom-alt=
+: 0; mso-margin-top-alt: 0;}
+    /* font color overrides in dark mode for Outlook Desktop app on Windows=
+ 10 */
+    .dm_gray900_font_ol, td.dm_gray900_font_ol, span.dm_gray900_font_ol, a.=
+dm_gray900_font_ol, strong.dm_gray900_font_ol {mso-style-textfill-type:grad=
+ient; mso-style-textfill-fill-gradientfill-stoplist:"0 \#000000 1 100000\,9=
+9000 \#000000 1 100000";}
+    /* font color overrides in dark mode for Outlook Desktop app on Windows=
+ 10 */
+    .dm_white_font_ol, td.dm_white_font_ol, span.dm_white_font_ol, a.dm_whi=
+te_font_ol, strong.dm_white_font_ol {mso-style-textfill-type:gradient; mso-=
+style-textfill-fill-gradientfill-stoplist:"0 \#FFFFFF 0 100000\,100000 \#FF=
+FFFF 0 100000";}
+</style>
+<![endif]-->
+    <!--[if gte mso 9]><xml>
+    <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+</xml><![endif]-->
+<style>
+
+h1, h2, h3, h4 {margin: 0px !important;padding: 0px !important;}
+
+.btnFFA000.hover:hover, a .btnFFA000.hover:hover {
+=09background: #FFB333 url("https://m.media-amazon.com/images/G/01/Audible/=
+Email/FFB333_1px.jpg") !important
+}
+
+.btn000000.hover:hover, a .btn000000.hover:hover {
+=09background: #687375 !important
+}
+
+.dm_gray400_pill_border.hover:hover, .dm_gray400_pill_border.hover:hover {
+=09border-color: #242728 !important;
+=09background-color: rgba(20, 20, 20, 0.1) !important
+}
+
+@font-face{font-family:'AudibleSansSm';src:url(https://m.media-amazon.com/i=
+mages/G/01/audibleweb/fonts/audiblesans/audiblesans-sm._CB493226459_.woff2)=
+ format("woff2"),url(https://m.media-amazon.com/images/G/01/audibleweb/font=
+s/audiblesans/audiblesans-sm._CB493226459_.woff) format("woff");font-weight=
+:600;font-style:normal;mso-font-alt:'Arial'}
+@font-face{font-family:'AudibleSansMd';src:url(https://m.media-amazon.com/i=
+mages/G/01/audibleweb/fonts/audiblesans/audiblesans-sm._CB493226459_.eot),u=
+rl(https://m.media-amazon.com/images/G/01/audibleweb/fonts/audiblesans/audi=
+blesans-sm._CB493226459_.woff2) format("woff2"),url(https://m.media-amazon.=
+com/images/G/01/audibleweb/fonts/audiblesans/audiblesans-sm._CB493226459_.w=
+off) format("woff");font-weight:500;font-style:normal;mso-font-alt:'Arial'}
+@font-face{font-family:'AudibleSansRg';src:url(https://m.media-amazon.com/i=
+mages/G/01/audibleweb/fonts/audiblesans/audiblesans-rg._CB493226456_.eot),u=
+rl(https://m.media-amazon.com/images/G/01/audibleweb/fonts/audiblesans/audi=
+blesans-rg._CB493226456_.woff2) format("woff2"),url(https://m.media-amazon.=
+com/images/G/01/audibleweb/fonts/audiblesans/audiblesans-rg._CB493226456_.w=
+off) format("woff");font-weight:normal;font-style:normal;mso-font-alt:'Aria=
+l'}
+@font-face{font-family:'AudibleSansLt';src:url(https://m.media-amazon.com/i=
+mages/G/01/audibleweb/fonts/audiblesans/audiblesans-lt._CB493226457_.eot),u=
+rl(https://m.media-amazon.com/images/G/01/audibleweb/fonts/audiblesans/audi=
+blesans-lt._CB493226457_.woff) format("woff"),url(https://m.media-amazon.co=
+m/images/G/01/audibleweb/fonts/audiblesans/audiblesans-lt._CB493226457_.wof=
+f2) format("woff2");font-weight:300;font-style:normal;mso-font-alt:'Arial'}
+@font-face{font-family:'AudibleSansBd';src:url(https://m.media-amazon.com/i=
+mages/G/01/audibleweb/fonts/audiblesans/audiblesans-bd._V493226462_.woff2) =
+format("woff2"),url(https://m.media-amazon.com/images/G/01/audibleweb/fonts=
+/audiblesans/audiblesans-bd._V493226462_.woff) format("woff");font-weight:7=
+00;mso-font-alt:'Arial'}
+@font-face{font-family:'Ember';font-style:bold;font-weight:600;src:local("E=
+mber"),url(https://m.media-amazon.com/images/G/01/outbound/AmazonEmber_Bd._=
+CB1515450239_.WOFF) format("woff")}
+@font-face{font-family:'Ember';font-style:normal;font-weight:400;src:local(=
+"Ember"),url(https://m.media-amazon.com/images/G/01/outbound/AmazonEmber_Rg=
+._CB1515450239_.WOFF) format("woff")}
+@font-face{font-family:'Ember';font-style:light;font-weight:200;src:local("=
+Ember"),url(https://m.media-amazon.com/images/G/01/outbound/AmazonEmber_Lt.=
+_CB1515450239_.WOFF) format("woff")}
+@font-face{font-family:'Ember';font-style:medium;font-weight:500;src:local(=
+"Ember"),url(https://m.media-amazon.com/images/G/01/outbound/AmazonEmber_Md=
+._CB1515450239_.WOFF) format("woff")}
+html{-webkit-text-size-adjust:none;-ms-text-size-adjust:none;box-sizing:bor=
+der-box}
+body{padding:0;margin:0;width:100%;margin-left:0px !important;margin-right:=
+0px !important}
+table th{margin:0 !important;padding:0;vertical-align:top;font-weight:norma=
+l !important}
+table td{border-collapse:collapse}
+div[style*=3D"margin: 16px 0"]{margin:0 !important;font-size:100% !importan=
+t}
+#MessageViewBody,#MessageWebViewDiv{width:100% !important}
+.ReadMsgBody{width:100%}
+.ExternalClass{width:100%}
+.ExternalClass *{line-height:100%}
+a{text-decoration:none}
+a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !im=
+portant;font-size:inherit !important;font-family:inherit !important;font-we=
+ight:inherit !important;line-height:inherit !important}
+p{margin:0px !important}
+.vreset{vertical-align:middle !important}
+u+#body a,u+#body a:hover,u+#body a:visited{color:inherit;text-decoration:n=
+one;font-size:inherit;font-family:inherit;font-weight:inherit;line-height:i=
+nherit}
+.graylink a{color:#535B5D !important}
+.aud_caret_2x{background-image:url("https://m.media-amazon.com/images/G/01/=
+Audible/Email/audible-logo-chevron-bg.png") !important}
+.aud_caret_short_2x{background-image:url("https://m.media-amazon.com/images=
+/G/01/Audible/Email/audible-logo-chevron-bg-short-2x.png") !important}
+u+#body .gmail_mb_hide{display:block}
+u+#body .gmail_mb_show{display:none !important}
+@media screen and (max-width: 598px){
+    .herotext_mb_background_triangle_2x{ background-image: url("https://m.m=
+edia-amazon.com/images/G/01/Audible/Email/triangle_mb.png") !important; bac=
+kground-size: 100% !important; }
+.herotext_mb_background_circle_2x{ background-image: url("https://m.media-a=
+mazon.com/images/G/01/Audible/Email/circle_background_mb.png") !important; =
+background-size: 100% !important; }
+    u ~div{width:100vw !important}
+    div>u ~div{width:100% !important}
+    .block{display:block !important}
+    .inlineblock{display:inline-block !important}
+    .inline{display:inline !important}
+    .blockhead{display:table-header-group !important}
+    .blockfoot{display:table-footer-group !important}
+    .hide{display:none !important}
+    .show{display:block !important;width:auto !important;overflow:visible !=
+important;float:none !important;max-height:inherit !important;line-height:i=
+nherit !important}
+    .centertable{margin:0 auto !important}
+    .aligncenter{text-align:center !important}
+    .alignleft{text-align:left !important}
+    .alignright{text-align:right !important}
+    .center{text-align:center !important}
+    .left{text-align:left !important}
+    .right{text-align:right !important}
+    .floatl{float:left !important}
+    .floatr{float:right !important}
+    .hauto{height:auto !important}
+    .width20{width:20px !important}
+    .width290{width:290px !important}
+    .width300{width:300px !important}
+    .width32p{width:32% !important}
+    .width48p{width:48% !important}
+    .width49p{width:49% !important}
+    .width50p{width:50% !important}
+    .width78p{width:78% !important}
+    .width80p{width:80% !important}
+    .width90p{width:90% !important}
+    .width92p{width:92% !important}
+    .width94p{width:94% !important}
+    .width100p{width:100% !important}
+    .maxwidth320{max-width:320px !important}
+    .minwidth320{min-width:320px !important}
+    .font24{font-size:24px !important}
+    .font39{font-size:39px !important}
+    .padding0{padding:0 !important}
+    .pt15{padding-top:15px !important}
+    .pt25{padding-top:25px !important}
+    .pt35{padding-top:35px !important}
+    .pr0{padding-right:0px !important}
+    .pr5{padding-right:5px !important}
+    .pb30{padding-bottom:30px !important}
+    .pb35{padding-bottom:35px !important}
+    .pb40{padding-bottom:40px !important}
+    .pl5{padding-left:5px !important}
+    .width3pt5p {width:3.5% !important;}
+    .width31p {width:31% !important;}
+    .width33p {width:33.33% !important;}
+    u+#body .quote-cell {height: 18px !important; line-height: 18px !import=
+ant}
+    .m_padding {width: 11px !important;}
+    .m_padding2 {min-width: 10px !important;}
+    .width105 {width: 105px !important;}
+    .width77p {width: 77% !important}
+    .width235 {width: 235px !important}
+    .width160 {width: 160px !important}
+    .width75 {width: 75px !important}
+    .pr25 {padding-right: 25px !important}
+    .width30p {width: 30% !important}
+    .width5p {width: 5% !important}
+    .borderbottom{border-bottom:1px solid #D1D6D7 !important}
+    .width200{width:200px !important}
+    .width4p {width: 10px !important;width: 4%;max-width: 4% !important;}
+    .height80 {height: 80px !important;max-height: 80px !important;}
+    .height100 {height: 100px !important;max-height: 100px !important;}
+    .maxwidth100p {max-width: 100% !important}
+    .pl0 {padding-left: 0px !important}
+    .width35{width:35px !important}
+    .desktop-content{display:none !important}
+    .mobile-content{display:block !important}
+    .width320{width: 320px !important}
+    .width288{width: 288px !important}
+    .font12{font-size: 12px !important; line-height: 16px !important;}
+    .font14{font-size: 14px !important; line-height: 18px !important;}
+    .font16{font-size: 16px !important; line-height: 22px !important;}
+    .font24{font-size: 24px !important; line-height: 32px !important;}
+    .font30{font-size: 30px !important; line-height: 36px !important;}
+    .pt0{padding-top:0px !important}
+    .pt8{padding-top: 8px !important;}
+    .pt16{padding-top: 16px !important;}
+    .pt24{padding-top: 24px !important;}
+    .pt32{padding-top: 32px !important;}
+    .pb0{padding-bottom: 0px !important;}
+    .pb8{padding-bottom: 8px !important;}
+    .pb16{padding-bottom: 16px !important;}
+    .pb24{padding-bottom: 24px !important;}
+    .pb32{padding-bottom: 32px !important;}
+    .padding24px0px{padding: 24px 0px !important;}
+    .padding8px32px {padding: 8px 32px !important;}
+    .padding10px32px {padding: 10px 32px !important;}
+    .padding4px0px{padding: 4px 0px !important; display: inline-block !impo=
+rtant;}
+    .width33p{width:33% !important}.width59p{width:59% !important}.width29p=
+{width:29% !important}.width42p{width:42% !important}.width44p{width:44% !i=
+mportant}.width56p{width:56% !important}
+    .font14{font-size:14px !important;line-height:18px !important}
+    .pt8{padding-top:8px !important}.pt16{padding-top:16px !important}
+    .pt0{padding-top:0px !important}
+    .acx-logo{background-image:url("https://m.media-amazon.com/images/G/01/=
+Audible/Email/acx-header-mb-2x.jpg") !important;width:100% !important;paddi=
+ng-top:31.25% !important;background-size:100% auto !important}
+    .acx-logo img{display:none !important}
+    .pt2 {padding-top: 2px !important;}
+    .pb24 {padding-bottom: 24px !important;}
+    u ~div .gmail-bullet {
+        font-size: 22px !important;
+        line-height: 22px !important;
+    }
+    .width47p{width: 47% !important;}
+    .width93p{width: 93% !important;}
+    .marginbottom8 {margin-bottom: 8px !important;}
+    .width49 {width: 49% !important;}
+    .quote-td {
+    line-height: 4px !important;
+    height: 0px !important;
+    padding-top: 16px !important;}
+    .quote-td .font30 {
+    line-height: 8px !important;}
+    u + #body .quote-td {
+    height: 18px !important;
+    line-height: 18px !important;}
+    .font18 {
+    font-size: 18px !important;
+    line-height: 26px !important;}
+    .width47p {width: 47% !important;}
+    .pt16 {padding-top: 16px !important;}
+    .width23p {width: 23% !important;}
+    .width2p {width: 2% !important;}
+    .width2pt5p {width: 2.5% !important;}
+    .width3pt5 {width: 3.5% !important;}
+    .marginbottom8 {margin-bottom: 8px !important;}
+    .padding16 {padding: 16px !important;}
+    .pl16 {padding-left: 16px !important;}
+    .pr16 {padding-right: 16px !important;}
+    .width22p { width: 22% !important; }
+    .width25p {width: 25% !important; }
+    .width35p { width: 35% !important; }
+}
+.aud_chevron_2x{background-image:url("https://m.media-amazon.com/images/G/0=
+1/Audible/Email/aud-nm-header-bg-2x.png") !important}
+.aud_chevron_short_2x{background-image:url("https://m.media-amazon.com/imag=
+es/G/01/Audible/Email/aud-nm-header-bg-short-2x.png") !important}
+
+@media only screen and (min-device-width: 599px) and (max-device-width: 102=
+4px){
+
+    .desktop-content{display:none !important}
+    .mobile-content{display:block !important}
+    .blockhead-tablet{display:table-header-group !important}.blockfoot-tabl=
+et{display:table-footer-group !important}.blockfoot-tablet:after,.blockhead=
+-tablet:after{content:' ';white-space:pre}
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+    a[href^=3D"tel"],a[href^=3D"sms"]{text-decoration:none;color:inherit;po=
+inter-events:none;cursor:default}}
+@media screen and (max-width: 1024px){
+    u+#body .gmail_mb_hide{display:none !important}
+    u+#body .gmail_mb_show{display:block !important}}
+:root {color-scheme: light dark;}
+@media (prefers-color-scheme: dark) {
+    body, td, a, h1, h2, h3, h4,  h5, h6, blockquote {
+        color:#FFFFFF !important
+    }
+    .dm_white_font{
+        color:#FFFFFF !important
+    }
+=09.dm_gray400_pill_border.hover, a .dm_gray400_pill_border.hover {
+=09=09border-color: #687375 !important
+=09}
+=09.dm_gray400_pill_border.hover:hover, a .dm_gray400_pill_border.hover:hov=
+er {
+=09=09border-color: #D1D6D7 !important;
+=09=09background-color: rgba(255, 255, 255, 0.1) !important
+=09}
+    .btn000000,a .btn000000{
+        background:#FFFFFF !important;
+        background:url("https://m.media-amazon.com/images/G/01/Audible/Emai=
+l/FFFFFF_1px.png") repeat !important
+    }
+    .btn000000 strong,.btn000000 span,a .btn000000 strong,a .btn000000 span=
+{
+        color:#141414 !important
+    }
+    .btn000000.hover:hover,a .btn000000.hover:hover{
+        background:#FFFFFF !important;
+        background:url("https://m.media-amazon.com/images/G/01/Audible/Emai=
+l/FFFFFF_1px.png") repeat !important
+    }
+    .btn000000.hover:hover, a .btn000000.hover:hover {
+=09=09background: #687375 !important;
+=09=09background: #687375 url("https://m.media-amazon.com/images/G/01/Audib=
+le/Email/687375_1px.jpg") repeat !important
+=09}
+
+=09.btn000000.hover:hover span, a .btn000000.hover:hover span {
+=09=09color: #FFFFFF !important
+=09}
+    .dm_gray900_font{
+        background-image:url("https://m.media-amazon.com/images/G/01/Audibl=
+e/Email/141414_1px.jpg") !important;
+        color:transparent !important;
+        -webkit-text-fill-color:#141414 !important;
+        -webkit-background-clip:text !important;
+        background-clip:text !important
+    }
+    u+#body .dm_gray900_font{
+        background-image:none !important;
+        color:#141414 !important
+    }
+    .gray300{
+        color:#B9BFC0 !important
+    }
+    .dm_img{
+        display:block !important;
+        width:auto !important;
+        overflow:visible !important;
+        float:none !important;
+        max-height:inherit !important;
+        max-width:inherit !important;
+        line-height:auto !important;
+        margin-top:0px !important;
+        visibility:inherit !important
+    }
+    .default_img{
+        display:none !important
+    }
+    a.gray600 {
+      color: #B9BFC0 !important;
+    }
+    .bg_gray500 {
+      background-color: #687375 !important;
+    }
+    .gray500 {
+      color: #687375 !important;
+    }
+}
+[data-ogsc][class~=3D"x_dm_img"] {
+    display: block !important;
+    width: auto !important;
+    overflow: visible !important;
+    float: none !important;
+    max-height: inherit !important;
+    max-width: inherit !important;
+    line-height: auto !important;
+    margin-top: 0px !important;
+    visibility: inherit !important;
+}
+[data-ogsc][class~=3D"x_default_img"] {
+    display: none !important;
+}
+@media screen and (max-width: 1024px) {   =20
+    div > u + #body .btn000000 {background: #4B5254 !important;}
+    div > u + #body .dm_gray500_border {border: 1px solid #687375 !importan=
+t; border-radius: 2px !important;}
+}
+</style>
+
+
+<style>
+[data-ogsc][class~=3D"x_btnFFA000"] {
+  background-color: #FFA000 !important;
+  background-image: url('https://m.media-amazon.com/images/G/01/Audible/squ=
+are-orange.jpg') !important;
+}
+[data-ogsc][class~=3D"x_btn000000"]{
+  background-color: #FFFFFF !important;
+  background-image: url('https://m.media-amazon.com/images/G/01/Audible/Ema=
+il/FFFFFF_1px.jpg') !important;
+}
+[data-ogsc][class~=3D"x_btn000000"][class~=3D"x_dm_gray900_font"]{
+  color: #FFFFFF!important; mix-blend-mode: exclusion !important;
+}
+
+
+[data-ogsc][class~=3D"x_dm_img"] {
+  display: block !important;
+  width: auto !important;
+  overflow: visible !important;
+  float: none !important;
+  max-height: inherit !important;
+  max-width: inherit !important;
+  line-height: auto !important;
+  margin-top: 0px !important;
+  visibility: inherit !important;
+}
+[data-ogsc][class~=3D"x_default_img"] {
+    display: none !important;
+}[class~=3D"x_outlook_video_show"] {display: block !important;}[class~=3D"x=
+_outlook_video_hide"] {display: none !important;}
+</style></head>
+
+
+<body style=3D"margin:0; padding:0; width:100% !important; min-width: 600px=
+;" class=3D"minwidth320" id=3D"body">
+<style>
+/* Media query for content swap for Outlook on iPad */
+@media only screen and (min-device-width: 599px) and (max-device-width: 102=
+4px){
+  .olm-fragment-custom .desktop-content {display: none !important;}
+  .olm-fragment-custom .desktop-content + div {display: block !important;}=
+=20
+}
+/* C02 Recent Listen - progress bar for Outlook app on iPad query */
+@media only screen and (min-width: 599px) and (max-width: 1024px){
+  .olm-fragment-custom .blockhead-tablet {
+        display:table-header-group !important=20
+  }
+  .olm-fragment-custom .blockfoot-tablet{
+      display:table-footer-group !important=20
+  }
+}
+@media (prefers-color-scheme:dark){
+  .olm-fragment-custom .dm_img{display:block!important;width:auto!important=
+;overflow:visible!important;float:none!important;max-height:inherit!importa=
+nt;max-width:inherit!important;line-height:auto!important;margin-top:0!impo=
+rtant;visibility:inherit!important}
+  .olm-fragment-custom .default_img{display:none!important}
+}
+@media screen and (prefers-color-scheme:dark){
+  .olm-fragment-custom .btnFFA000{
+    background-color: #FFA000 !important;
+    background-image: url('https://m.media-amazon.com/images/G/01/Audible/E=
+mail/Rauxa/Audible/ssh/FFA000_1px.jpg') !important;
+  }
+  .olm-fragment-custom .btn000000{
+    background-color: #4B5254 !important;
+    background-image: url('https://m.media-amazon.com/images/G/01/Audible/E=
+mail/Rauxa/Audible/ssh/4B5254_1px.jpg') !important;
+  }
+    .olm-fragment-custom .dm_gray400_pill_border {
+        border-color: #687375 !important;
+    }
+}
+</style>
+
+
+<style>     =20
+.& .yahoo_bg {background: url("https://m.media-amazon.com/images/G/01/Audib=
+le/Email/FFFFFF_600x600.png") !important;}
+@media only screen and (min-width: 599px) and (max-width: 1024px){
+  .& .desktop-content {
+    display: none !important;
+  }
+  .& .desktop-content + div {
+    display: block !important;
+  }
+}
+@media screen and (max-width: 1024px) {   =20
+    .& .btn000000 {
+      background-color: #4B5254 !important;=20
+      background-image: none !important;
+      color: #ffffff !important;
+    }
+    .& .btn000000 span{
+      color: #ffffff !important;
+    }
+    .& .btnFFA000 {
+      color: #141414 !important;
+    }
+    .& .btnFFA000 span{
+      color: #141414 !important;
+    }
+}
+</style>
+<div style=3D"display:none !important; display:none; overflow:hidden; float=
+:left; width:0px; max-height:0px; max-width:0px; line-height:0px; visibilit=
+y:hidden;mso-hide:all;color:#fff; font-size:2pt;">Discover thousands of Aud=
+ible Originals, audiobooks and podcasts=E2=80=94including exclusive series.=
+ &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#81=
+99;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847;
+             &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847;
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy;=20
+             &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;
+             &nbsp;
+    <div aria-hidden=3D"true">
+        <img width=3D"1" height=3D"1" src=3D"https://r.audible.com/gp/r.htm=
+l?C=3D16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386=
+a4e44875a8ca1ff99120p0na&R=3D3E27VUC6XQWQC&T=3DO&U=3Dhttps%3A%2F%2Fimages-n=
+a.ssl-images-amazon.com%2Fimages%2FG%2F01%2Fnav%2Ftransp.gif&H=3DAUD2410EDV=
+QODM8UBZMNAGNEODQA&ref_=3Dpe_125709910_1045311850_opens" alt=3D"" />
+    </div>
+</div>
+
+<div align=3D"center">
+      <!--[if (gte mso 9)|(IE)]>
+      <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=3D=
+"0" style=3D"width:600px;">
+        <tr>
+          <td align=3D"center" valign=3D"top">
+            <![endif]-->
+<!--[if mso]><div style=3D"mso-hide: all"><![endif]-->
+<table width=3D"1" height=3D"1" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" role=3D"presentation">
+  <tr><td style=3D"font-size:0px; line-height:0px;">
+    <img src=3D"https://www.movable-ink-306.com/p/up/b1e8d125b5d2645e/o.gif=
+?mi_u=3Damzn1.account.AEXYUKUWUZ7QU7RU2Z6OW5PRAK6Q&mi_ecmp=3D1045311850" wi=
+dth=3D"1" height=3D"1" alt=3D"" aria-hidden=3D"true" />
+  </td></tr>
+</table>
+<!--[if mso]></div><![endif]-->
+  <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" ro=
+le=3D"presentation" style=3D"width: 100%; table-layout:fixed;">
+              <tr>
+                <td align=3D"center" width=3D"100%" style=3D"width: 100%; v=
+ertical-align: top;">
+
+
+
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentatio=
+n" align=3D"center" bgcolor=3D"transparent" style=3D"width: 100%; max-width=
+: 600px;">
+      <tr>
+        <td align=3D"center" style=3D"padding-top: 12px; padding-bottom: 16=
+px;">
+          <table class=3D"width90p" cellpadding=3D"0" cellspacing=3D"0" bor=
+der=3D"0" role=3D"presentation" align=3D"center" style=3D"width: 92%; max-w=
+idth: 552px;">
+                    <tr>
+              <td>
+                <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" b=
+order=3D"0" role=3D"presentation" align=3D"center">
+                  <tr>
+                    <td align=3D"center" valign=3D"top">
+                   =20
+                      <a href=3D"https://r.audible.com/gp/r.html?C=3D16X7NS=
+AHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca=
+1ff99120p0na&R=3D1Z98064QO6GCD&T=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Fsi=
+gn-in%3Frdpath%3Dhttps%3A%2F%2Fwww.audible.com%2F%3Fsource_code%3DAUDOREM12=
+16179MBK%26ref_%3Dpe_125709910_1045311850&H=3DIM3WYW55TXEULEGEIQ7H97NSJKYA&=
+ref_=3Dpe_125709910_1045311850"  style=3D"display: inline-block;"><img src=
+=3D"https://m.media-amazon.com/images/G/01/Audible/Email/audible_chevron.pn=
+g" width=3D"38" border=3D"0" style=3D"height: auto; display: inline-block; =
+font-family: AudibleSansSm, Arial, sans-serif; color: #141414; font-size: 1=
+1px; line-height: 15px; text-align: left; color:#FFA000;" alt=3D"Audible"><=
+/a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+
+
+
+
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentatio=
+n" bgcolor=3D"transparent" style=3D"width: 100%; max-width: 600px;">
+<tr>
+  <td align=3D"center" style=3D"padding-top: 32px; padding-bottom: 32px;" c=
+lass=3D"pt24 pb24">
+      <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=3D=
+"0" role=3D"presentation" style=3D"width: 100%;" >
+        <tr>
+          <td align=3D"center">
+           =20
+
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentatio=
+n" style=3D"width: 100%; max-width: 600px; background-color: transparent;">
+  <tr>
+    <td align=3D"center" style=3D"padding-top: 0px; padding-bottom: 0px;" c=
+lass=3D"pt0 pb0">
+      <table width=3D"100%" align=3D"center" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation">
+        <tr>
+          <td align=3D"center">
+            <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" bor=
+der=3D"0" role=3D"presentation" style=3D"width: 92%; max-width: 552px;" cla=
+ss=3D"width90p">
+                   =20
+<tr>
+    <td align=3D"center" style=3D"color: #141414; font-family: AudibleSansB=
+d, Arial, sans-serif;">
+        <h2 class=3D"font30" style=3D"font-size: 36px; line-height: 42px; f=
+ont-weight: 700; margin: 0px; padding: 0px;">Your next listen is ready, <br=
+ class=3D"hide" /> Dawn</h2>
+    </td>
+</tr>
+                   =20
+<tr>
+    <td align=3D"center" style=3D"padding-top: 8px; font-size: 18px; line-h=
+eight: 26px; font-weight: 400; color: #141414; font-family: AudibleSansRg, =
+Arial, sans-serif;">
+        Order number: D01-2327336-6723439
+    </td>
+</tr></table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+  <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentat=
+ion" bgcolor=3D"transparent" style=3D"width:90%; max-width: 552px;">
+    <tr>
+      <td class=3D"center" align=3D"center">
+        <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" role=3D"presentation" width=3D"100%">
+          <tr>
+            <td align=3D"center" style=3D"padding-top: 32px; padding-bottom=
+: 0px;" class=3D"pt24 pb0 center">
+              <table class=3D"center" align=3D"center" width=3D"100%" cells=
+pacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation">
+<tr><td class=3D"padding4px0px" align=3D"center" valign=3D"top" style=3D"fo=
+nt-size: 0px;"><a href=3D"https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WBA=
+&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca1ff9912=
+0p0na&R=3D1HA3JS7CK04R5&T=3DC&U=3Dhttps%3A%2F%2Fsmart.link%2Fqpv8swzkyuflf%=
+3Fsource_code%3DAUDOREM1216179MBK&H=3DYP1JAYYLL1JO8FBTVVYWEAGNCB8A" style=
+=3D"text-decoration: none !important; display: inline">
+        <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" role=3D"presentation" class=3D"center">
+            <tr><td>
+                    <!--[if !mso]><!-->
+                    <span class=3D"btnFFA000 hover" background=3D"https://m=
+.media-amazon.com/images/G/01/Audible/Email/FFA000_1px.jpg" style=3D"backgr=
+ound: url('https://m.media-amazon.com/images/G/01/Audible/Email/FFA000_1px.=
+jpg'); background-repeat: repeat; background-color: #FFA000; border-radius:=
+ 2em;font-size: 16px; display: block; text-decoration: none !important;">
+                        <!--<![endif]-->
+                        <table class=3D"padding10px32px" align=3D"center" c=
+ellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=3D"presentation" style=
+=3D"mso-shading: #FFA000; padding: 14px 32px;">
+                            <tr>
+                                <td class=3D"dm_gray900_font" align=3D"cent=
+er" style=3D"font-family: AudibleSansSm, Arial, sans-serif; font-size: 16px=
+; line-height: 20px; font-weight: 600; text-align: center; text-decoration:=
+ none !important;"><!--[if gte mso 9]><a href=3D"https://r.audible.com/gp/r=
+.html?C=3D16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0=
+c386a4e44875a8ca1ff99120p0na&R=3DO2Z3QG4FZKNJ&T=3DC&U=3Dhttps%3A%2F%2Fsmart=
+.link%2Fqpv8swzkyuflf%3Fsource_code%3DAUDOREM1216179MBK&H=3DAWZDMHNVATH5UXW=
+A9DZS4AFZF48A"><![endif]--><span class=3D"dm_gray900_font" style=3D"color: =
+#141414; text-decoration: none !important;">Visit library</span><!--[if gte=
+ mso 9]></a><![endif]--></td>
+                            </tr>
+                        </table>
+                        <!--[if !mso]><!-->
+                    </span>
+                    <!--<![endif]--></td></tr>
+        </table></a></td></tr></table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+          </td>
+        </tr>
+      </table>
+     </td>
+    </tr>
+  </table>
+
+
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentatio=
+n" style=3D"width: 100%; max-width: 600px; background-color: transparent;">
+=09<tr>
+=09=09<td class=3D"padding24px0px" style=3D"padding-top: 32px; padding-bott=
+om: 32px;">
+=09=09=09<table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=3D"pr=
+esentation" align=3D"center" style=3D"width: 92%; max-width: 552px;" class=
+=3D"width90p">
+=09=09=09=09<tr>
+=09=09=09=09=09<td style=3D"padding-bottom: 16px;">
+=09=09=09=09=09=09<table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0" role=3D"presentation" align=3D"center" style=3D"font-size: 0p=
+x;">
+=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09<td align=3D"left" style=3D"font-family:AudibleSans=
+Sm, Arial, sans-serif; color: #141414;">
+=09=09=09=09=09=09=09=09=09<h1 class=3D"font14" style=3D"font-size: 16px; f=
+ont-weight: 600; line-height: 22px; margin: 0px; padding: 0px;">Title</h1>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"left" aria-hidden=3D"true" class=3D"wi=
+dth8" width=3D"12" style=3D"min-width: 8px; height: 12px; width: 12px; font=
+-size: 12px; mso-line-height-rule:exactly; line-height: 16px;">&nbsp;
+=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"right" aria-hidden=3D"true" width=3D"8=
+0" class=3D"font14 width70" style=3D"width: 80px; font-family: AudibleSansS=
+m, Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 22px;=
+ color: #141414; text-align: right;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;"><strong><spa=
+n style=3D"font-weight: 600">Amount</span></strong></p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09</td>
+=09=09=09=09</tr>
+=09=09=09=09<tr>
+=09=09=09=09=09<td>
+=09=09=09=09=09=09<table width=3D"100%" align=3D"center" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation">
+=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09<td class=3D"bg_gray500 width100p" height=3D"1" bgc=
+olor=3D"#949C9E" style=3D"background-color: #949C9E; height: 1px; line-heig=
+ht:1px; mso-line-height-rule: exactly;">
+=09=09=09=09=09=09=09=09=09<!--[if gte mso 15]>&nbsp;<![endif]-->
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09</td>
+=09=09=09=09</tr>
+               =20
+
+
+<tr>
+=09=09=09=09=09<td class=3D"padding24px0px" style=3D"padding-top: 32px; pad=
+ding-bottom: 32px;">
+=09=09=09=09=09=09<table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0" role=3D"presentation" align=3D"center" style=3D"font-size: 0p=
+x;">
+=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09<td align=3D"left" valign=3D"top" style=3D"min-widt=
+h: 64px; width: 140px; vertical-align: top; font-size: 0px;" class=3D"width=
+33p"><a href=3D"https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WBA&K=3DK3YW1=
+N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca1ff99120p0na&R=3D=
+1FHCZPUN8JRXX&T=3DC&U=3Dhttps%3A%2F%2Fsmart.link%2Fqpv8swzkyuflf&H=3DAOTQ5F=
+9AZHS19PS3QU09ULOFTS4A" aria-label=3D"Audible library" class=3D"yinlinebloc=
+k"><img src=3D"https://m.media-amazon.com/images/I/51HIZdnqASL._SL500_.___F=
+Mpng_RO50,1,156,156,156,156,156,156,0,0,15___.jpg" width=3D"140" border=3D"=
+0" class=3D"width100p" style=3D"display: block; min-width: 64px; font-famil=
+y: AudibleSansRg, Arial, sans-serif; font-size: 11px;" alt=3D""></a></td>
+=09=09=09=09=09=09=09=09<td align=3D"left" width=3D"16" style=3D"min-width:=
+ 8px; height: 16px; width: 16px; font-size: 16px; mso-line-height-rule:exac=
+tly; line-height: 16px;">
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td valign=3D"top">
+=09=09=09=09=09=09=09=09=09<table width=3D"100%" cellpadding=3D"0" cellspac=
+ing=3D"0" border=3D"0" role=3D"presentation" align=3D"center">
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"left" class=3D"font14" style=
+=3D"font-family: AudibleSansSm, Arial, sans-serif; font-size: 16px; font-we=
+ight: 600; line-height: 22px; color: #141414; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;"><st=
+rong><span style=3D"font-weight: 600">Dungeon Crawler Carl</span></strong><=
+/p>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"left" aria-hidden=3D"true" cl=
+ass=3D"width8" width=3D"12" style=3D"min-width: 8px; height: 12px; width: 1=
+2px; font-size: 12px; mso-line-height-rule:exactly; line-height: 16px;">&nb=
+sp;
+=09=09=09=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"right" valign=3D"top" width=
+=3D"80" class=3D"font14 width70" style=3D"vertical-align: top; width: 80px;=
+ font-family: AudibleSansSm, Arial, sans-serif; font-size: 16px; font-weigh=
+t: 600; line-height: 22px; color: #141414; text-align: right;">
+=09=09=09=09=09=09=09=09=09=09=09=09<p><strong><span style=3D"font-weight: =
+600">1&nbsp;credit</span></strong></p>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td colspan=3D"3" align=3D"left" class=3D"=
+font12 gray300" style=3D"font-family:AudibleSansRg, Arial, sans-serif; font=
+-weight: 400; color: #4B5254; font-size: 14px; line-height: 18px;">
+=09=09=09=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">Aut=
+hor: Matt Dinniman</p>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td colspan=3D"3" align=3D"left" class=3D"=
+font12 gray300" style=3D"font-family: AudibleSansRg, Arial, sans-serif; fon=
+t-weight: 400; color: #4B5254; font-size: 14px; line-height: 18px;">
+=09=09=09=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">Nar=
+rated by: Jeff Hays</p>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td colspan=3D"3" align=3D"left" height=3D=
+"24" style=3D"font-size: 14px; line-height: 16px; font-family: AudibleSansS=
+m, Arial, sans-serif; font-weight: 600; color: #141414; height: 24px; paddi=
+ng-top: 8px;">
+                                                <a href=3D"https://r.audibl=
+e.com/gp/r.html?C=3D16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:20260413=
+16080461b0c386a4e44875a8ca1ff99120p0na&R=3D2VH3BJJU5GTZX&T=3DC&U=3Dhttps%3A=
+%2F%2Fsmart.link%2Fqpv8swzkyuflf&H=3D9WNKOCYNTAJCU1ZASADJKKVM3YMA" style=3D=
+"text-decoration: none; color: #141414;">Visit library
+                                                <img src=3D"https://m.media=
+-amazon.com/images/G/01/Audible/Email/gray900_w_caret.png" width=3D"9" bord=
+er=3D"0" style=3D"width: 9px; height: auto; display: inline-block; font-fam=
+ily: AudibleSansSm, Arial, sans-serif; font-size: 16px; color:#141414;" alt=
+=3D"" aria-hidden=3D"true" tabindex=3D"-1"></a>
+                                            </td>
+=09=09=09=09=09=09=09=09=09=09</tr></table>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09</td>
+=09=09=09=09</tr><tr>
+=09=09=09=09=09<td>
+=09=09=09=09=09=09<table width=3D"100%" align=3D"center" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation">
+=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09<td class=3D"bg_gray500 width100p" height=3D"1" bgc=
+olor=3D"#949C9E" style=3D"background-color: #949C9E; height: 1px; line-heig=
+ht:1px; mso-line-height-rule: exactly;">
+=09=09=09=09=09=09=09=09=09<!--[if gte mso 15]>&nbsp;<![endif]-->
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09</td>
+=09=09=09=09</tr>
+=09=09=09=09<tr>
+=09=09=09=09=09<td align=3D"left" class=3D"pt24 font14" style=3D"padding-to=
+p: 32px; padding-bottom: 16px; font-family: AudibleSansSm, Arial, sans-seri=
+f; font-weight: 600; font-size: 16px; line-height: 22px; color: #141414;">
+=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;"><strong><span style=
+=3D"font-weight: 600">Summary</span></strong></p>
+=09=09=09=09=09</td>
+=09=09=09=09</tr>
+=09=09=09=09<tr>
+=09=09=09=09=09<td>
+=09=09=09=09=09=09<table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0" role=3D"presentation" align=3D"center" style=3D"font-size: 0p=
+x;">
+=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09<td align=3D"left" class=3D"font14" style=3D"font-f=
+amily: AudibleSansRg, Arial, sans-serif; font-weight: 400; color: #141414; =
+font-size: 16px; line-height: 22px; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">Credit(s) us=
+ed:</p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"left" aria-hidden=3D"true" class=3D"wi=
+dth8" width=3D"12" style=3D"min-width: 8px; height: 12px; width: 12px; font=
+-size: 12px; mso-line-height-rule:exactly; line-height: 16px;">&nbsp;
+=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"right" width=3D"170" class=3D"font14 w=
+idth70" style=3D"width: 170px; font-family: AudibleSansRg, Arial, sans-seri=
+f; font-weight: 400; color: #141414; font-size: 16px; line-height: 22px; te=
+xt-align: right; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">1</p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr><tr>
+=09=09=09=09=09=09=09=09<td align=3D"left" class=3D"font14" style=3D"font-f=
+amily: AudibleSansRg, Arial, sans-serif; font-weight: 400; color: #141414; =
+font-size: 16px; line-height: 22px; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">Subtotal:</p=
+>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"left" aria-hidden=3D"true" class=3D"wi=
+dth8" width=3D"12" style=3D"min-width: 8px; height: 12px; width: 12px; font=
+-size: 12px; mso-line-height-rule:exactly; line-height: 16px;">&nbsp;
+=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"right" width=3D"170" class=3D"font14 w=
+idth70" style=3D"width: 170px; font-family: AudibleSansRg, Arial, sans-seri=
+f; font-weight: 400; color: #141414; font-size: 16px; line-height: 22px; te=
+xt-align: right; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">$0.00</p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr><tr>
+=09=09=09=09=09=09=09=09<td align=3D"left" class=3D"font14" style=3D"font-f=
+amily: AudibleSansRg, Arial, sans-serif; font-weight: 400; color: #141414; =
+font-size: 16px; line-height: 22px; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">Tax:</p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"left" aria-hidden=3D"true" class=3D"wi=
+dth8" width=3D"12" style=3D"min-width: 8px; height: 12px; width: 12px; font=
+-size: 12px; mso-line-height-rule:exactly; line-height: 16px;">&nbsp;
+=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"right" width=3D"170" class=3D"font14" =
+style=3D"width: 170px; font-family: AudibleSansRg, Arial, sans-serif; font-=
+weight: 400; color: #141414; font-size: 16px; line-height: 22px; text-align=
+: right; padding-bottom: 8px;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;">$0.00</p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr><tr>
+=09=09=09=09=09=09=09=09<td align=3D"left" class=3D"font16" style=3D"font-f=
+amily: AudibleSansSm, Arial, sans-serif; font-weight: 400; font-size: 18px;=
+ line-height: 26px; color: #141414; font-weight: 600">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;"><strong><spa=
+n style=3D"font-weight: 600">Total paid:</span></strong></p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"left" aria-hidden=3D"true" class=3D"wi=
+dth8" width=3D"12" style=3D"min-width: 8px; height: 12px; width: 12px; font=
+-size: 12px; mso-line-height-rule:exactly; line-height: 16px;">&nbsp;
+=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09<td align=3D"right" width=3D"170" class=3D"font16" =
+style=3D"width: 170px; font-family: AudibleSansSm, Arial, sans-serif; font-=
+weight: 400; font-size: 18px; line-height: 26px; color: #141414; text-align=
+: right; font-weight: 600; vertical-align:bottom;">
+=09=09=09=09=09=09=09=09=09<p style=3D"margin: 0; padding: 0;"><strong><spa=
+n style=3D"font-weight: 600">$0.00</span></strong></p>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09</td>
+=09=09=09=09</tr>
+=09=09=09=09
+=09=09=09</table>
+=09=09</td>
+=09</tr>
+</table>
+
+
+<table align=3D"center" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" ro=
+le=3D"presentation" bgcolor=3D"transparent" style=3D"width: 100%; max-width=
+: 600px;">
+    <tr>
+        <td align=3D"center" style=3D"padding-top:0px;padding-bottom:0px;">
+            <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=3D=
+"presentation" align=3D"center" style=3D"text-align:center; width: 100%; ma=
+x-width: 600px;">
+                <tr>
+                    <td class=3D"bg_gray500 width100p" height=3D"1" bgcolor=
+=3D"#D8D8D8" style=3D"height: 1px; line-height:1px; mso-line-height-rule: e=
+xactly;">
+                        <!--[if gte mso 15]>&nbsp;<![endif]-->
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>=20
+
+
+
+
+<table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" ro=
+le=3D"presentation" style=3D"width: 100%; max-width:600px;" bgcolor=3D"tran=
+sparent"><tr><td align=3D"center" style=3D"padding-top: 32px; padding-botto=
+m: 32px;" class=3D"pt24 pb24">
+
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentatio=
+n" style=3D"width: 100%; max-width: 600px; background-color: transparent;">
+  <tr>
+    <td align=3D"center" style=3D"padding-top: 0px; padding-bottom: 32px;" =
+class=3D"pt0 pb24">
+      <table width=3D"100%" align=3D"center" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation">
+        <tr>
+          <td align=3D"center">
+            <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" bor=
+der=3D"0" role=3D"presentation" style=3D"width: 92%; max-width: 552px;" cla=
+ss=3D"width90p">
+                   =20
+<tr>
+    <td align=3D"center" style=3D"color: #141414; font-family: AudibleSansB=
+d, Arial, sans-serif;">
+        <h2 class=3D"font24" style=3D"font-size: 28px; line-height: 34px; f=
+ont-weight: 700; margin: 0px; padding: 0px;">You might like these&nbsp;list=
+ens</h2>
+    </td>
+</tr></table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+    <table class=3D"width90p" cellpadding=3D"0" cellspacing=3D"0" border=3D=
+"0" role=3D"presentation" align=3D"center" style=3D"width: 92%; max-width: =
+552px;">
+        <tr>
+            <td>
+                <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" b=
+order=3D"0" role=3D"presentation" align=3D"center" style=3D"font-size: 0px;=
+">
+                    <tr>
+                       =20
+<td width=3D"173" class=3D"inlineblock width31p" align=3D"center" style=3D"=
+vertical-align:top" valign=3D"top">
+    <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" =
+role=3D"presentation" align=3D"center">
+        <tr>
+            <td align=3D"center" style=3D"font-size: 0px">
+                <a href=3D"https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WB=
+A&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca1ff991=
+20p0na&R=3DBEHGLY1Q6QCE&T=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Fsign-in%3=
+Frdpath%3Dhttps%253A%252F%252Fwww.audible.com%252Fpd%252FB0BXTL5Y9C%253Fsou=
+rce_code%253DAUDOREM1216179MBK%2526plink%253DzeeMk2uMwodQFCJI%2526ref_%253D=
+1045311850_adblp13npbxx%26ref_%3Dpe_125709910_1045311850&H=3DEUYLL7SMSB6UFS=
+MIUO0OKGAR5HCA&ref_=3Dpe_125709910_1045311850" aria-label=3D"Image" style=
+=3D"display: inline;"><img class=3D"width100p" src=3D"https://m.media-amazo=
+n.com/images/I/51iWZRnlRmL._SL500_.__SL384_.___FMpng_BO0_RO30,1,156,156,156=
+,156,156,156,0,0,15___.jpg" width=3D"173" border=3D"0" style=3D"display: in=
+line; font-family: AudibleSansRg, Arial, sans-serif: 11px;" alt=3D"The Will=
+ of the Many by James Islington"></a>
+            </td>
+        </tr>
+       =20
+
+       =20
+    </table>
+</td>
+
+                        <td class=3D"inlineblock width3pt5" width=3D"16" he=
+ight=3D"32" style=3D"width: 16px; height: 32px; font-size: 16px; mso-line-h=
+eight-rule:exactly; line-height: 1px;">
+                            &nbsp;
+                        </td>
+                       =20
+<td width=3D"173" class=3D"inlineblock width31p" align=3D"center" style=3D"=
+vertical-align:top" valign=3D"top">
+    <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" =
+role=3D"presentation" align=3D"center">
+        <tr>
+            <td align=3D"center" style=3D"font-size: 0px">
+                <a href=3D"https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WB=
+A&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca1ff991=
+20p0na&R=3D3JXP32ZUAQLNK&T=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Fsign-in%=
+3Frdpath%3Dhttps%253A%252F%252Fwww.audible.com%252Fpd%252FB07341FZDC%253Fso=
+urce_code%253DAUDOREM1216179MBK%2526plink%253DzeeMk2uMwodQFCJI%2526ref_%253=
+D1045311850_adblp13npbxx%26ref_%3Dpe_125709910_1045311850&H=3DRDDQJ7IKGNKK9=
+ALARHN3X6EPKACA&ref_=3Dpe_125709910_1045311850" aria-label=3D"Image" style=
+=3D"display: inline;"><img class=3D"width100p" src=3D"https://m.media-amazo=
+n.com/images/I/51Q6a-I2n6L._SL500_.__SL384_.___FMpng_BO0_RO30,1,156,156,156=
+,156,156,156,0,0,15___.jpg" width=3D"173" border=3D"0" style=3D"display: in=
+line; font-family: AudibleSansRg, Arial, sans-serif: 11px;" alt=3D"All Thes=
+e Worlds by Dennis E. Taylor"></a>
+            </td>
+        </tr>
+       =20
+
+       =20
+    </table>
+</td>
+
+                        <td class=3D"inlineblock width3pt5" width=3D"16" he=
+ight=3D"32" style=3D"width: 16px; height: 32px; font-size: 16px; mso-line-h=
+eight-rule:exactly; line-height: 1px;">
+                            &nbsp;
+                        </td>
+                       =20
+<td width=3D"173" class=3D"inlineblock width31p" align=3D"center" style=3D"=
+vertical-align:top" valign=3D"top">
+    <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" =
+role=3D"presentation" align=3D"center">
+        <tr>
+            <td align=3D"center" style=3D"font-size: 0px">
+                <a href=3D"https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WB=
+A&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca1ff991=
+20p0na&R=3D2DH4V9QKJDQCZ&T=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Fsign-in%=
+3Frdpath%3Dhttps%253A%252F%252Fwww.audible.com%252Fpd%252FB0934GTSGT%253Fso=
+urce_code%253DAUDOREM1216179MBK%2526plink%253DzeeMk2uMwodQFCJI%2526ref_%253=
+D1045311850_adblp13npbxx%26ref_%3Dpe_125709910_1045311850&H=3DS0ULFB8LXXUAE=
+38HOWBPHMHFBAEA&ref_=3Dpe_125709910_1045311850" aria-label=3D"Image" style=
+=3D"display: inline;"><img class=3D"width100p" src=3D"https://m.media-amazo=
+n.com/images/I/51e1PKKdv8L._SL500_.__SL384_.___FMpng_BO0_RO30,1,156,156,156=
+,156,156,156,0,0,15___.jpg" width=3D"173" border=3D"0" style=3D"display: in=
+line; font-family: AudibleSansRg, Arial, sans-serif: 11px;" alt=3D"Carl's D=
+oomsday Scenario by Matt Dinniman"></a>
+            </td>
+        </tr>
+       =20
+
+       =20
+    </table>
+</td>
+
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</td></tr></table>
+
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"text-align:center; width: 100%; max-width: 600=
+px;">
+ =20
+<tr>
+      <td align=3D"center">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"text-align:center; width: 100%; max-width: 600=
+px;">
+          <tr>
+            <td class=3D"bg_gray500 width100p" height=3D"1" bgcolor=3D"#B9B=
+FC0" style=3D"background-color: #B9BFC0; height: 1px; line-height:1px; mso-=
+line-height-rule: exactly;">
+              <!--[if gte mso 15]>&nbsp;<![endif]-->
+            </td>
+          </tr>
+        </table><table align=3D"center" width=3D"552" cellspacing=3D"0" cla=
+ss=3D"width90p" cellpadding=3D"0" border=3D"0" role=3D"presentation" style=
+=3D"width: 92%; max-width: 552px;">
+          <tr>
+            <td class=3D"padding24px0px" align=3D"center" style=3D"padding-=
+top: 32px; padding-bottom: 32px;">
+              <table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0" role=3D"presentation">
+                <tr>
+                  <td width=3D"100%" style=3D"padding-bottom: 8px;">
+                    <div role=3D"navigation" aria-label=3D"Audible Global L=
+inks.">
+                    <table align=3D"left" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" role=3D"presentation" style=3D"float: left;">
+                      <tr>
+                        <td style=3D"font-family: AudibleSansRg, Arial, san=
+s-serif; font-size: 12px; line-height: 16px; mso-padding-bottom-alt: 16px; =
+color: #000000;">
+                       =20
+                       =20
+                           =20
+                            <!--[if gte mso 9]>
+                            <td style=3D"font-family: AudibleSansRg, Arial,=
+ sans-serif; font-size: 12px; line-height: 16px; mso-line-height-rule: exac=
+tly; color: #000000;">
+                            <![endif]-->
+                            <span style=3D"display: inline-block;">
+                            <p style=3D"margin: 0; padding: 0;"><a href=3D"=
+https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:=
+rtn:msg:2026041316080461b0c386a4e44875a8ca1ff99120p0na&R=3D2KL2LFZGM1KML&T=
+=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Flib%3Fsource_code%3DAUDOREM1216179=
+MBK%26ref_%3Dpe_125709910_1045311850&H=3D5XNEWNENN8UDUKNLK9SHFBFZNPQA&ref_=
+=3Dpe_125709910_1045311850" style=3D"color: #000000; display: inline-block;=
+ text-decoration: none; padding-bottom: 16px;" target=3D"_blank">Library</a=
+>&nbsp;&nbsp;&nbsp;<span aria-hidden=3D"true" style=3D"color: #B9BFC0; disp=
+lay: inline; vertical-align: top;" class=3D"gray500">|</span>&nbsp;&nbsp;</=
+p>
+                            </span>
+                            <!--[if gte mso 9]>
+                            </td>
+                            <![endif]-->
+                            <!--[if gte mso 9]>
+                            <td style=3D"font-family: AudibleSansRg, Arial,=
+ sans-serif; font-size: 12px; line-height: 16px; mso-line-height-rule: exac=
+tly; color: #000000;">
+                            <![endif]-->
+                            <span style=3D"display: inline-block;">
+                            <p style=3D"margin: 0; padding: 0;"><a href=3D"=
+https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:=
+rtn:msg:2026041316080461b0c386a4e44875a8ca1ff99120p0na&R=3D1CA1T2HFM759X&T=
+=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Fwl%3Fsource_code%3DAUDOREM1216179M=
+BK%26ref_%3Dpe_125709910_1045311850&H=3D8J7I9H2ETRTN2FYZYPKPYFZDMIYA&ref_=
+=3Dpe_125709910_1045311850" style=3D"color: #000000; display: inline-block;=
+ text-decoration: none; padding-bottom: 16px;" target=3D"_blank">Wish&nbsp;=
+List</a>&nbsp;&nbsp;&nbsp;<span aria-hidden=3D"true" style=3D"color: #B9BFC=
+0; display: inline; vertical-align: top;" class=3D"gray500">|</span>&nbsp;&=
+nbsp;</p>
+                            </span>
+                            <!--[if gte mso 9]>
+                            </td>
+                            <![endif]-->
+                       =20
+                            <!--[if gte mso 9]>
+                            <td style=3D"font-family: AudibleSansRg, Arial,=
+ sans-serif; font-size: 12px; line-height: 16px; mso-line-height-rule: exac=
+tly; color: #000000;">
+                            <![endif]-->
+                            <span style=3D"display: inline-block;">
+                              <p style=3D"margin: 0; padding: 0;">
+                            <a href=3D"https://r.audible.com/gp/r.html?C=3D=
+16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e448=
+75a8ca1ff99120p0na&R=3D1XAOYK2A4F0AC&T=3DC&U=3Dhttps%3A%2F%2Fhelp.audible.c=
+om%2Fs%2F%3Flanguage%3Den_US%26ref_%3Dpe_125709910_1045311850&H=3DSNZAGPJMT=
+RDVT1ZQF4KVZY6XOSEA&ref_=3Dpe_125709910_1045311850" style=3D"color: #000000=
+; display: inline-block; text-decoration: none; padding-bottom: 16px;" targ=
+et=3D"_blank">FAQ&nbsp;&amp;&nbsp;Help Center</a>&nbsp;&nbsp;&nbsp;<span ar=
+ia-hidden=3D"true" style=3D"color: #B9BFC0; display: inline; vertical-align=
+: top;" class=3D"gray500">|</span>&nbsp;&nbsp;</p>
+                            </span>=20
+                            <!--[if gte mso 9]>
+                            </td>
+                            <![endif]-->
+                            <!--[if gte mso 9]>
+                            <td style=3D"font-family: AudibleSansRg, Arial,=
+ sans-serif; font-size: 12px; line-height: 16px; mso-line-height-rule: exac=
+tly; color: #000000;">
+                            <![endif]-->
+                            <span style=3D"display: inline-block;">
+                            <p style=3D"margin: 0; padding: 0;">
+                            <a href=3D"https://r.audible.com/gp/r.html?C=3D=
+16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e448=
+75a8ca1ff99120p0na&R=3D1ZF4RW7DROQBY&T=3DC&U=3Dhttps%3A%2F%2Fwww.amazon.com=
+%2Fgp%2Fhelp%2Fcustomer%2Fdisplay.html%2Fref%3Dpe_125709910_1045311850_hp_l=
+eft_v4_sib%3Fie%3DUTF8%26nodeId%3D468496%26language%3Den_US&H=3DAODYADJGUAJ=
+HII7ARTSKIQPM9KWA&ref_=3Dpe_125709910_1045311850_hp_left_v4_sib" style=3D"c=
+olor: #000000; display: inline-block; text-decoration: none; padding-bottom=
+: 16px;" target=3D"_blank">Privacy&nbsp;Notice</a></p>
+                            </span>
+                            <!--[if gte mso 9]>
+                            </td>
+                            <![endif]-->
+
+                           =20
+                        </td>
+                      </tr>
+                    </table>
+                    </div>
+                  </td>
+                </tr>
+=09=09=09=09<tr>
+=09=09=09=09<td align=3D"left" class=3D"gray300" style=3D"padding-bottom: 1=
+6px; font-family: AudibleSansRg, Arial, sans-serif; font-size: 12px; line-h=
+eight: 16px; color: #4B5254;"><p style=3D"margin: 0; padding: 0;">
+=09=09=09=09=09 =C2=BFQuieres recibir e-mails en Espa=C3=B1ol? Puede <a hre=
+f=3D"https://r.audible.com/gp/r.html?C=3D16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=
+=3Durn:rtn:msg:2026041316080461b0c386a4e44875a8ca1ff99120p0na&R=3D3SBP5KK5H=
+Q80W&T=3DC&U=3Dhttps%3A%2F%2Fwww.audible.com%2Faccount%2Femail-notification=
+s%3Fref_%3Dpe_125709910_1045311850&H=3DEYQEAMDGAYLAAP8S5BXGH6I6O2WA&ref_=3D=
+pe_125709910_1045311850" style=3D"color:#4B5254; display: inline-block; tex=
+t-decoration: underline;" target=3D"_blank">cambiar su preferencia de idiom=
+a</a> en cualquier momento.
+=09=09=09=09</p>
+=09=09=09=09</td>
+=09=09=09=09</tr><tr>
+                        <td align=3D"left" class=3D"gray300" style=3D"paddi=
+ng-bottom: 16px; font-family: AudibleSansRg, Arial, sans-serif; font-size: =
+12px; line-height: 16px; color: #4B5254;"><p style=3D"margin: 0; padding: 0=
+;">This email was sent to dawnwolff@me.com.=20
+                        </p>
+                        <!--[if gte mso 9]>
+                        <p style=3D"margin: 0; padding: 0; width: 0px; heig=
+ht: 0px; font-size: 0px; line-height: 0px; color: transparent; mso-color-al=
+t: #ffffff;">
+                        </p>
+                        <![endif]-->
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align=3D"left" class=3D"gray300" style=3D"font-=
+family: AudibleSansRg, Arial, sans-serif; font-size: 12px; line-height: 16p=
+x; color: #4B5254;">
+                          <p style=3D"margin: 0; padding: 0;">&copy;1&zwnj;=
+9&zwnj;9&zwnj;7&zwnj;-2026 Audible, Inc. Audible and the Audible logo are t=
+rademarks of Audible, Inc, or its affiliates. <br class=3D"hide" />1 Washin=
+gton Park, 16th Floor. Newark, NJ 07102. All Rights Reserved. Email referen=
+ce number: 1045311850</p>
+                        </td>
+                      </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        </td>
+        </tr>
+</table>
+</td>
+              </tr>
+            </table>
+            <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+      </table>
+      <![endif]-->
+    </div>
+  <img width=3D"1" height=3D"1" src=3D"https://r.audible.com/gp/r.html?C=3D=
+16X7NSAHJ4WBA&K=3DK3YW1N2LV886&M=3Durn:rtn:msg:2026041316080461b0c386a4e448=
+75a8ca1ff99120p0na&R=3DHE8H4VFN1E0A&T=3DE&U=3Dhttps%3A%2F%2Fimages-na.ssl-i=
+mages-amazon.com%2Fimages%2FG%2F01%2Fnav%2Ftransp.gif&H=3DHJESLGWLHGDOXS5NJ=
+VTAOJAY4ZOA&ref_=3Dpe_125709910_1045311850_open" alt=3D"" /></body>
+</html>
+------=_Part_20947_1018659409.1776096485689--

@@ -1,0 +1,10 @@
+# Added by goreleaser init:
+dist/
+
+.DS_Store
+**/.DS_Store
+
+ynam
+.ynam.yaml
+
+.claude/

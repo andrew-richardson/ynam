@@ -1,0 +1,18 @@
+all: false
+template: testify
+generate: true
+log-level: warn
+
+# Default output: place mocks in a `mocks` subdirectory beside the package
+# that defines the interface, using package name `mocks`.
+# This prevents cyclic imports — the mocks package never imports the package
+# under test; the test file imports both independently.
+dir: "{{.InterfaceDir}}/mocks"
+filename: "{{.InterfaceName}}.go"
+pkgname: mocks
+structname: "Mock{{.InterfaceName}}"
+
+packages:
+  ynam/pkg/email/imap:
+    interfaces:
+      Conn: {}

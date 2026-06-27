@@ -1,0 +1,527 @@
+Delivered-To: arichardson2189@gmail.com
+Received: by 2002:a17:522:1b09:b0:662:a4bf:320 with SMTP id j9csp2333432pvb;
+        Tue, 16 Jun 2026 15:19:19 -0700 (PDT)
+X-Received: by 2002:a05:622a:a6c5:b0:517:736b:e0c2 with SMTP id d75a77b69052e-519a8e5d663mr20614501cf.27.1781648359003;
+        Tue, 16 Jun 2026 15:19:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781648358; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GHE5r81CXOZYB+ehI1Q4ESz9WGlH4ltReiQDwIeCWN4waLTpYOljdIbobcE843rdg1
+         rVe+H4cPBTP1gW/w46QgCYfi+HJH2Ei2lCmHx3OBacQ0AZ7+5qmuUf7swLkDFedpJ14l
+         oa0/HJ6eDzf4Ff/b66Zg0PcIROkdKZPGRlMfh+Bdt81LVGOlc5rMPbwsP9WekVMxipSK
+         S/i5n6WSG397CLuAxFDV2hwJUR9cBYUd2UBKGfNOblpMBfEgdns16JfMu/Q2iMd1FCYA
+         RwLlwcjHEXlpoYROeqZGdogxmY17LGZ+asZU65jJUBIYKVg0qJr7oTEquUvNStuJA1s+
+         UO1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:date:message-id:mime-version:subject:to:reply-to:from
+         :dkim-signature:dkim-signature;
+        bh=4jL24WntQmk8elmqwInLkGpFDYra2N6177DI9UgEGFQ=;
+        fh=w3Zq0R6JsSbfxboy+W4/MCEnAEnmTQ6K2BpH+Zufrb8=;
+        b=hw60buQfGBSUD1atw5R6h9dUJVeywk1J5kC+7QswamZi5WJDpUa38m8XGefjiZbvN5
+         TMch4Mt17E11XlmlNGLVeClpCaLf6koHHyx7gsjjSCExNbic1gMi+9+BjqFxI8oi19Wz
+         gSbE6AbG2GPG+yKGfpBrOBPMOXDf++nbk1ROIO69eNrgWDsiXw+u3xovb1YpEJY+cZs7
+         8pbtt/7sBh1iIEp9v8mLAKnhqRe+nN8Y4qCD+vEkbUZ3b4xwvT1sW5QG6wv9hVvl9VDi
+         Q/KChteIGqDrX98Ha6uwWFuuZxRJEnc9mkdeX7f1UXEtcyE1KIrfg0XSMWXD0KW84GKL
+         W8DA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@venmo.com header.s=yzlavq3ml4jl4lt6dltbgmnoftxftkly header.b=lq3F3BMv;
+       dkim=pass header.i=@amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=RRYXekDa;
+       spf=pass (google.com: domain of 0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@amazonses.com designates 54.240.48.230 as permitted sender) smtp.mailfrom=0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@amazonses.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=venmo.com
+Return-Path: <0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@amazonses.com>
+Received: from a48-230.smtp-out.amazonses.com (a48-230.smtp-out.amazonses.com. [54.240.48.230])
+        by mx.google.com with ESMTPS id d75a77b69052e-517fb8028f6si172860601cf.241.2026.06.16.15.19.18
+        for <arichardson2189@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Jun 2026 15:19:18 -0700 (PDT)
+Received-SPF: pass (google.com: domain of 0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@amazonses.com designates 54.240.48.230 as permitted sender) client-ip=54.240.48.230;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@venmo.com header.s=yzlavq3ml4jl4lt6dltbgmnoftxftkly header.b=lq3F3BMv;
+       dkim=pass header.i=@amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=RRYXekDa;
+       spf=pass (google.com: domain of 0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@amazonses.com designates 54.240.48.230 as permitted sender) smtp.mailfrom=0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@amazonses.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=venmo.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=yzlavq3ml4jl4lt6dltbgmnoftxftkly; d=venmo.com; t=1781648358;
+	h=From:Reply-To:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
+	bh=4AhXGz1tZvOsl8ler/9f3bbO4gJV5ORNpwSvMrDfZG4=;
+	b=lq3F3BMvElN6iLyn+PQfVotto/sIJExWmJrGoXYaBlaJ7c7G/aoTePh3r+RXY13h
+	xyVMfSHjGn4SQ113GaJXZeo0Fa0hvr1E6FmWM5UdYVKxqxUJgbYOR4aHQiBuEafkfgv
+	FYaBJmVR3jl4Co7jHbkV+TecBWIGpILk/gEvJfTs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1781648358;
+	h=From:Reply-To:To:Subject:MIME-Version:Content-Type:Message-ID:Date:Feedback-ID;
+	bh=4AhXGz1tZvOsl8ler/9f3bbO4gJV5ORNpwSvMrDfZG4=;
+	b=RRYXekDacMF1ZfCVwqqw076okaUjwm2W6HrDmr2NH74M1QVhchJK5N9PxAhkXNja
+	5DnUpUrE2WkslDRoqOMV4kWETeRCqHnVfgUZEwwyB4T7Giai3x4x192Naqt8wJTMzKb
+	G81TWOPijZw5Fp4q1FaNtjifv81Hm+O1UvkVmQFw=
+From: Venmo <venmo@venmo.com>
+Reply-To: Venmo No-reply <no-reply@venmo.com>
+To: arichardson2189@gmail.com
+Subject: You paid Justin Hay $443.85
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_306491_328491276.1781648358621"
+Message-ID: <0100019ed2847cdd-c3db3040-a413-4569-be21-72ca878c93cb-000000@email.amazonses.com>
+Date: Tue, 16 Jun 2026 22:19:18 +0000
+Feedback-ID: ::1.us-east-1.fQ0yL0IwGSResIpU9lW9fHNtFl/iEQA4Znd52HkQv2U=:AmazonSES
+X-SES-Outgoing: 2026.06.16-54.240.48.230
+
+------=_Part_306491_328491276.1781648358621
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+------=_Part_306491_328491276.1781648358621
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml" lang=3D"en" xml:lang=3D"en" style=3D"box-sizing:border-box;=
+color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-=
+size:16px;font-weight:400;line-height:1.375;text-align:center"><head><meta =
+http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><meta na=
+me=3D"viewport" content=3D"width=3Ddevice-width"><title>You paid Justin Hay=
+ $443.85</title><style>@media only screen{html{min-height:100%;background:#=
+f1f2f4}}@media only screen and (max-width:596px){.small-float-center{margin=
+:0 auto!important;float:none!important;text-align:center!important}.small-t=
+ext-center{text-align:center!important}.small-text-left{text-align:left!imp=
+ortant}.small-text-right{text-align:right!important}}@media only screen and=
+ (max-width:596px){.hide-for-large{display:block!important;width:auto!impor=
+tant;overflow:visible!important;max-height:none!important;font-size:inherit=
+!important;line-height:inherit!important}}@media only screen and (max-width=
+:596px){table.body table.container .hide-for-large,table.body table.contain=
+er .row.hide-for-large{display:table!important;width:100%!important}}@media=
+ only screen and (max-width:596px){table.body table.container .callout-inne=
+r.hide-for-large{display:table-cell!important;width:100%!important}}@media =
+only screen and (max-width:596px){table.body table.container .show-for-larg=
+e{display:none!important;width:0;mso-hide:all;overflow:hidden}}@media only =
+screen and (max-width:596px){table.body img{width:auto;height:auto}table.bo=
+dy center{min-width:0!important}table.body .container{width:95%!important}t=
+able.body .column,table.body .columns{height:auto!important;-moz-box-sizing=
+:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;padding-lef=
+t:16px!important;padding-right:16px!important}table.body .column .column,ta=
+ble.body .column .columns,table.body .columns .column,table.body .columns .=
+columns{padding-left:0!important;padding-right:0!important}table.body .coll=
+apse .column,table.body .collapse .columns{padding-left:0!important;padding=
+-right:0!important}td.small-1,th.small-1{display:block!important;width:-zf-=
+grid-calc-pct(1,12)!important}td.small-2,th.small-2{display:block!important=
+;width:-zf-grid-calc-pct(2,12)!important}td.small-3,th.small-3{display:bloc=
+k!important;width:-zf-grid-calc-pct(3,12)!important}td.small-4,th.small-4{d=
+isplay:block!important;width:-zf-grid-calc-pct(4,12)!important}td.small-5,t=
+h.small-5{display:block!important;width:-zf-grid-calc-pct(5,12)!important}t=
+d.small-6,th.small-6{display:block!important;width:-zf-grid-calc-pct(6,12)!=
+important}td.small-7,th.small-7{display:block!important;width:-zf-grid-calc=
+-pct(7,12)!important}td.small-8,th.small-8{display:block!important;width:-z=
+f-grid-calc-pct(8,12)!important}td.small-9,th.small-9{display:block!importa=
+nt;width:-zf-grid-calc-pct(9,12)!important}td.small-10,th.small-10{display:=
+block!important;width:-zf-grid-calc-pct(10,12)!important}td.small-11,th.sma=
+ll-11{display:block!important;width:-zf-grid-calc-pct(11,12)!important}td.s=
+mall-12,th.small-12{display:block!important;width:-zf-grid-calc-pct(12,12)!=
+important}.column td.small-12,.column th.small-12,.columns td.small-12,.col=
+umns th.small-12{display:block!important;width:100%!important}table.body td=
+.small-offset-1,table.body th.small-offset-1{margin-left:-zf-grid-calc-pct(=
+1,12)!important}table.body td.small-offset-2,table.body th.small-offset-2{m=
+argin-left:-zf-grid-calc-pct(2,12)!important}table.body td.small-offset-3,t=
+able.body th.small-offset-3{margin-left:-zf-grid-calc-pct(3,12)!important}t=
+able.body td.small-offset-4,table.body th.small-offset-4{margin-left:-zf-gr=
+id-calc-pct(4,12)!important}table.body td.small-offset-5,table.body th.smal=
+l-offset-5{margin-left:-zf-grid-calc-pct(5,12)!important}table.body td.smal=
+l-offset-6,table.body th.small-offset-6{margin-left:-zf-grid-calc-pct(6,12)=
+!important}table.body td.small-offset-7,table.body th.small-offset-7{margin=
+-left:-zf-grid-calc-pct(7,12)!important}table.body td.small-offset-8,table.=
+body th.small-offset-8{margin-left:-zf-grid-calc-pct(8,12)!important}table.=
+body td.small-offset-9,table.body th.small-offset-9{margin-left:-zf-grid-ca=
+lc-pct(9,12)!important}table.body td.small-offset-10,table.body th.small-of=
+fset-10{margin-left:-zf-grid-calc-pct(10,12)!important}table.body td.small-=
+offset-11,table.body th.small-offset-11{margin-left:-zf-grid-calc-pct(11,12=
+)!important}table.body table.columns td.expander,table.body table.columns t=
+h.expander{display:none!important}table.body .right-text-pad,table.body .te=
+xt-pad-right{padding-left:10px!important}table.body .left-text-pad,table.bo=
+dy .text-pad-left{padding-right:10px!important}table.menu{width:100%!import=
+ant}table.menu td,table.menu th{width:auto!important;display:inline-block!i=
+mportant}table.menu.small-vertical td,table.menu.small-vertical th,table.me=
+nu.vertical td,table.menu.vertical th{display:block!important}table.menu[al=
+ign=3Dcenter]{width:auto!important}table.button.small-expand,table.button.s=
+mall-expanded{width:100%!important}table.button.small-expand table,table.bu=
+tton.small-expanded table{width:100%}table.button.small-expand table a,tabl=
+e.button.small-expanded table a{text-align:center!important;width:100%!impo=
+rtant;padding-left:0!important;padding-right:0!important}table.button.small=
+-expand center,table.button.small-expanded center{min-width:0}}@media scree=
+n and (min-width:596px){.wrapper{width:580px}}@media screen and (min-width:=
+596px){.disclosures-v2 .ct-disclosure-container p{font-size:14px}}@media sc=
+reen and (min-width:596px){table.body .pugs{max-width:600px;width:600px}}@m=
+edia screen and (max-width:596px){.payments .account-cancellation-container=
+{width:299px;height:200px;padding:0}}@media screen and (max-width:596px){.p=
+ayments .account-cancellation-container .account-cancellation-header{font-s=
+ize:18px;line-height:22px;color:#2f3033;margin-top:0;margin-bottom:0;margin=
+-left:0;margin-right:0;width:233px;height:44px}}@media screen and (max-widt=
+h:596px){.card-container .profile-image img{width:60px!important;height:60p=
+x!important}}@media screen and (max-width:596px){.card-container .image-wra=
+pper img{width:60px!important;height:60px!important}}@media screen and (max=
+-width:596px){.card-container .profile-image-initials{width:60px!important;=
+height:60px!important;font-size:30px!important;line-height:60px!important}}=
+@media screen and (min-width:596px){.hero-card-container{padding:0 78px!imp=
+ortant}}@media screen and (max-width:596px){.hero-card-container .account-c=
+ancellation-body{line-height:22px;color:#55585e;margin-top:8px;margin-left:=
+0;margin-right:0;margin-bottom:28px;width:233px;height:88px}}@media screen =
+and (max-width:596px){.hero-card-container .card-container .content-contain=
+er{min-width:236px;min-height:202px;padding:32px 32px}.hero-card-container =
+.card-container .content-container .main-text{min-height:96px;margin-bottom=
+:24px}.hero-card-container .card-container .content-container .main-text.no=
+-margin-bottom{margin-bottom:0}.hero-card-container .card-container .conten=
+t-reactive{min-width:236px;padding-top:32px;padding-left:32px;padding-right=
+:32px}}@media screen and (min-width:596px){.hero-card-with-top-and-bottom-l=
+ogo .generic-disclosures{padding:0 78px!important}}@media screen{@font-face=
+{font-family:"Athletics Regular";src:url(../fonts/Athletics-Regular.woff) f=
+ormat("woff"),url(https://cdn1.venmo.com/marketing/fonts/Athletics-Regular.=
+woff) format("woff")}@font-face{font-family:"Scto Grotesk A";src:url(../fon=
+ts/Scto-Grotesk-A-Regular.woff) format("woff"),url(https://cdn1.venmo.com/m=
+arketing/fonts/Scto-Grotesk-A-Regular.woff) format("woff")}}@media screen a=
+nd (max-width:596px){.upfront-email-verification-container .text-container =
+p{font-size:14px!important}}@media screen and (max-width:580px){.loss-gener=
+ic-layout .venmo-logo-container{width:100%!important}}@media screen and (ma=
+x-width:580px){.loss-generic-layout .loss-wrapper .loss-container{padding:2=
+0px 0!important;border:none!important}}@media screen and (min-width:596px){=
+.location{padding:0 78px!important}}@media screen and (max-width:596px){.lo=
+cation .map{padding:0 0 24px}}@media screen and (min-width:596px){.payment-=
+issue-container .payment-issue{padding:12px 78px!important}}@media screen a=
+nd (min-width:596px){.refunds{padding:0 78px!important}}@media screen and (=
+min-width:596px){.social-info-container{padding:0 78px!important}}@media sc=
+reen and (max-width:596px){.account_updater_title{font-size:16px}}@media sc=
+reen and (max-width:596px){.account_updater_secondary{font-size:14px}}@medi=
+a screen and (max-width:596px){.account-updater__header .gift-transaction-b=
+utton{width:100%}.account-updater__header .gift-transaction-button table td=
+{text-align:center}.account-updater__header .gift-transaction-button table =
+td a{padding:12px 0;font-weight:700;font-size:14px!important}}@media screen=
+ and (max-width:596px){.gifting-template .short-text-irs{margin-bottom:24px=
+}}@media screen and (max-width:596px){.gifting-template .icon-gift-card{wid=
+th:100%}}@media screen and (max-width:596px){.gifting-template .social-icon=
+-container{margin:24px 0}.gifting-template .social-icon-container .icon:fir=
+st-child{margin-left:0}}@media screen and (max-width:596px){.gifting-templa=
+te .gift-transaction-button{width:100%}}@media screen and (max-width:596px)=
+{.gifting-template .balance-button{width:253px;margin-bottom:32px}}@media s=
+creen and (max-width:596px){.gifting-template .last-cashout{margin-bottom:2=
+4px}}@media screen and (max-width:596px){.gifting-template .resend-gift-but=
+ton{width:100%}}@media screen and (max-width:596px){.gifting-template .sepa=
+rate-cbo{width:100%;margin-left:-16px}}@media screen and (max-width:596px){=
+.gifting-template .social-paid-icon-container{margin:24px 0}}@media screen =
+and (max-width:596px){.gifting-template .separate-cbo{width:100%;margin-lef=
+t:-16px}}@media screen and (max-width:596px){.gifting-template .see-transac=
+tion-button{width:100%}}@media screen and (max-width:596px){.gifting-templa=
+te .social-donated-icon-container{margin:24px 0}}@media screen and (max-wid=
+th:596px){.short-text{margin-bottom:24px}}@media screen and (max-width:596p=
+x){.disbursements .short-text{margin-bottom:24px}}@media screen and (max-wi=
+dth:596px){.disbursements .see-transaction-button{width:100%}}@media screen=
+ and (min-width:596px){.disbursements-payout .hero-card-container .cancelat=
+ion-content-container{padding:38px 32px!important}}@media screen and (max-w=
+idth:596px){.disbursements-payout .content-container .profile-image-initial=
+s{width:60px!important;height:60px!important;font-size:30px!important;line-=
+height:60px!important}}@media screen and (max-width:430px){.biz-profile-mon=
+thly-statements .hero-card-container .card-container .content-container{pad=
+ding-left:0!important;padding-right:0!important}}@media screen and (max-wid=
+th:360px){.biz-profile-monthly-statements .hero-card-container .card-contai=
+ner .content-container{width:299px!important}}@media screen and (max-width:=
+730px){.biz-profile-monthly-statements .hero-card-container .card-container=
+ .content-container .card-description-container{padding:0 32px}}@media scre=
+en and (max-width:430px){.biz-profile-monthly-statements .hero-card-contain=
+er .card-container .content-container .button-container{padding:0 32px}}@me=
+dia screen and (min-width:596px){.biz-profile-monthly-statements .hero-card=
+-container .card-container .content-container .button-container .gift-trans=
+action-button{width:100%!important}}@media screen and (max-width:596px){.cp=
+2100 .primary-button{width:100%}}@media screen and (max-width:596px){.suspe=
+nsion-main .hero-card-container .card-container .content-container{padding:=
+32px 32px 24px;min-height:auto}}@media screen and (max-width:596px){.suspen=
+sion-removed .hero-card-container .card-container .content-container{min-he=
+ight:auto}}@media only screen and (max-width:596px){.gs-transaction-fee .tr=
+ansaction-fee-description-container{width:100%}}@media screen and (min-widt=
+h:660px){.gs-transaction-fee .transaction-fee-description-container{width:6=
+00px;max-width:600px}}</style></head><body style=3D"-moz-box-sizing:border-=
+box;-ms-text-size-adjust:100%;-webkit-box-sizing:border-box;-webkit-text-si=
+ze-adjust:100%;margin:0;box-sizing:border-box;color:#2f3033;font-family:'He=
+lvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;lin=
+e-height:1.375;margin:0;min-width:100%;padding:0;text-align:center;width:10=
+0%!important">  <span class=3D"preheader" style=3D"color:#f1f2f4;display:no=
+ne!important;font-size:1px;line-height:1px;max-height:0;max-width:0;mso-hid=
+e:all!important;opacity:0;overflow:hidden;visibility:hidden">You paid Justi=
+n Hay $443.85</span><table role=3D"presentation" class=3D"body p2p-table" s=
+tyle=3D"margin:0;background:#fff;background-color:#fff;border-collapse:coll=
+apse;border-spacing:0;box-sizing:border-box;color:#2f3033;font-family:'Helv=
+etica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;heigh=
+t:100%;line-height:1.375;margin:0;padding:0;text-align:center;vertical-alig=
+n:top;width:100%"><tr style=3D"padding:0;text-align:left;vertical-align:top=
+"><td class=3D"center" align=3D"center" valign=3D"top" style=3D"-moz-hyphen=
+s:auto;-webkit-hyphens:auto;margin:0;border-collapse:collapse!important;col=
+or:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-siz=
+e:16px;font-weight:400;hyphens:auto;line-height:1.375;margin:0;padding:0;te=
+xt-align:left;vertical-align:top;word-wrap:break-word"><table role=3D"prese=
+ntation" class=3D"wrapper venmo-logo-container" align=3D"center" style=3D"b=
+order-collapse:collapse;border-spacing:0;box-sizing:border-box;color:#2f303=
+3;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;fo=
+nt-weight:400;line-height:1.375;padding:0;text-align:center;vertical-align:=
+top;width:100%"><tbody><tr style=3D"padding:0;text-align:left;vertical-alig=
+n:top"><td class=3D"wrapper-inner" style=3D"-moz-hyphens:auto;-webkit-hyphe=
+ns:auto;margin:0;border-collapse:collapse!important;color:#2f3033;font-fami=
+ly:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:4=
+00;hyphens:auto;line-height:1.375;margin:0;padding:0;padding-top:16px;text-=
+align:left;vertical-align:top;word-wrap:break-word"><table role=3D"presenta=
+tion" align=3D"center" class=3D"container" style=3D"margin:0 auto;backgroun=
+d:#fff;border-collapse:collapse;border-spacing:0;box-sizing:border-box;colo=
+r:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size=
+:16px;font-weight:400;line-height:1.375;margin:0 auto;padding:0;text-align:=
+inherit;vertical-align:top;width:450px"><tbody><tr style=3D"padding:0;text-=
+align:left;vertical-align:top"><td style=3D"-moz-hyphens:auto;-webkit-hyphe=
+ns:auto;margin:0;border-collapse:collapse!important;color:#2f3033;font-fami=
+ly:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:4=
+00;hyphens:auto;line-height:1.375;margin:0;padding:0;text-align:left;vertic=
+al-align:top;word-wrap:break-word"><table role=3D"presentation" class=3D"ro=
+w" style=3D"border-collapse:collapse;border-spacing:0;box-sizing:border-box=
+;color:#2f3033;display:table;font-family:'Helvetica Neue',Helvetica,Arial,s=
+ans-serif;font-size:16px;font-weight:400;line-height:1.375;padding:0;positi=
+on:relative;text-align:center;vertical-align:top;width:100%"><tbody><tr sty=
+le=3D"padding:0;text-align:left;vertical-align:top"><th class=3D"small-12 l=
+arge-12 columns first last" style=3D"margin:0 auto;color:#2f3033;font-famil=
+y:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:40=
+0;line-height:1.375;margin:0 auto;padding:0;padding-bottom:0;padding-left:1=
+6px;padding-right:16px;text-align:left;width:-zf-grid-calc-px(12,12,580px)"=
+><table role=3D"presentation" style=3D"border-collapse:collapse;border-spac=
+ing:0;box-sizing:border-box;color:#2f3033;font-family:'Helvetica Neue',Helv=
+etica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.375;pad=
+ding:0;text-align:center;vertical-align:top;width:100%"><tbody><tr style=3D=
+"padding:0;text-align:left;vertical-align:top"><th style=3D"margin:0;color:=
+#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:1=
+6px;font-weight:400;line-height:1.375;margin:0;padding:0;text-align:left"><=
+img style=3D"-ms-interpolation-mode:bicubic;clear:both;display:block;height=
+:auto;margin:0 auto;max-width:100%;outline:0;text-decoration:none;width:110=
+px" src=3D"https://d3f7mhbv11m2z3.cloudfront.net/email-assets/shared/venmo-=
+wordmark-v2.png" alt=3D"Venmo logo"></th><th class=3D"expander" style=3D"ma=
+rgin:0;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-seri=
+f;font-size:16px;font-weight:400;line-height:1.375;margin:0;padding:0!impor=
+tant;text-align:left;visibility:hidden;width:0"></th></tr></tbody></table><=
+/th></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tabl=
+e><center style=3D"min-width:580px;width:100%"><table role=3D"presentation"=
+ align=3D"center" class=3D"wrapper float-center" style=3D"margin:0 auto;bor=
+der-collapse:collapse;border-spacing:0;box-sizing:border-box;color:#2f3033;=
+float:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-siz=
+e:16px;font-weight:400;line-height:1.375;margin:0 auto;padding:0;text-align=
+:center;vertical-align:top;width:100%"><tbody><tr style=3D"padding:0;text-a=
+lign:left;vertical-align:top"><td class=3D"wrapper-inner" style=3D"-moz-hyp=
+hens:auto;-webkit-hyphens:auto;margin:0;border-collapse:collapse!important;=
+color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-=
+size:16px;font-weight:400;hyphens:auto;line-height:1.375;margin:0;padding:0=
+;padding-top:16px;text-align:left;vertical-align:top;word-wrap:break-word">=
+<table role=3D"presentation" align=3D"center" class=3D"container" style=3D"=
+margin:0 auto;background:#fff;border-collapse:collapse;border-spacing:0;box=
+-sizing:border-box;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Ari=
+al,sans-serif;font-size:16px;font-weight:400;line-height:1.375;margin:0 aut=
+o;padding:0;text-align:inherit;vertical-align:top;width:450px"><tbody><tr s=
+tyle=3D"padding:0;text-align:left;vertical-align:top"><td style=3D"-moz-hyp=
+hens:auto;-webkit-hyphens:auto;margin:0;border-collapse:collapse!important;=
+color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-=
+size:16px;font-weight:400;hyphens:auto;line-height:1.375;margin:0;padding:0=
+;text-align:left;vertical-align:top;word-wrap:break-word"><table role=3D"pr=
+esentation" class=3D"row" style=3D"border-collapse:collapse;border-spacing:=
+0;box-sizing:border-box;color:#2f3033;display:table;font-family:'Helvetica =
+Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height=
+:1.375;padding:0;position:relative;text-align:center;vertical-align:top;wid=
+th:100%"><tbody><tr style=3D"padding:0;text-align:left;vertical-align:top">=
+<th class=3D"p2p-container small-12 large-12 columns first last" style=3D"m=
+argin:0 auto;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,san=
+s-serif;font-size:16px;font-weight:400;line-height:1.375;margin:0 auto;padd=
+ing:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left=
+;width:-zf-grid-calc-px(12,12,580px)"><table role=3D"presentation" style=3D=
+"border-collapse:collapse;border-spacing:0;box-sizing:border-box;color:#2f3=
+033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;=
+font-weight:400;line-height:1.375;padding:0;text-align:center;vertical-alig=
+n:top;width:100%"><tbody><tr style=3D"padding:0;text-align:left;vertical-al=
+ign:top"><th style=3D"margin:0;color:#2f3033;font-family:'Helvetica Neue',H=
+elvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.375;=
+margin:0;padding:0;text-align:left"><div class=3D"card-container" style=3D"=
+background-color:#e6f4ff;border-radius:15px 35px;margin-bottom:0;margin-top=
+:24px;padding:0 12px 12px 0;position:relative"><div class=3D"content-contai=
+ner" style=3D"background-color:#fff;border:1px solid #ccc;border-radius:10.=
+25px;box-sizing:border-box;padding:40px 0 28px 0;width:100%;z-index:1"><p c=
+lass=3D"profile-image" style=3D"margin:0;margin-bottom:15px;color:#2f3033;f=
+ont-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-=
+weight:400;line-height:1.375;margin:0;margin-bottom:16px;padding:0;text-ali=
+gn:left"><img src=3D"https://pics-v3.venmo.com/420ef0e7-bac7-4563-8b5a-546b=
+ffa332e1?width=3D100&amp;height=3D100&amp;version=3D2" alt=3D"Justin Hay im=
+age" style=3D"-ms-interpolation-mode:bicubic;border-radius:50%;clear:both;d=
+isplay:block;height:93px;margin-left:auto;margin-right:auto;max-width:100%;=
+outline:0;text-decoration:none;width:93px"></p><p class=3D"text-center seco=
+ndary-text title" style=3D"margin:0;margin-bottom:15px;color:#2f3033;font-f=
+amily:Arial;font-size:18px;font-style:normal;font-weight:400;line-height:24=
+px;margin:0;margin-bottom:8px;padding:0;text-align:center">You paid Justin =
+Hay</p> <div class=3D"amount-container" style=3D"display:flex;margin-bottom=
+:16px;text-align:center"><div class=3D"amount-container__centered" style=3D=
+"display:flex;flex-direction:row;margin:0 auto 0 auto"><div class=3D"amount=
+-container__text-high" style=3D"font-family:Arial;font-size:20px;font-style=
+:normal;font-weight:400;line-height:25px;padding-top:1px">$</div><div class=
+=3D"amount-container__amount-text" style=3D"color:#2e3034;font-family:Arial=
+;font-size:41px;font-style:normal;font-weight:400;line-height:40px">443</di=
+v><span style=3D"display:none">.</span><div class=3D"amount-container__text=
+-high" style=3D"font-family:Arial;font-size:20px;font-style:normal;font-wei=
+ght:400;line-height:25px;padding-top:1px">85</div></div></div> <p class=3D"=
+transaction-note secondary-text" style=3D"margin:0;margin-bottom:15px;color=
+:#6b6e76;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:=
+18px;font-weight:400;line-height:24px;margin:0;margin-bottom:16px;margin-le=
+ft:32px;margin-right:32px;padding:0;text-align:left">=E2=9C=88</p><p class=
+=3D"text-center" style=3D"margin:0;margin-bottom:15px;color:#2f3033;font-fa=
+mily:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight=
+:400;line-height:1.375;margin:0;margin-bottom:15px;padding:0;text-align:cen=
+ter"><a class=3D"venmo-button-v2" href=3D"https://venmo.com/story/462111937=
+9605889766?k=3Dbfc9534b-e10b-48d0-8272-e11e69139b73" target=3D"_blank" rel=
+=3D"noopener noreferrer" style=3D"margin:0;background-color:#0074de;border-=
+radius:24px;color:#fff;display:inline-block;font-family:'Helvetica Neue',He=
+lvetica,Arial,sans-serif;font-size:18px;font-weight:700;line-height:1.375;m=
+argin:0;padding:12px 24px;text-align:center;text-decoration:none;width:75%"=
+>See transaction</a></p></div></div><div class=3D"transaction-detail"><h2 c=
+lass=3D"transaction-detail__title" style=3D"margin:0;margin-bottom:10px;col=
+or:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-siz=
+e:16px;font-weight:400;line-height:22px;margin:0;margin-bottom:0;padding:0;=
+padding-bottom:16px;padding-top:24px;text-align:left;word-wrap:normal">Tran=
+saction details</h2><h3 style=3D"margin:0;margin-bottom:10px;color:#6b6e76;=
+font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font=
+-weight:700;line-height:1.375;margin:0;margin-bottom:4px;padding:0;text-ali=
+gn:left;word-wrap:normal">Date</h3><p class=3D"transaction-value" style=3D"=
+margin:0;margin-bottom:15px;color:#2f3033;font-family:'Helvetica Neue',Helv=
+etica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.375;mar=
+gin:0;margin-bottom:24px!important;padding:0;text-align:left">Jun 16, 2026<=
+/p><h3 style=3D"margin:0;margin-bottom:10px;color:#6b6e76;font-family:'Helv=
+etica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;line-=
+height:1.375;margin:0;margin-bottom:4px;padding:0;text-align:left;word-wrap=
+:normal">Status</h3><p class=3D"transaction-value" style=3D"margin:0;margin=
+-bottom:15px;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,san=
+s-serif;font-size:14px;font-weight:400;line-height:1.375;margin:0;margin-bo=
+ttom:24px!important;padding:0;text-align:left"> Completed </p><h3 style=3D"=
+margin:0;margin-bottom:10px;color:#6b6e76;font-family:'Helvetica Neue',Helv=
+etica,Arial,sans-serif;font-size:16px;font-weight:700;line-height:1.375;mar=
+gin:0;margin-bottom:4px;padding:0;text-align:left;word-wrap:normal">Transac=
+tion ID</h3><p class=3D"transaction-value" style=3D"margin:0;margin-bottom:=
+15px;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;=
+font-size:14px;font-weight:400;line-height:1.375;margin:0;margin-bottom:24p=
+x!important;padding:0;text-align:left">4621119378532827148</p><h3 style=3D"=
+margin:0;margin-bottom:10px;color:#6b6e76;font-family:'Helvetica Neue',Helv=
+etica,Arial,sans-serif;font-size:16px;font-weight:700;line-height:1.375;mar=
+gin:0;margin-bottom:4px;padding:0;text-align:left;word-wrap:normal">Payment=
+ Method</h3><div class=3D"transaction-value" style=3D"font-size:14px;margin=
+-bottom:24px!important">   USAA FEDERAL SAVINGS BANK account ending in 2742=
+   </div><h3 style=3D"margin:0;margin-bottom:10px;color:#6b6e76;font-family=
+:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:700=
+;line-height:1.375;margin:0;margin-bottom:4px;padding:0;text-align:left;wor=
+d-wrap:normal">Sent from</h3><p class=3D"transaction-value" style=3D"margin=
+:0;margin-bottom:15px;color:#2f3033;font-family:'Helvetica Neue',Helvetica,=
+Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.375;margin:0;=
+margin-bottom:24px!important;padding:0;text-align:left">@arichardson2189</p=
+> </div> </th><th class=3D"expander" style=3D"margin:0;color:#2f3033;font-f=
+amily:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weigh=
+t:400;line-height:1.375;margin:0;padding:0!important;text-align:left;visibi=
+lity:hidden;width:0"></th></tr></tbody></table></th></tr></tbody></table><t=
+able role=3D"presentation" align=3D"center" class=3D"container" style=3D"ma=
+rgin:0 auto;background:#fff;border-collapse:collapse;border-spacing:0;box-s=
+izing:border-box;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial=
+,sans-serif;font-size:16px;font-weight:400;line-height:1.375;margin:0 auto;=
+padding:0;text-align:inherit;vertical-align:top;width:450px"><tbody><tr sty=
+le=3D"padding:0;text-align:left;vertical-align:top"><td style=3D"-moz-hyphe=
+ns:auto;-webkit-hyphens:auto;margin:0;border-collapse:collapse!important;co=
+lor:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-si=
+ze:16px;font-weight:400;hyphens:auto;line-height:1.375;margin:0;padding:0;t=
+ext-align:left;vertical-align:top;word-wrap:break-word"><table role=3D"pres=
+entation" class=3D"row" style=3D"border-collapse:collapse;border-spacing:0;=
+box-sizing:border-box;color:#2f3033;display:table;font-family:'Helvetica Ne=
+ue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1=
+.375;padding:0;position:relative;text-align:center;vertical-align:top;width=
+:100%"><tbody><tr style=3D"padding:0;text-align:left;vertical-align:top"><t=
+h class=3D"small-12 large-12 columns first last" style=3D"margin:0 auto;col=
+or:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-siz=
+e:16px;font-weight:400;line-height:1.375;margin:0 auto;padding:0;padding-bo=
+ttom:0;padding-left:16px;padding-right:16px;text-align:left;width:-zf-grid-=
+calc-px(12,12,580px)"><table role=3D"presentation" style=3D"border-collapse=
+:collapse;border-spacing:0;box-sizing:border-box;color:#2f3033;font-family:=
+'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;=
+line-height:1.375;padding:0;text-align:center;vertical-align:top;width:100%=
+"><tbody><tr style=3D"padding:0;text-align:left;vertical-align:top"><th sty=
+le=3D"margin:0;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,s=
+ans-serif;font-size:16px;font-weight:400;line-height:1.375;margin:0;padding=
+:0;text-align:left"><img class=3D"venmo-wordmark-v2" src=3D"https://d3f7mhb=
+v11m2z3.cloudfront.net/email-assets/shared/venmo-wordmark-v2.png" alt=3D"Ve=
+nmo logo" style=3D"-ms-interpolation-mode:bicubic;clear:both;display:block;=
+height:auto;margin-bottom:16px;margin-top:16px;max-width:100%;outline:0;tex=
+t-decoration:none;width:61px"></th><th class=3D"expander" style=3D"margin:0=
+;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font=
+-size:16px;font-weight:400;line-height:1.375;margin:0;padding:0!important;t=
+ext-align:left;visibility:hidden;width:0"></th></tr></tbody></table></th></=
+tr></tbody></table></td></tr></tbody></table><table role=3D"presentation" c=
+lass=3D"row" style=3D"border-collapse:collapse;border-spacing:0;box-sizing:=
+border-box;color:#2f3033;display:table;font-family:'Helvetica Neue',Helveti=
+ca,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.375;paddin=
+g:0;position:relative;text-align:center;vertical-align:top;width:100%"><tbo=
+dy><tr style=3D"padding:0;text-align:left;vertical-align:top"><th class=3D"=
+disclosures-v2 small-12 large-12 columns first last" style=3D"margin:0 auto=
+;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font=
+-size:16px;font-weight:400;line-height:1.375;margin:0 auto;padding:0;paddin=
+g-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:-zf-g=
+rid-calc-px(12,12,580px)"><table role=3D"presentation" style=3D"border-coll=
+apse:collapse;border-spacing:0;box-sizing:border-box;color:#2f3033;font-fam=
+ily:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:=
+400;line-height:1.375;padding:0;text-align:center;vertical-align:top;width:=
+100%"><tbody><tr style=3D"padding:0;text-align:left;vertical-align:top"><th=
+ style=3D"margin:0;color:#2f3033;font-family:'Helvetica Neue',Helvetica,Ari=
+al,sans-serif;font-size:16px;font-weight:400;line-height:1.375;margin:0;pad=
+ding:0;text-align:left"><p style=3D"margin:0;margin-bottom:15px;color:#6b6e=
+76;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;f=
+ont-weight:400;line-height:15px;margin:0;margin-bottom:15px;padding:0;text-=
+align:left">For any issues, including the recipient not receiving funds, pl=
+ease contact us at Help Center at <a href=3D"https://help.venmo.com" target=
+=3D"_blank" rel=3D"noopener noreferrer" style=3D"margin:0;color:#0074de;fon=
+t-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:400;line-h=
+eight:1.375;margin:0;padding:0;text-align:left;text-decoration:underline">h=
+elp.venmo.com</a> or call <a href=3D"tel:855-812-4430" style=3D"margin:0;co=
+lor:#0074de;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-we=
+ight:400;line-height:1.375;margin:0;padding:0;text-align:left;text-decorati=
+on:underline">1-855-812-4430</a>.</p> <p style=3D"margin:0;margin-bottom:15=
+px;color:#6b6e76;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;fo=
+nt-size:11px;font-weight:400;line-height:15px;margin:0;margin-bottom:15px;p=
+adding:0;text-align:left">This payment will be reviewed for compliance with=
+ our User Agreement and if we determine that there is a violation by either=
+ party, it may be reversed or your ability to transfer to your bank account=
+ may be restricted.</p><p style=3D"margin:0;margin-bottom:15px;color:#6b6e7=
+6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;fo=
+nt-weight:400;line-height:15px;margin:0;margin-bottom:15px;padding:0;text-a=
+lign:left">If you don't recognize this payment or want to report it as unau=
+thorized, you can file a dispute in the Venmo app or at any time. To file a=
+ dispute, go to the Venmo app or contact Venmo Customer support at <a href=
+=3D"tel:855-812-4430" style=3D"margin:0;color:#0074de;font-family:'Helvetic=
+a Neue',Helvetica,Arial,sans-serif;font-weight:400;line-height:1.375;margin=
+:0;padding:0;text-align:left;text-decoration:underline">(855) 812-4430</a>.=
+</p> <p style=3D"margin:0;margin-bottom:15px;color:#6b6e76;font-family:'Hel=
+vetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:400;line=
+-height:15px;margin:0;margin-bottom:15px;padding:0;text-align:left">Venmo i=
+s a service of PayPal, Inc., a licensed provider of money transfer services=
+. All money transmission is provided by PayPal, Inc. pursuant to PayPal, In=
+c.'s <a href=3D"https://venmo.com/legal/us-licenses/" style=3D"margin:0;col=
+or:#0074de;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-wei=
+ght:400;line-height:1.375;margin:0;padding:0;text-align:left;text-decoratio=
+n:underline">licenses</a>. (NMLS ID #: 910457)</p><p style=3D"margin:0;marg=
+in-bottom:15px;color:#6b6e76;font-family:'Helvetica Neue',Helvetica,Arial,s=
+ans-serif;font-size:11px;font-weight:400;line-height:15px;margin:0;margin-b=
+ottom:15px;padding:0;text-align:left">PayPal is located at 2211 North First=
+ Street, San Jose, CA 95131</p><p style=3D"margin:0;margin-bottom:15px;colo=
+r:#6b6e76;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size=
+:11px;font-weight:400;line-height:15px;margin:0;margin-bottom:15px;padding:=
+0;text-align:left">For security reasons, you cannot unsubscribe from paymen=
+t emails.</p><p style=3D"margin:0;margin-bottom:15px;color:#6b6e76;font-fam=
+ily:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:=
+400;line-height:15px;margin:0;margin-bottom:15px;padding:0;text-align:left"=
+>Venmo RT</p></th><th class=3D"expander" style=3D"margin:0;color:#2f3033;fo=
+nt-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-w=
+eight:400;line-height:1.375;margin:0;padding:0!important;text-align:left;vi=
+sibility:hidden;width:0"></th></tr></tbody></table></th></tr></tbody></tabl=
+e></td></tr></tbody></table></td></tr></tbody></table></center></td></tr></=
+table><!-- prevent Gmail on iOS font size manipulation --><div style=3D"dis=
+play:none;white-space:nowrap;font:15px courier;line-height:0">&nbsp; &nbsp;=
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
+p; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &n=
+bsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div></body></html>
+
+------=_Part_306491_328491276.1781648358621--
