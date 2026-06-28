@@ -27,6 +27,12 @@ builds:
       - arm64
       - amd64
 
+archives:
+  # Upload raw binaries (no tar.gz) with stable, predictable names so a fixed
+  # URL like .../releases/latest/download/ynam_linux_amd64 always works.
+  - formats: [binary]
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+
 changelog:
   sort: asc
   filters:
