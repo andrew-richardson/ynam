@@ -75,10 +75,40 @@ func (p *amazonParser) Parse(emailBody string) ([]email.Transaction, error) {
 		return txns, nil
 	}
 
+	cleaned := cleanForTotals(emailBodyFull)
+
+	// Refund emails ("Your refund was issued") credit money back — they post to
+	// YNAB as a positive inflow. Extract the refund total and returned item so
+	// the inflow gets a description. Matching is amount-absolute, so the positive
+	// refund matches the positive YNAB transaction.
+	if isRefundEmail(cleaned) {
+		amount := extractRefundTotal(cleaned)
+		if amount.IsZero() {
+			return txns, nil
+		}
+		item := firstReturnItem(cleaned)
+		memo := "Refund: " + item
+		if item == "" {
+			memo = "Amazon Refund"
+		}
+		txns = append(txns, email.Transaction{
+			Service: "amazon",
+			Payee:   "Amazon",
+			Amount:  amount,
+			Date:    orderDate,
+			Memo:    memo,
+			Details: map[string]string{
+				"order_number": orderNum,
+				"items":        item,
+				"refund":       "true",
+			},
+		})
+		return txns, nil
+	}
+
 	// "Thanks for your order!" confirmation emails render each total as
 	// "Grand Total:\n$X" with HTML tags between label and amount. Match on the
 	// tag-stripped text.
-	cleaned := cleanForTotals(emailBodyFull)
 	totals := findOrderTotals(cleaned)
 
 	// Multi-order email: a single message bundling several orders, each with its
@@ -92,62 +122,35 @@ func (p *amazonParser) Parse(emailBody string) ([]email.Transaction, error) {
 			if num == "" {
 				num = orderNum
 			}
-			items := s.items
+			items, prices := s.items, s.prices
 			if len(items) == 0 {
-				items = extractItemsFromHTML(emailBodyFull)
+				items, prices = extractItemsFromHTML(emailBodyFull), nil
 			}
-			itemsText := joinItems(items)
-			memo := itemsText
-			if memo == "" {
-				memo = "Amazon Order"
-			}
-			txns = append(txns, email.Transaction{
-				Service: "amazon",
-				Payee:   "Amazon",
-				Amount:  s.amount,
-				Date:    orderDate,
-				Memo:    memo,
-				Details: map[string]string{
-					"order_number": num,
-					"items":        itemsText,
-				},
-			})
+			txns = append(txns, makeOrderTxn(num, s.amount, orderDate, items, prices))
 		}
 		if len(txns) > 0 {
 			return txns, nil
 		}
 	}
 
-	// Single-order confirmation: one Grand Total. The richest item name is the
-	// HTML image alt text (full product title). Extract from emailBodyFull — the
-	// hex-decoded body — so alt="..." matches (in the raw body it is alt=3D"...").
-	// Fall back to the "Quantity:"-anchored visible text if no alt is found.
+	// Single-order confirmation: one Grand Total. For a multi-item order, use the
+	// "Quantity:"-anchored section so each item gets its own price. For a single
+	// item, prefer the HTML image alt text (the full product title).
 	if len(totals) == 1 {
-		items := extractItems(emailBody)
-		if len(items) == 0 {
-			items = extractItemsFromHTML(emailBodyFull)
-		}
-		if len(items) == 0 {
-			if secs := parseOrderSections(cleaned); len(secs) == 1 {
-				items = secs[0].items
+		secs := parseOrderSections(cleaned)
+		var items, prices []string
+		if len(secs) == 1 && len(secs[0].items) >= 2 {
+			items, prices = secs[0].items, secs[0].prices
+		} else {
+			items = extractItems(emailBody)
+			if len(items) == 0 {
+				items = extractItemsFromHTML(emailBodyFull)
+			}
+			if len(items) == 0 && len(secs) == 1 {
+				items, prices = secs[0].items, secs[0].prices
 			}
 		}
-		itemsText := joinItems(items)
-		memo := itemsText
-		if memo == "" {
-			memo = "Amazon Order"
-		}
-		txns = append(txns, email.Transaction{
-			Service: "amazon",
-			Payee:   "Amazon",
-			Amount:  totals[0].amount,
-			Date:    orderDate,
-			Memo:    memo,
-			Details: map[string]string{
-				"order_number": orderNum,
-				"items":        itemsText,
-			},
-		})
+		txns = append(txns, makeOrderTxn(orderNum, totals[0].amount, orderDate, items, prices))
 		return txns, nil
 	}
 
@@ -210,6 +213,7 @@ type orderSection struct {
 	orderNum string
 	amount   decimal.Decimal
 	items    []string
+	prices   []string // per-item price, aligned with items ("" when unknown)
 }
 
 // reGrandTotal matches "Grand Total:" / "Order Total:" followed (possibly across
@@ -283,8 +287,8 @@ func parseSectionLines(lines []string, start, gt int) orderSection {
 	}
 
 	// Items: Amazon lists each line item as "<product name>" followed by a
-	// "Quantity: N" line. The product name is the nearest non-empty line above
-	// each "Quantity:" marker.
+	// "Quantity: N" line, then the price ("$" then dollars/cents on their own
+	// lines). The product name is the nearest non-empty line above "Quantity:".
 	for i := start; i < gt; i++ {
 		if !strings.HasPrefix(strings.ToLower(strings.TrimSpace(lines[i])), "quantity") {
 			continue
@@ -296,9 +300,46 @@ func parseSectionLines(lines []string, start, gt int) orderSection {
 		clean := regex.CleanText(name)
 		if !containsItem(sec.items, clean) && len(sec.items) < 5 {
 			sec.items = append(sec.items, clean)
+			sec.prices = append(sec.prices, priceAfter(lines, i, gt))
 		}
 	}
 	return sec
+}
+
+// priceAfter extracts the line-item price following a "Quantity:" line. Amazon
+// renders it either inline ("$11.88") or split across lines ("$", "11", "88").
+// Returns "" if no price is found before gt.
+func priceAfter(lines []string, qtyIdx, gt int) string {
+	inline := regexp.MustCompile(`\$\s*([\d,]+\.\d{2})`)
+	digits := regexp.MustCompile(`^\d+$`)
+	for j := qtyIdx + 1; j < gt; j++ {
+		l := strings.TrimSpace(lines[j])
+		if l == "" {
+			continue
+		}
+		if m := inline.FindStringSubmatch(l); len(m) > 1 {
+			return strings.ReplaceAll(m[1], ",", "")
+		}
+		if l == "$" {
+			// Next two non-empty lines are dollars then cents.
+			var nums []string
+			for k := j + 1; k < gt && len(nums) < 2; k++ {
+				n := strings.TrimSpace(lines[k])
+				if n == "" {
+					continue
+				}
+				if !digits.MatchString(n) {
+					break
+				}
+				nums = append(nums, n)
+			}
+			if len(nums) == 2 {
+				return nums[0] + "." + nums[1]
+			}
+		}
+		return "" // first content after Quantity wasn't a price
+	}
+	return ""
 }
 
 // precedingNonEmpty returns the nearest non-empty trimmed line above index i,
@@ -380,6 +421,41 @@ func joinItems(items []string) string {
 	return s
 }
 
+// makeOrderTxn builds an Amazon order transaction. The display memo uses the
+// (possibly truncated) joined item names; Details carries the full untruncated
+// item list and, when available, the per-item prices aligned with it (so the
+// summarizer can pair each item's short label with its price).
+func makeOrderTxn(orderNum string, amount decimal.Decimal, date string, items, prices []string) email.Transaction {
+	memo := joinItems(items)
+	if memo == "" {
+		memo = "Amazon Order"
+	}
+	details := map[string]string{
+		"order_number": orderNum,
+		"items":        strings.Join(items, "; "),
+	}
+	if anyNonEmpty(prices) {
+		details["item_prices"] = strings.Join(prices, "; ")
+	}
+	return email.Transaction{
+		Service: "amazon",
+		Payee:   "Amazon",
+		Amount:  amount,
+		Date:    date,
+		Memo:    memo,
+		Details: details,
+	}
+}
+
+func anyNonEmpty(ss []string) bool {
+	for _, s := range ss {
+		if strings.TrimSpace(s) != "" {
+			return true
+		}
+	}
+	return false
+}
+
 // isCancellationEmail returns true when the email body indicates an Amazon
 // item cancellation (no charge was made to the customer).
 func isCancellationEmail(body string) bool {
@@ -399,6 +475,47 @@ func extractAriaLabelAmount(body string) decimal.Decimal {
 		}
 	}
 	return decimal.Zero
+}
+
+// isRefundEmail returns true when the email confirms a refund was credited
+// (Amazon's "Your refund was issued" / "Total refund" return-summary emails).
+func isRefundEmail(body string) bool {
+	lower := strings.ToLower(body)
+	return strings.Contains(lower, "your refund was issued") ||
+		strings.Contains(lower, "total refund")
+}
+
+// extractRefundTotal parses the credited amount from a refund email's return
+// summary: "Total refund*\n$14.06" (falling back to "Refund subtotal").
+func extractRefundTotal(cleaned string) decimal.Decimal {
+	for _, pat := range []string{
+		`(?i)Total refund\*?[\s\S]{0,40}?\$([\d,]+\.\d{2})`,
+		`(?i)Refund subtotal[\s\S]{0,40}?\$([\d,]+\.\d{2})`,
+	} {
+		if m := regexp.MustCompile(pat).FindStringSubmatch(cleaned); len(m) > 1 {
+			if d, err := decimal.NewFromString(strings.ReplaceAll(m[1], ",", "")); err == nil {
+				return d
+			}
+		}
+	}
+	return decimal.Zero
+}
+
+// firstReturnItem returns the name of the returned item, which sits on the line
+// immediately above the first "Quantity:" marker in the return summary.
+func firstReturnItem(cleaned string) string {
+	lines := strings.Split(cleaned, "\n")
+	for i, l := range lines {
+		if !strings.HasPrefix(strings.ToLower(strings.TrimSpace(l)), "quantity") {
+			continue
+		}
+		name := precedingNonEmpty(lines, i, 0)
+		if isItemNameLine(name) {
+			return regex.CleanText(name)
+		}
+		return ""
+	}
+	return ""
 }
 
 func extractOrderDate(body string) string {

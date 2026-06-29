@@ -192,3 +192,29 @@ func TestFindMatch(t *testing.T) {
 		}
 	})
 }
+
+func TestSplitList(t *testing.T) {
+	tests := []struct {
+		in   string
+		want []string
+	}{
+		{"a; b; c", []string{"a", "b", "c"}},
+		{"a, b, c", []string{"a", "b", "c"}},
+		{"single", []string{"single"}},
+		{"", nil},
+		{"a;  ; b", []string{"a", "b"}}, // drops empty segment (semicolon path)
+		{"10.98; 12.97; 32.00", []string{"10.98", "12.97", "32.00"}},
+	}
+	for _, tt := range tests {
+		got := splitList(tt.in)
+		if len(got) != len(tt.want) {
+			t.Errorf("splitList(%q) = %v, want %v", tt.in, got, tt.want)
+			continue
+		}
+		for i := range got {
+			if got[i] != tt.want[i] {
+				t.Errorf("splitList(%q)[%d] = %q, want %q", tt.in, i, got[i], tt.want[i])
+			}
+		}
+	}
+}

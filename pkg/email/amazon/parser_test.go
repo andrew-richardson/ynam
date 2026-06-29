@@ -136,6 +136,18 @@ func TestParseMultiOrder(t *testing.T) {
 	if !strings.Contains(byAmount["96.04"].Memo, "Maybelline") {
 		t.Errorf("$96.04 memo should name its items, got %q", byAmount["96.04"].Memo)
 	}
+
+	// Multi-item order should carry per-item prices aligned with the item list.
+	multi := byAmount["96.04"]
+	items := strings.Split(multi.Details["items"], "; ")
+	prices := strings.Split(multi.Details["item_prices"], "; ")
+	if len(prices) != len(items) {
+		t.Fatalf("expected %d prices aligned with items, got %d (%q)",
+			len(items), len(prices), multi.Details["item_prices"])
+	}
+	if prices[0] != "10.98" {
+		t.Errorf("first item price: got %q, want %q", prices[0], "10.98")
+	}
 }
 
 // TestParseCancellation verifies that "Item cancelled successfully" emails are
@@ -172,6 +184,46 @@ func TestParseCancellation(t *testing.T) {
 			}
 			if !strings.Contains(txn.Memo, "Cancelled") {
 				t.Errorf("memo should indicate cancellation, got %q", txn.Memo)
+			}
+		})
+	}
+}
+
+// TestParseRefund verifies that Amazon "refund issued" emails are parsed with
+// the credited total, the returned item name, and a refund marker.
+func TestParseRefund(t *testing.T) {
+	cases := []struct {
+		name   string
+		file   string
+		order  string
+		amount string
+		item   string
+	}{
+		{"advance refund", "amazon_refund_outus.eml", "112-8937929-9981837", "14.06", "Outus"},
+		{"refund confirmation", "amazon_refund_confirmation.eml", "111-9715099-8245834", "12.98", "Shappy"},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			txns := parseFixture(t, tc.file)
+			if len(txns) != 1 {
+				t.Fatalf("expected 1 transaction, got %d", len(txns))
+			}
+			txn := txns[0]
+			if txn.Service != "amazon" {
+				t.Errorf("service: got %q, want %q", txn.Service, "amazon")
+			}
+			if txn.Details["order_number"] != tc.order {
+				t.Errorf("order_number: got %q, want %q", txn.Details["order_number"], tc.order)
+			}
+			if txn.Amount.String() != tc.amount {
+				t.Errorf("amount: got %q, want %q", txn.Amount.String(), tc.amount)
+			}
+			if txn.Details["refund"] != "true" {
+				t.Errorf("expected refund=true, got %q", txn.Details["refund"])
+			}
+			if !strings.Contains(txn.Memo, "Refund") || !strings.Contains(txn.Memo, tc.item) {
+				t.Errorf("memo %q should mention Refund and %q", txn.Memo, tc.item)
 			}
 		})
 	}

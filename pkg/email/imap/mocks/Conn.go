@@ -149,6 +149,61 @@ func (_c *MockConn_FetchMessages_Call) RunAndReturn(run func(numSet imap.NumSet,
 	return _c
 }
 
+// ListMailboxes provides a mock function for the type MockConn
+func (_mock *MockConn) ListMailboxes() ([]string, error) {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListMailboxes")
+	}
+
+	var r0 []string
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func() ([]string, error)); ok {
+		return returnFunc()
+	}
+	if returnFunc, ok := ret.Get(0).(func() []string); ok {
+		r0 = returnFunc()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]string)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func() error); ok {
+		r1 = returnFunc()
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockConn_ListMailboxes_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListMailboxes'
+type MockConn_ListMailboxes_Call struct {
+	*mock.Call
+}
+
+// ListMailboxes is a helper method to define mock.On call
+func (_e *MockConn_Expecter) ListMailboxes() *MockConn_ListMailboxes_Call {
+	return &MockConn_ListMailboxes_Call{Call: _e.mock.On("ListMailboxes")}
+}
+
+func (_c *MockConn_ListMailboxes_Call) Run(run func()) *MockConn_ListMailboxes_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockConn_ListMailboxes_Call) Return(strings []string, err error) *MockConn_ListMailboxes_Call {
+	_c.Call.Return(strings, err)
+	return _c
+}
+
+func (_c *MockConn_ListMailboxes_Call) RunAndReturn(run func() ([]string, error)) *MockConn_ListMailboxes_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // Logout provides a mock function for the type MockConn
 func (_mock *MockConn) Logout() error {
 	ret := _mock.Called()

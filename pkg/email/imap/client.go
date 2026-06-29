@@ -75,8 +75,8 @@ func (c *Client) Close() error {
 // date, parses them, and returns the transactions plus the raw match count.
 // Messages appearing in more than one mailbox (e.g. Gmail's "All Mail") are
 // de-duplicated by Message-ID.
-func (c *Client) FetchSince(since time.Time, services []string, filters map[string]config.ServiceConfig) ([]email.Transaction, int, error) {
-	msgs, count, err := c.FetchWithBodies(since, services, filters)
+func (c *Client) FetchSince(since, until time.Time, services []string, filters map[string]config.ServiceConfig) ([]email.Transaction, int, error) {
+	msgs, count, err := c.FetchWithBodies(since, until, services, filters)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -101,7 +101,7 @@ func (c *Client) SearchSince(since time.Time, services []string, filters map[str
 		if err := c.conn.Select(box); err != nil {
 			continue // skip mailboxes we cannot open
 		}
-		uids, err := c.searchUIDsRetry(since, services, filters)
+		uids, err := c.searchUIDsRetry(since, time.Time{}, services, filters)
 		if err != nil {
 			continue // skip a busy/failing mailbox
 		}
@@ -121,8 +121,13 @@ func (c *Client) selectableMailboxes() []string {
 }
 
 // searchUIDs searches for messages by date, sender AND subject criteria.
-func (c *Client) searchUIDs(since time.Time, services []string, filters map[string]config.ServiceConfig) ([]imapv2.UID, error) {
+// `until` is an inclusive upper bound; since IMAP's BEFORE is exclusive, we add
+// one day. A zero `until` means no upper bound.
+func (c *Client) searchUIDs(since, until time.Time, services []string, filters map[string]config.ServiceConfig) ([]imapv2.UID, error) {
 	criteria := &imapv2.SearchCriteria{Since: since}
+	if !until.IsZero() {
+		criteria.Before = until.AddDate(0, 0, 1)
+	}
 	clauses := make([]imapv2.SearchCriteria, 0, len(services)*2)
 
 	for _, service := range services {
@@ -194,6 +199,7 @@ type ParsedMessage struct {
 	From         string
 	Subject      string
 	MessageID    string // RFC822 Message-ID, used to de-duplicate across mailboxes
+	Mailbox      string // mailbox the message was found in (set by diagnostic search)
 }
 
 // FetchWithBodies searches every mailbox and returns ParsedMessage entries so
@@ -201,7 +207,7 @@ type ParsedMessage struct {
 // that appear in multiple mailboxes (e.g. Gmail's "All Mail" duplicates the
 // INBOX) are de-duplicated by Message-ID. The returned count is the number of
 // unique messages fetched.
-func (c *Client) FetchWithBodies(since time.Time, services []string, filters map[string]config.ServiceConfig) ([]ParsedMessage, int, error) {
+func (c *Client) FetchWithBodies(since, until time.Time, services []string, filters map[string]config.ServiceConfig) ([]ParsedMessage, int, error) {
 	if len(services) == 0 {
 		services = email.ListParsers()
 	}
@@ -217,7 +223,7 @@ func (c *Client) FetchWithBodies(since time.Time, services []string, filters map
 			lastErr = err
 			continue // skip mailboxes we cannot open
 		}
-		uids, err := c.searchUIDsRetry(since, services, filters)
+		uids, err := c.searchUIDsRetry(since, until, services, filters)
 		if err != nil {
 			lastErr = err
 			continue // a busy/failing mailbox shouldn't abort the whole account
@@ -251,13 +257,94 @@ func (c *Client) FetchWithBodies(since time.Time, services []string, filters map
 	return out, len(out), nil
 }
 
+// FindText searches EVERY mailbox on the account (not just configured ones) for
+// messages whose text contains query, using a server-side IMAP TEXT search. It
+// parses each match with all registered parsers. Intended as a diagnostic to
+// check whether a specific order/transaction appears anywhere in the mailbox.
+func (c *Client) FindText(query string) ([]ParsedMessage, error) {
+	boxes, err := c.conn.ListMailboxes()
+	if err != nil || len(boxes) == 0 {
+		boxes = c.selectableMailboxes()
+	}
+
+	var out []ParsedMessage
+	seen := make(map[string]bool)
+	for _, box := range boxes {
+		if err := c.conn.Select(box); err != nil {
+			continue
+		}
+		uids, err := c.conn.UIDSearch(&imapv2.SearchCriteria{Text: []string{query}})
+		if err != nil || len(uids) == 0 {
+			continue
+		}
+		msgs, err := c.fetchAndParseRaw(uids, email.ListParsers(), nil)
+		if err != nil {
+			continue
+		}
+		for _, m := range msgs {
+			if m.MessageID != "" {
+				if seen[m.MessageID] {
+					continue
+				}
+				seen[m.MessageID] = true
+			}
+			m.Mailbox = box
+			out = append(out, m)
+		}
+	}
+	return out, nil
+}
+
+// FindByText searches every configured account (all of each account's mailboxes)
+// for messages containing query, returning per-account results.
+func FindByText(ctx context.Context, cfg *config.Config, query string) []RawFetchResult {
+	accounts := cfg.GetEmailAccounts()
+	results := make([]RawFetchResult, len(accounts))
+	var wg sync.WaitGroup
+
+	for i, account := range accounts {
+		i, account := i, account
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			tCtx, cancel := context.WithTimeout(ctx, perAccountTimeout)
+			defer cancel()
+
+			res := RawFetchResult{Account: account.Email}
+			client, err := NewClient(account)
+			if err != nil {
+				res.Err = err
+				results[i] = res
+				return
+			}
+			go func() {
+				<-tCtx.Done()
+				_ = client.conn.Close()
+			}()
+			defer client.Close()
+
+			msgs, err := client.FindText(query)
+			if err != nil {
+				res.Err = err
+			} else {
+				res.Messages = msgs
+				res.MatchedCount = len(msgs)
+			}
+			results[i] = res
+		}()
+	}
+
+	wg.Wait()
+	return results
+}
+
 // searchUIDsRetry runs searchUIDs, retrying once after a short pause when the
 // server reports a transient condition (e.g. iCloud's "Server Busy").
-func (c *Client) searchUIDsRetry(since time.Time, services []string, filters map[string]config.ServiceConfig) ([]imapv2.UID, error) {
-	uids, err := c.searchUIDs(since, services, filters)
+func (c *Client) searchUIDsRetry(since, until time.Time, services []string, filters map[string]config.ServiceConfig) ([]imapv2.UID, error) {
+	uids, err := c.searchUIDs(since, until, services, filters)
 	if err != nil && isTransientIMAPError(err) {
 		time.Sleep(2 * time.Second)
-		return c.searchUIDs(since, services, filters)
+		return c.searchUIDs(since, until, services, filters)
 	}
 	return uids, err
 }
@@ -412,10 +499,20 @@ func FetchAll(ctx context.Context, cfg *config.Config, daysToLookBack int, onDon
 	return fetchAll(ctx, cfg, daysToLookBack, onDone, NewClient)
 }
 
-// fetchAll is the internal implementation that accepts a clientFactory so
-// tests can inject a pre-built client without dialing a real IMAP server.
+// FetchAllRange is like FetchAll but fetches messages within [since, until]
+// (inclusive). A zero `until` means no upper bound.
+func FetchAllRange(ctx context.Context, cfg *config.Config, since, until time.Time, onDone func(idx int, result FetchResult)) []FetchResult {
+	return fetchAllRange(ctx, cfg, since, until, onDone, NewClient)
+}
+
+// fetchAll is the internal days-based wrapper used by tests and FetchAll.
 func fetchAll(ctx context.Context, cfg *config.Config, daysToLookBack int, onDone func(idx int, result FetchResult), dial clientFactory) []FetchResult {
-	since := cfg.SinceDateAsTime(daysToLookBack)
+	return fetchAllRange(ctx, cfg, cfg.SinceDateAsTime(daysToLookBack), time.Time{}, onDone, dial)
+}
+
+// fetchAllRange is the internal implementation that accepts a clientFactory so
+// tests can inject a pre-built client without dialing a real IMAP server.
+func fetchAllRange(ctx context.Context, cfg *config.Config, since, until time.Time, onDone func(idx int, result FetchResult), dial clientFactory) []FetchResult {
 	accounts := cfg.GetEmailAccounts()
 
 	results := make([]FetchResult, len(accounts))
@@ -431,7 +528,7 @@ func fetchAll(ctx context.Context, cfg *config.Config, daysToLookBack int, onDon
 			tCtx, cancel := context.WithTimeout(ctx, perAccountTimeout)
 			defer cancel()
 
-			result := processAccount(tCtx, cfg, account, since, dial)
+			result := processAccount(tCtx, cfg, account, since, until, dial)
 			results[i] = result
 			if onDone != nil {
 				onDone(i, result)
@@ -444,7 +541,7 @@ func fetchAll(ctx context.Context, cfg *config.Config, daysToLookBack int, onDon
 }
 
 // processAccount runs the full IMAP flow for one account and returns its result.
-func processAccount(ctx context.Context, cfg *config.Config, account config.EmailAccount, since time.Time, dial clientFactory) FetchResult {
+func processAccount(ctx context.Context, cfg *config.Config, account config.EmailAccount, since, until time.Time, dial clientFactory) FetchResult {
 	result := FetchResult{Account: account.Email}
 
 	services := cfg.ServicesForAccount(account)
@@ -473,7 +570,7 @@ func processAccount(ctx context.Context, cfg *config.Config, account config.Emai
 	defer client.Close()
 
 	filters := cfg.FiltersForServices(services)
-	txns, matched, err := client.FetchSince(since, services, filters)
+	txns, matched, err := client.FetchSince(since, until, services, filters)
 	if err != nil {
 		if ctx.Err() != nil {
 			result.Err = fmt.Errorf("cancelled")
@@ -500,7 +597,12 @@ type RawFetchResult struct {
 // FetchAllWithBodies is like FetchAll but returns RawFetchResult so callers
 // can access the raw email body alongside parsed transactions.
 func FetchAllWithBodies(ctx context.Context, cfg *config.Config, daysToLookBack int, onDone func(idx int, result RawFetchResult)) []RawFetchResult {
-	since := cfg.SinceDateAsTime(daysToLookBack)
+	return FetchAllWithBodiesRange(ctx, cfg, cfg.SinceDateAsTime(daysToLookBack), time.Time{}, onDone)
+}
+
+// FetchAllWithBodiesRange is like FetchAllWithBodies but fetches messages within
+// [since, until] (inclusive). A zero `until` means no upper bound.
+func FetchAllWithBodiesRange(ctx context.Context, cfg *config.Config, since, until time.Time, onDone func(idx int, result RawFetchResult)) []RawFetchResult {
 	accounts := cfg.GetEmailAccounts()
 
 	results := make([]RawFetchResult, len(accounts))
@@ -514,7 +616,7 @@ func FetchAllWithBodies(ctx context.Context, cfg *config.Config, daysToLookBack 
 			tCtx, cancel := context.WithTimeout(ctx, perAccountTimeout)
 			defer cancel()
 
-			result := processAccountWithBodies(tCtx, cfg, account, since)
+			result := processAccountWithBodies(tCtx, cfg, account, since, until)
 			results[i] = result
 			if onDone != nil {
 				onDone(i, result)
@@ -526,7 +628,7 @@ func FetchAllWithBodies(ctx context.Context, cfg *config.Config, daysToLookBack 
 	return results
 }
 
-func processAccountWithBodies(ctx context.Context, cfg *config.Config, account config.EmailAccount, since time.Time) RawFetchResult {
+func processAccountWithBodies(ctx context.Context, cfg *config.Config, account config.EmailAccount, since, until time.Time) RawFetchResult {
 	result := RawFetchResult{Account: account.Email}
 
 	services := cfg.ServicesForAccount(account)
@@ -553,7 +655,7 @@ func processAccountWithBodies(ctx context.Context, cfg *config.Config, account c
 	defer client.Close()
 
 	filters := cfg.FiltersForServices(services)
-	msgs, matched, err := client.FetchWithBodies(since, services, filters)
+	msgs, matched, err := client.FetchWithBodies(since, until, services, filters)
 	if err != nil {
 		if ctx.Err() != nil {
 			result.Err = fmt.Errorf("cancelled")

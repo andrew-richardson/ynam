@@ -25,6 +25,8 @@ import (
 
 var (
 	syncDays          int
+	syncFrom          string
+	syncTo            string
 	syncDryRun        bool
 	syncFailOnWarning bool
 	syncLogPath       string
@@ -56,9 +58,17 @@ Use --dry-run to preview matches without modifying YNAB.`,
 		}
 		defer lg.Close()
 
-		daysToLookBack := cfg.DaysSince
-		if syncDays > 0 {
-			daysToLookBack = syncDays
+		since, until, err := resolveRange(cfg, syncDays, syncFrom, syncTo)
+		if err != nil {
+			return err
+		}
+
+		// YNAB fetch is widened by a buffer on both ends so the date-match window
+		// can still span transactions near the range edges.
+		ynabSince := since.AddDate(0, 0, -ynabTransactionDaysBuffer)
+		var ynabUntil time.Time
+		if !until.IsZero() {
+			ynabUntil = until.AddDate(0, 0, ynabTransactionDaysBuffer)
 		}
 
 		// YNAB and email fetching are independent — run them concurrently.
@@ -88,7 +98,7 @@ Use --dry-run to preview matches without modifying YNAB.`,
 		go func() {
 			defer wg.Done()
 			client := ynab.NewClient(cfg.YNABAPIToken, cfg.YNABBudgetID)
-			txns, err := client.List(daysToLookBack + ynabTransactionDaysBuffer)
+			txns, err := client.ListRange(ynabSince, ynabUntil)
 			mu.Lock()
 			allTxns = txns
 			ynabErr = err
@@ -104,7 +114,7 @@ Use --dry-run to preview matches without modifying YNAB.`,
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			results := imap.FetchAll(ctx, cfg, daysToLookBack, func(idx int, r imap.FetchResult) {
+			results := imap.FetchAllRange(ctx, cfg, since, until, func(idx int, r imap.FetchResult) {
 				if r.Err != nil {
 					sp.Finish(idx+1, "", r.Err)
 					return
@@ -160,8 +170,8 @@ Use --dry-run to preview matches without modifying YNAB.`,
 
 		matched := 0
 		skipped := 0
-		updated := 0
 		usedEmail := make([]bool, len(emailTxns))
+		pendingUpdates := make(map[string]string) // id -> memo, written in one bulk call
 
 		// Match against ALL YNAB transactions regardless of memo so we can
 		// distinguish "already memoized" (Skipped) from "no counterpart" (No match).
@@ -210,12 +220,21 @@ Use --dry-run to preview matches without modifying YNAB.`,
 			if syncDryRun {
 				continue
 			}
+			pendingUpdates[yt.ID] = memo
+		}
 
-			if err := ynabClient.Update(yt.ID, memo); err != nil {
-				lg.Printf("  failed to update %s: %v\n", yt.ID, err)
-				continue
+		// Write all memos in one bulk request (chunked) rather than one PATCH per
+		// match, to stay under YNAB's ~200 requests/hour rate limit.
+		updated := 0
+		if !syncDryRun && len(pendingUpdates) > 0 {
+			n, err := ynabClient.BulkUpdate(pendingUpdates)
+			updated = n
+			if err != nil {
+				lg.Printf("  bulk update error after %d: %v\n", n, err)
+				if warnErr == nil {
+					warnErr = err
+				}
 			}
-			updated++
 		}
 
 		lg.Printf("\nMatched %d, skipped %d (already memoized).\n", matched, skipped)
@@ -326,7 +345,43 @@ func summarizeItems(ctx context.Context, s *claude.Summarizer, et email.Transact
 		return "", nil
 	}
 
-	return s.SummarizeMemo(ctx, items)
+	short, err := s.SummarizeMemo(ctx, items)
+	if err != nil {
+		return "", err
+	}
+
+	// For multi-item orders, annotate each item's short label with its price,
+	// e.g. "Vinyl liquid lipstick ($10.98), Baked powder blush ($12.97)".
+	prices := splitList(et.Details["item_prices"])
+	labels := splitList(short)
+	if len(items) >= 2 && len(prices) == len(items) && len(labels) == len(items) {
+		parts := make([]string, len(labels))
+		for i, label := range labels {
+			if p := strings.TrimSpace(prices[i]); p != "" {
+				parts[i] = fmt.Sprintf("%s ($%s)", strings.TrimSpace(label), p)
+			} else {
+				parts[i] = strings.TrimSpace(label)
+			}
+		}
+		return strings.Join(parts, ", "), nil
+	}
+
+	return short, nil
+}
+
+// splitList splits a "; "- or ", "-separated list into trimmed, non-empty parts.
+func splitList(s string) []string {
+	sep := "; "
+	if !strings.Contains(s, sep) {
+		sep = ", "
+	}
+	var out []string
+	for _, p := range strings.Split(s, sep) {
+		if t := strings.TrimSpace(p); t != "" {
+			out = append(out, t)
+		}
+	}
+	return out
 }
 
 func buildMemo(et email.Transaction) string {
@@ -341,7 +396,9 @@ func buildMemo(et email.Transaction) string {
 
 func init() {
 	rootCmd.AddCommand(syncCmd)
-	syncCmd.Flags().IntVar(&syncDays, "days", 0, "number of days to look back (0 = use config value)")
+	syncCmd.Flags().IntVar(&syncDays, "days", 0, "number of days to look back (0 = use config value; ignored if --from is set)")
+	syncCmd.Flags().StringVar(&syncFrom, "from", "", "start date YYYY-MM-DD (overrides --days)")
+	syncCmd.Flags().StringVar(&syncTo, "to", "", "end date YYYY-MM-DD inclusive (default: now)")
 	syncCmd.Flags().BoolVar(&syncDryRun, "dry-run", false, "preview matches without updating YNAB")
 	syncCmd.Flags().BoolVar(&syncFailOnWarning, "fail-on-warning", false, "exit non-zero if any email account fails (for schedulers/notifiers)")
 	syncCmd.Flags().StringVar(&syncLogPath, "log", "", "also write output to this file (overwritten every 7 runs)")

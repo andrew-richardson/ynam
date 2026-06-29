@@ -24,10 +24,13 @@ import (
 )
 
 var (
-	searchDays      int
-	searchUIDsOnly  bool
-	searchAmount    string
-	searchSaveDir   string
+	searchDays     int
+	searchFrom     string
+	searchTo       string
+	searchUIDsOnly bool
+	searchAmount   string
+	searchSaveDir  string
+	searchOrder    string
 )
 
 var searchCmd = &cobra.Command{
@@ -36,14 +39,18 @@ var searchCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := config.Get()
 
-		daysToLookBack := cfg.DaysSince
-		if searchDays > 0 {
-			daysToLookBack = searchDays
+		// --order: diagnostic full-text search for a specific order/transaction
+		// ID across ALL mailboxes (ignores date range and configured filters).
+		if searchOrder != "" {
+			return runOrderSearch(cmd, cfg, searchOrder)
 		}
-		since := cfg.SinceDateAsTime(daysToLookBack)
 
-		fmt.Printf("Searching since %s (%d day lookback)\n\n",
-			since.Format("2006-01-02"), daysToLookBack)
+		since, until, err := resolveRange(cfg, searchDays, searchFrom, searchTo)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("Searching %s\n\n", rangeLabel(since, until))
 
 		// Parse optional amount filter.
 		var filterAmount *decimal.Decimal
@@ -69,7 +76,7 @@ var searchCmd = &cobra.Command{
 
 		if !needBodies {
 			// Fast path: normal parsed-only fetch.
-			results := imap.FetchAll(cmd.Context(), cfg, daysToLookBack, func(idx int, r imap.FetchResult) {
+			results := imap.FetchAllRange(cmd.Context(), cfg, since, until, func(idx int, r imap.FetchResult) {
 				if r.Err != nil {
 					sp.Finish(idx, "", r.Err)
 					return
@@ -118,7 +125,7 @@ var searchCmd = &cobra.Command{
 		}
 
 		// Slow path: fetch with bodies for amount filtering / saving.
-		results := imap.FetchAllWithBodies(cmd.Context(), cfg, daysToLookBack, func(idx int, r imap.RawFetchResult) {
+		results := imap.FetchAllWithBodiesRange(cmd.Context(), cfg, since, until, func(idx int, r imap.RawFetchResult) {
 			if r.Err != nil {
 				sp.Finish(idx, "", r.Err)
 				return
@@ -200,6 +207,65 @@ var searchCmd = &cobra.Command{
 	},
 }
 
+// runOrderSearch does a full-text search across every mailbox of every account
+// for a specific order/transaction ID, reporting where (if anywhere) it appears
+// and whether ynam's parsers extract a transaction from it.
+func runOrderSearch(cmd *cobra.Command, cfg *config.Config, query string) error {
+	accounts := cfg.GetEmailAccounts()
+	labels := make([]string, len(accounts))
+	for i, a := range accounts {
+		labels[i] = a.Email
+	}
+	sp := spinner.New(labels)
+	sp.Start()
+	results := imap.FindByText(cmd.Context(), cfg, query)
+	for i, r := range results {
+		if r.Err != nil {
+			sp.Finish(i, "", r.Err)
+		} else {
+			sp.Finish(i, fmt.Sprintf("%d match(es)", len(r.Messages)), nil)
+		}
+	}
+	sp.Stop()
+
+	found := 0
+	for _, r := range results {
+		if r.Err != nil {
+			fmt.Printf("%s: error: %v\n", r.Account, r.Err)
+			continue
+		}
+		for _, m := range r.Messages {
+			found++
+			fmt.Printf("\n%s  [%s]\n", r.Account, m.Mailbox)
+			fmt.Printf("  From:    %s\n", m.From)
+			fmt.Printf("  Subject: %s\n", m.Subject)
+			if len(m.Transactions) == 0 {
+				fmt.Printf("  Parsed:  (no transaction parsed by ynam)\n")
+			}
+			for _, txn := range m.Transactions {
+				fmt.Printf("  Parsed:  [%s] %s  %s\n",
+					txn.Service, txn.Amount.StringFixed(2), txn.Memo)
+			}
+			if searchSaveDir != "" {
+				fn := filepath.Join(searchSaveDir, fmt.Sprintf("order_%s.eml", query))
+				if err := os.WriteFile(fn, []byte(m.RawBody), 0644); err != nil {
+					fmt.Printf("  warning: could not save %s: %v\n", fn, err)
+				} else {
+					fmt.Printf("  saved -> %s\n", fn)
+				}
+			}
+		}
+	}
+
+	fmt.Println()
+	if found == 0 {
+		fmt.Printf("Order %q not found in any mailbox of any configured account.\n", query)
+	} else {
+		fmt.Printf("Found %q in %d message(s).\n", query, found)
+	}
+	return nil
+}
+
 // parseTxnDate parses the date formats that parsers produce.
 func parseTxnDate(s string) time.Time {
 	for _, layout := range []string{
@@ -234,8 +300,11 @@ func sortByDateDesc(txns []email.Transaction) {
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-	searchCmd.Flags().IntVar(&searchDays, "days", 0, "number of days to look back (0 = use config value)")
+	searchCmd.Flags().IntVar(&searchDays, "days", 0, "number of days to look back (0 = use config value; ignored if --from is set)")
+	searchCmd.Flags().StringVar(&searchFrom, "from", "", "start date YYYY-MM-DD (overrides --days)")
+	searchCmd.Flags().StringVar(&searchTo, "to", "", "end date YYYY-MM-DD inclusive (default: now)")
 	searchCmd.Flags().BoolVar(&searchUIDsOnly, "uids-only", false, "only run the search; do not fetch/parse bodies")
 	searchCmd.Flags().StringVar(&searchAmount, "amount", "", "filter to transactions matching this amount (e.g. 83.26)")
+	searchCmd.Flags().StringVar(&searchOrder, "order", "", "find an order/transaction ID across ALL mailboxes (diagnostic; ignores date range)")
 	searchCmd.Flags().StringVar(&searchSaveDir, "save-testdata", "", "directory to save matching raw emails into (e.g. testdata/)")
 }

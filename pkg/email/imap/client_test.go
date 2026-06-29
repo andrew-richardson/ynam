@@ -59,7 +59,7 @@ func TestFetchSince_SelectSkipped(t *testing.T) {
 	client := NewClientWithConn(accountWithMailboxes("Junk", "INBOX"), conn)
 	defer client.Close()
 
-	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.NoError(t, err)
 	assert.Equal(t, 0, count)
 	assert.Empty(t, txns)
@@ -76,7 +76,7 @@ func TestFetchSince_AllMailboxesFailErrors(t *testing.T) {
 	client := NewClientWithConn(testAccount, conn)
 	defer client.Close()
 
-	_, _, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	_, _, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.Error(t, err)
 }
 
@@ -92,7 +92,7 @@ func TestFetchSince_SearchError(t *testing.T) {
 	client := NewClientWithConn(testAccount, conn)
 	defer client.Close()
 
-	_, _, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	_, _, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.Error(t, err)
 }
 
@@ -107,7 +107,7 @@ func TestFetchSince_Empty(t *testing.T) {
 	client := NewClientWithConn(testAccount, conn)
 	defer client.Close()
 
-	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.NoError(t, err)
 	assert.Equal(t, 0, count)
 	assert.Empty(t, txns)
@@ -136,7 +136,7 @@ func TestFetchSince_ParsesMessages(t *testing.T) {
 	client := NewClientWithConn(testAccount, conn)
 	defer client.Close()
 
-	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.NoError(t, err)
 	assert.Equal(t, 1, count)
 	assert.NotEmpty(t, txns)
@@ -168,7 +168,7 @@ func TestFetchSince_MultipleMailboxes(t *testing.T) {
 	client := NewClientWithConn(accountWithMailboxes("INBOX", "Confirmations & Receipts"), conn)
 	defer client.Close()
 
-	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	txns, count, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.NoError(t, err)
 	assert.Equal(t, 1, count, "duplicate message across mailboxes should be counted once")
 	assert.NotEmpty(t, txns)
@@ -187,7 +187,7 @@ func TestFetchSince_FetchError(t *testing.T) {
 	client := NewClientWithConn(testAccount, conn)
 	defer client.Close()
 
-	_, _, err := client.FetchSince(time.Now().Add(-24*time.Hour), []string{"amazon"}, amazonFilters())
+	_, _, err := client.FetchSince(time.Now().Add(-24*time.Hour), time.Time{}, []string{"amazon"}, amazonFilters())
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "fetch")
 }

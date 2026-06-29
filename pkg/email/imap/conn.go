@@ -9,6 +9,8 @@ import (
 // Extracting it as an interface lets tests inject a mock without dialing a
 // real IMAP server.
 type Conn interface {
+	// ListMailboxes returns the names of all selectable mailboxes.
+	ListMailboxes() ([]string, error)
 	// Select selects the named mailbox in read-only mode.
 	Select(mailbox string) error
 	// UIDSearch executes a UID SEARCH and returns the matching UIDs.
@@ -25,6 +27,27 @@ type Conn interface {
 // go-imap command objects and waiting for their responses inline.
 type realConn struct {
 	c *imapclient.Client
+}
+
+func (r *realConn) ListMailboxes() ([]string, error) {
+	entries, err := r.c.List("", "*", nil).Collect()
+	if err != nil {
+		return nil, err
+	}
+	var names []string
+	for _, e := range entries {
+		noselect := false
+		for _, a := range e.Attrs {
+			if a == imapv2.MailboxAttrNoSelect {
+				noselect = true
+				break
+			}
+		}
+		if !noselect {
+			names = append(names, e.Mailbox)
+		}
+	}
+	return names, nil
 }
 
 func (r *realConn) Select(mailbox string) error {
